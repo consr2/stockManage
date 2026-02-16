@@ -1,10 +1,19 @@
 package com.my.shop.item;
 
+import com.my.shop.item.dto.ItemDto;
+import com.my.shop.util.ResponseUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequiredArgsConstructor
 public class ItemController {
+
+    private final ItemService itemService;
 
     @GetMapping("/item/manage")
     public String itemManage(){
@@ -20,4 +29,27 @@ public class ItemController {
     public String itemHistory(){
         return "/item/itemHistory";
     }
+
+
+    @ResponseBody
+    @PostMapping("/item/save")
+    public ResponseUtil itemSave(@RequestBody ItemDto itemDto){
+        return ResponseUtil.builder()
+                .data(itemService.saveItem(itemDto))
+                .msg("저장완료")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
+    @PostMapping("/item/search")
+    public ResponseUtil itemSerch(@RequestBody ItemDto itemDto){
+        return ResponseUtil.builder()
+                .data(itemService.itemSerch(itemDto))
+                .msg("검색완료")
+                .code(200)
+                .build();
+    }
+
+
 }

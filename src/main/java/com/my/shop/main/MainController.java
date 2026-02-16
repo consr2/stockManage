@@ -16,8 +16,6 @@ public class MainController {
 
     @GetMapping("/index")
     public String main(){
-        List<Map<String,Object>> result = mainService.getUser();
-        System.out.println(result.toString());
         return "/main/main";
     }
 

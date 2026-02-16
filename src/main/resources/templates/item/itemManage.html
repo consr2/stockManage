@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>품목 관리 - SHOP MGMT</title>
-    <link rel="stylesheet" href="/item/itemManage.css">
+    <link rel="stylesheet" href="/css/item/itemManage.css">
 </head>
 <body>
 <div class="dashboard">
@@ -14,30 +14,60 @@
     </header>
 
     <section class="item-form-section">
-        <form class="item-form">
+        <div class="item-form">
             <div class="input-group">
                 <label>품목명</label>
-                <input type="text" placeholder="예: 무선 마우스">
+                <input type="text" placeholder="예: 무선 마우스" id="itemName">
             </div>
             <div class="input-group">
-                <label>가격</label>
-                <input type="number" placeholder="0">
+                <label>가격1</label>
+                <input type="number" placeholder="0" id="price1">
             </div>
-            <button type="submit" class="btn-add">등록하기</button>
-        </form>
+            <div class="input-group">
+                <label>가격2</label>
+                <input type="number" placeholder="0" id="price2">
+            </div>
+            <div class="input-group">
+                <label>가격3</label>
+                <input type="number" placeholder="0" id="price3">
+            </div>
+            <button type="submit" class="btn-add" id="saveItemBtn">등록하기</button>
+        </div>
     </section>
 
     <hr class="divider">
 
-    <section class="item-list-section">
-        <div class="item-card">
-            <div class="info">
-                <span class="name">샘플 품목 A</span>
-                <span class="price">15,000원</span>
-            </div>
-            <button class="btn-delete">삭제</button>
-        </div>
-    </section>
+<!--    <section class="item-list-section">-->
+<!--        <div class="item-card">-->
+<!--            <div class="info">-->
+<!--                <span class="name">샘플 품목 A</span>-->
+<!--                <span class="price">15,000원</span>-->
+<!--            </div>-->
+<!--            <button class="btn-delete">삭제</button>-->
+<!--        </div>-->
+<!--    </section>-->
 </div>
 </body>
 </html>
+<script src="/js/util/util.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnAdd = document.querySelector('#saveItemBtn');
+
+        btnAdd.addEventListener('click',async function() {
+            // 2. 파라미터 구성
+            const params = {
+                itemName: document.querySelector('#itemName').value,
+                price1: document.querySelector('#price1').value,
+                price2: document.querySelector('#price2').value,
+                price3: document.querySelector('#price3').value
+            };
+
+            let data = await sendRequest("/item/save",'POST',params);
+            console.log(data);
+            if(data.code === 200){
+                alert(data.msg);
+            }
+        });
+    });
+</script>

@@ -78,3 +78,19 @@ body {
     padding: 18px; border-radius: 12px; font-weight: 600; font-size: 16px;
     cursor: pointer; margin-top: 10px;
 }
+
+.autocomplete-suggestions {
+    border: 1px solid var(--border-color);
+    border-top: none;
+    background: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 0 0 12px 12px;
+}
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+}
+.suggestion-item:hover {
+    background-color: var(--hover-bg);
+}

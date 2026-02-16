@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>재고 변환</title>
-    <link rel="stylesheet" href="/item/itemChange.css">
+    <link rel="stylesheet" href="/css/item/itemChange.css">
 </head>
 <body>
 <div class="dashboard">
@@ -13,14 +13,12 @@
         <h1>재고 변환</h1>
     </header>
 
-    <form class="stock-form">
+    <div class="stock-form">
         <div class="input-group">
             <label>재고 품목</label>
-            <select>
-                <option value="">품목을 선택하세요</option>
-                <option value="1">무선 마우스</option>
-                <option value="2">기계식 키보드</option>
-            </select>
+            <input placeholder="품목을 입력하세요" id="itemName">
+            <input id="itemNameId" hidden>
+            <div id="autocomplete-list" class="autocomplete-suggestions"></div>
         </div>
 
         <div class="input-group">
@@ -53,7 +51,46 @@
         </div>
 
         <button type="submit" class="btn-submit">변환 내용 저장</button>
-    </form>
+    </div>
 </div>
 </body>
 </html>
+<script src="/js/util/util.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const itemName = document.querySelector('#itemName');
+        const itemNameId = document.querySelector('#itemNameId');
+        const listContainer = document.querySelector('#autocomplete-list');
+
+        itemName.addEventListener('input',async function() {
+            if(isEmpty(itemName.value) || itemName.value.length < 2){
+                listContainer.innerHTML = '';
+                return;
+            }
+
+            const params = {
+                itemName: itemName.value,
+            };
+
+            let data = await sendRequest("/item/search",'POST',params);
+            console.log(data);
+            if(data.code === 200){
+                let html = '';
+                data.data.forEach(item => {
+                    html += `<div class="suggestion-item" onclick="selectItem('${item.id}', '${item.itemName}')">
+                                ${item.itemName}
+                            </div>`;
+                });
+
+                listContainer.innerHTML = html;
+            }
+        });
+
+        window.selectItem = function(id, name){
+            itemName.value = name;
+            itemNameId.value = id;
+            listContainer.innerHTML = '';
+        }
+
+    });
+</script>
