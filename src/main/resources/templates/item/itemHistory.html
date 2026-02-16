@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입출고 내역</title>
+    <link rel="stylesheet" href="/item/itemHistory.css">
+</head>
+<body>
+<div class="dashboard">
+    <header class="main-header">
+        <a href="/index" class="back-link">← 뒤로가기</a>
+        <h1>입출고 내역 이력</h1>
+    </header>
+
+    <section class="search-container">
+        <div class="search-row">
+            <div class="filter-group">
+                <label>시작일</label>
+                <input type="date">
+            </div>
+            <div class="filter-group">
+                <label>종료일</label>
+                <input type="date">
+            </div>
+        </div>
+        <div class="search-row">
+            <div class="filter-group">
+                <label>품명</label>
+                <input type="text" placeholder="품목 검색">
+            </div>
+            <div class="filter-group">
+                <label>고객/담당자</label>
+                <input type="text" placeholder="성함/업체명">
+            </div>
+            <button class="btn-search">조회</button>
+        </div>
+    </section>
+
+    <table class="history-grid">
+        <thead>
+        <tr>
+            <th>일시</th>
+            <th>품명</th>
+            <th>구분</th>
+            <th>수량</th>
+            <th>대상</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>2026-02-16</td>
+            <td>무선 마우스</td>
+            <td class="status-in">입고</td>
+            <td>+10</td>
+            <td>물류센터</td>
+        </tr>
+        <tr>
+            <td>2026-02-15</td>
+            <td>기계식 키보드</td>
+            <td class="status-out">출고</td>
+            <td>-1</td>
+            <td>김철수</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

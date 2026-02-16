@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>품목 관리 - SHOP MGMT</title>
+    <link rel="stylesheet" href="/item/itemManage.css">
+</head>
+<body>
+<div class="dashboard">
+    <header class="main-header">
+        <a href="/index" class="back-link">← 뒤로가기</a>
+        <h1>품목 관리</h1>
+    </header>
+
+    <section class="item-form-section">
+        <form class="item-form">
+            <div class="input-group">
+                <label>품목명</label>
+                <input type="text" placeholder="예: 무선 마우스">
+            </div>
+            <div class="input-group">
+                <label>가격</label>
+                <input type="number" placeholder="0">
+            </div>
+            <button type="submit" class="btn-add">등록하기</button>
+        </form>
+    </section>
+
+    <hr class="divider">
+
+    <section class="item-list-section">
+        <div class="item-card">
+            <div class="info">
+                <span class="name">샘플 품목 A</span>
+                <span class="price">15,000원</span>
+            </div>
+            <button class="btn-delete">삭제</button>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+:root {
+    --bg-color: #ffffff;
+    --text-main: #111111;
+    --text-sub: #888888;
+    --border-color: #eeeeee;
+    --hover-bg: #f9f9f9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    padding-top: 5vh;
+}
+
+.dashboard { width: 100%; max-width: 500px; padding: 0 24px; }
+.main-header { margin-bottom: 40px; }
+.main-header h1 { font-size: 32px; font-weight: 700; margin-top: 8px; }
+
+.back-link {
+    text-decoration: none; color: var(--text-sub); font-size: 14px;
+    display: inline-block; margin-bottom: 12px;
+}
+
+.stock-form { display: flex; flex-direction: column; gap: 24px; }
+.input-group { display: flex; flex-direction: column; gap: 8px; }
+.input-group label { font-size: 12px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; }
+
+/* 입력창 공통 */
+.input-group input, .input-group select {
+    padding: 16px; border: 1px solid var(--border-color);
+    border-radius: 12px; font-size: 16px; background-color: var(--hover-bg);
+    outline: none; width: 100%; -webkit-appearance: none;
+}
+
+/* 입고/출고 라디오 버튼 디자인 수정 */
+.type-group {
+    display: flex;
+    background-color: var(--hover-bg);
+    padding: 4px;
+    border-radius: 14px;
+    gap: 4px;
+}
+
+.type-option {
+    flex: 1;
+}
+
+/* 실제 라디오 버튼은 숨김 */
+.type-option input[type="radio"] {
+    display: none;
+}
+
+/* 라벨을 버튼처럼 보이게 */
+.type-label {
+    display: block;
+    padding: 12px 0;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text-sub);
+    transition: all 0.2s ease;
+}
+
+/* 선택되었을 때 스타일 */
+.type-option input[type="radio"]:checked + .type-label {
+    background-color: #ffffff;
+    color: var(--text-main);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.btn-submit {
+    background-color: var(--text-main); color: white; border: none;
+    padding: 18px; border-radius: 12px; font-weight: 600; font-size: 16px;
+    cursor: pointer; margin-top: 10px;
+}

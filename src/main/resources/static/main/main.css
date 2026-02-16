@@ -1,0 +1,79 @@
+:root {
+    --bg-color: #ffffff;
+    --text-main: #111111;
+    --text-sub: #888888;
+    --border-color: #eeeeee;
+    --hover-bg: #f9f9f9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    padding-top: 10vh;
+}
+
+.dashboard {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 24px;
+}
+
+.main-header {
+    margin-bottom: 60px;
+}
+
+.logo {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-sub);
+}
+
+.main-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 8px;
+}
+
+.nav-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    text-decoration: none;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.nav-item .label {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.nav-item .arrow {
+    color: var(--text-sub);
+    transition: transform 0.2s ease;
+}
+
+/* Hover Effect */
+.nav-item:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--text-main);
+}
+
+.nav-item:hover .arrow {
+    transform: translateX(5px);
+    color: var(--text-main);
+}
