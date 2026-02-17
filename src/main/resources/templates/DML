@@ -26,3 +26,5 @@ CREATE TABLE item_stock (
     current_cnt INT DEFAULT 0,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+docker run -d --name shop --network db -p 80:80 -e SPRING_PROFILES_ACTIVE=prop shop
