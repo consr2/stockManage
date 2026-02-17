@@ -38,16 +38,26 @@
             i.item_name like CONCAT('%',#{itemName},'%')
     </select>
 
+
+    <select id="selectCustomer" parameterType="com.my.shop.item.dto.ItemDto" resultType="java.util.HashMap">
+        SELECT
+            customer
+        FROM
+        item_history
+        WHERE customer like CONCAT('%',#{customer},'%')
+        GROUP BY customer
+    </select>
+
     <insert id="insertItemHistroy" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
         INSERT INTO item_history
         (
-            customer, date
+            customer, customer_tel,date
             , item_idx, item_name, cnt,
             type, created_at)
         VALUES
         <foreach collection="itemInfoList" item="item" separator=",">
         (
-            #{customer}, #{date},
+            #{customer}, #{customerTel}, #{date},
             #{item.itemId}, #{item.itemName}, #{item.cnt},
             #{type}, now()
         )

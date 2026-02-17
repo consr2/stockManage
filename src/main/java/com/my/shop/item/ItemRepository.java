@@ -25,6 +25,8 @@ public interface ItemRepository {
 
     List<Map<String, Object>> selectItemHistory(SearchDto searchDto);
 
+    List<Map<String, Object>> selectCustomer(SearchDto searchDto);
+
     List<Map<String, Object>> selectItemList(SearchDto searchDto);
 
 }

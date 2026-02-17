@@ -9,7 +9,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
 
 body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; padding-top: 5vh; }
-.dashboard { width: 100%; max-width: 700px; padding: 0 24px; }
+.dashboard { width: 100%; max-width: 900px; padding: 0 24px; }
 .main-header { margin-bottom: 30px; }
 .main-header h1 { font-size: 28px; font-weight: 700; }
 .back-link { text-decoration: none; color: var(--text-sub); font-size: 14px; margin-bottom: 10px; display: inline-block; }
@@ -19,7 +19,25 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
     background-color: var(--hover-bg);
     padding: 20px;
     border-radius: 16px;
-    margin-bottom: 30px;
+}
+
+.excelBtnBox{
+    display: flex;
+    justify-content: flex-end;
+}
+.excelBtn{
+    margin: 10px;
+}
+
+.suggestion-item {
+    border: 1px solid black;
+    background: #ededed;
+    padding: 10px;
+    position: absolute;
+    width: 28%;
+}
+.suggestion-item:hover {
+    background-color: var(--hover-bg);
 }
 
 .search-row {

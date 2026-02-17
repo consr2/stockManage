@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>품목조회</title>
     <link rel="stylesheet" href="/js/lib/tui-grid.css" />
-    <link rel="stylesheet" href="/css/item/itemHistory.css">
+    <link rel="stylesheet" href="/css/item/itemList.css">
 </head>
 <body>
 <div class="dashboard">
@@ -74,7 +74,7 @@
                             align: 'center',
                             name: 'created_at',
                             formatter:({value}) => {
-                                return fommatter('yyyy-mm-dd HH:mm', value);
+                                return fommatter('yyyy-mm-dd', value);
                             }
                         },
                         {
@@ -87,12 +87,18 @@
                             name: 'price1',
                             width: 100,
                             align: 'center',
+                            formatter:({value}) => {
+                                return fommatter('yyyy-mm-dd', value);
+                            }
                         },
                         {
                             header: '매출단가',
                             align: 'center',
                             width: 100,
                             name: 'price2',
+                            formatter:({value}) => {
+                                return fommatter('yyyy-mm-dd', value);
+                            }
                         },
                         {
                             header: '재고',

@@ -18,11 +18,11 @@
             <label>변환 종류</label>
             <div class="type-group">
                 <div class="type-option">
-                    <input type="radio" name="type" id="type-out" value="OUT" checked>
+                    <input type="radio" name="type" id="type-out" value="출고" checked>
                     <label for="type-out" class="type-label">출고 (-)</label>
                 </div>
                 <div class="type-option">
-                    <input type="radio" name="type" id="type-in" value="IN" >
+                    <input type="radio" name="type" id="type-in" value="입고" >
                     <label for="type-in" class="type-label">입고 (+)</label>
                 </div>
             </div>
@@ -30,12 +30,17 @@
 
         <div class="input-group">
             <label>발생 시간</label>
-            <input type="datetime-local" id="dateTime">
+            <input type="date" id="dateTime">
         </div>
 
         <div class="input-group" id="customerBox">
-            <label>대상 (수령인/업체)</label>
+            <label>매출,매입처 (수령인/업체)</label>
             <input type="text" placeholder="이름을 입력하세요" id="customer">
+        </div>
+
+        <div class="input-group" id="customerTelBox">
+            <label>연락처</label>
+            <input type="text" placeholder="010-xxxx-xxxx" id="customerTel" oninput="this.value = fommatter('tel',this.value)">
         </div>
 
         <div id="ItemListBox"></div>
@@ -160,6 +165,10 @@
          * 최종 제출
          */
         changeItemBtn.addEventListener('click',async function(){
+            if(!fn_validate()){
+                return;
+            }
+
             let list = document.querySelectorAll('.itemInfo');
             let itemInfoList = [];
             list.forEach((item, idx) =>{
@@ -180,6 +189,7 @@
             const params = {
                 date: document.querySelector('#dateTime').value,
                 customer: document.querySelector('#customer').value,
+                customerTel: document.querySelector(`#customerTel`).value.replaceAll('-',''),
                 itemInfoList: itemInfoList,
                 type: document.querySelector('input[name="type"]:checked').value,
             };
@@ -190,6 +200,8 @@
                 ItemListBox.innerHTML = '';
                 document.querySelector(`#total-price`).innerHTML = '0원';
                 document.querySelector(`#receiptBox`).innerHTML = '';
+                document.querySelector(`#customer`).innerHTML = '';
+                document.querySelector(`#customerTel`).innerHTML = '';
                 index = 1;
                 addItemBtn.click();
             }
@@ -199,14 +211,6 @@
          * 출고, 입고 선택지
          */
         typeGroup.addEventListener('click', function (){
-            let customerBox = document.querySelector('#customerBox');
-            let type = document.querySelector('input[name="type"]:checked').value;
-            if(type === "IN"){
-                customerBox.style.display = 'none';
-                document.querySelector('#customer').value = '';
-            }else{
-                customerBox.style.display = 'block';
-            }
             initTotalPrice();
         })
 
@@ -248,6 +252,22 @@
                 return acc + price;
             },0)
             totalPrice.innerHTML = fommatter('comma', total) + '원';
+        }
+
+        function fn_validate(){
+            if(isEmpty(document.querySelector('#dateTime').value)){
+                alert("날짜가 비었습니다");
+                return false;
+            }
+            if(isEmpty(document.querySelector('#customer').value)){
+                alert("매출, 매입처가 비었습니다");
+                return false;
+            }
+            if(isEmpty(document.querySelector('#customerTel').value)){
+                alert("연락처가 비었습니다");
+                return false;
+            }
+            return true;
         }
 
         addItemBtn.click();

@@ -14,6 +14,7 @@ public class ItemHistoryListDto {
     private Integer id;
     private String date;
     private String customer;
+    private String customerTel;
     private List<ItemInfo> itemInfoList;
     private String type;
 

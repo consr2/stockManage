@@ -82,6 +82,16 @@ public class ItemController {
     }
 
     @ResponseBody
+    @PostMapping("/item/getCustomer")
+    public ResponseUtil getCustomer(@RequestBody SearchDto searchDto){
+        return ResponseUtil.builder()
+                .data(itemService.getCustomer(searchDto))
+                .msg("조회성공")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
     @PostMapping("/item/getItemList")
     public ResponseUtil getItemList(@RequestBody SearchDto searchDto){
         return ResponseUtil.builder()

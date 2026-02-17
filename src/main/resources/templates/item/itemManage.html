@@ -55,6 +55,10 @@
         const btnAdd = document.querySelector('#saveItemBtn');
 
         btnAdd.addEventListener('click',async function() {
+            if(!fn_validate()){
+                return;
+            }
+
             // 2. 파라미터 구성
             const params = {
                 itemName: document.querySelector('#itemName').value,
@@ -69,5 +73,21 @@
                 alert(data.msg);
             }
         });
+
+        function fn_validate(){
+            if(isEmpty(document.querySelector('#itemName').value)){
+                alert("품목이 비었습니다");
+                return false;
+            }
+            if(isEmpty(document.querySelector('#price1').value)){
+                alert("매입단가가 비었습니다");
+                return false;
+            }
+            if(isEmpty(document.querySelector('#price2').value)){
+                alert("매출단가가 비었습니다");
+                return false;
+            }
+            return true;
+        }
     });
 </script>

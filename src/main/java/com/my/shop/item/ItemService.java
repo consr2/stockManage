@@ -48,6 +48,10 @@ public class ItemService {
         return itemRepository.selectItemHistory(searchDto);
     }
 
+    public List<Map<String, Object>> getCustomer(SearchDto searchDto){
+        return itemRepository.selectCustomer(searchDto);
+    }
+
     public List<Map<String, Object>> getItemList(SearchDto searchDto){
         return itemRepository.selectItemList(searchDto);
     }
