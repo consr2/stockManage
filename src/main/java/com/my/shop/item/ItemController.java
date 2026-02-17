@@ -21,22 +21,22 @@ public class ItemController {
 
     @GetMapping("/item/manage")
     public String itemManage(){
-        return "/item/itemManage";
+        return "item/itemManage";
     }
 
     @GetMapping("/item/change")
     public String itemChange(){
-        return "/item/itemChange";
+        return "item/itemChange";
     }
 
     @GetMapping("/item/history")
     public String itemHistory(){
-        return "/item/itemHistory";
+        return "item/itemHistory";
     }
 
     @GetMapping("/item/list")
     public String itemList(){
-        return "/item/itemlist";
+        return "item/itemlist";
     }
 
 

@@ -63,7 +63,7 @@
                 itemName: itemName,
                 customer: customer
             }
-            let data = await sendRequest('/item/getItemList', 'POST', param);
+            let data = await sendRequest('/item/getItemHistory', 'POST', param);
             console.log(data);
             initGrid(data.data);
         })

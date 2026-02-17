@@ -58,9 +58,9 @@
             // 2. 파라미터 구성
             const params = {
                 itemName: document.querySelector('#itemName').value,
-                price1: document.querySelector('#price1').value,
-                price2: document.querySelector('#price2').value,
-                price3: document.querySelector('#price3').value
+                price1: document.querySelector('#price1').value.replace(','),
+                price2: document.querySelector('#price2').value.replace(','),
+                price3: document.querySelector('#price3').value.replace(',')
             };
 
             let data = await sendRequest("/item/save",'POST',params);

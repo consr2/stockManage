@@ -5,5 +5,7 @@ FROM amazoncorretto:17-alpine-jdk
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
+EXPOSE 80
+
 # 3. 서버 실행 명령
 ENTRYPOINT ["java", "-jar", "/app.jar"]
