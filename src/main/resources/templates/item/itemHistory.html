@@ -144,7 +144,10 @@
                         {
                             header: '연락처',
                             align: 'center',
-                            name: 'customer_tel'
+                            name: 'customer_tel',
+                            formatter:({value}) => {
+                                return fommatter('tel', value);
+                            }
                         },
                         {
                             header: '타입',
