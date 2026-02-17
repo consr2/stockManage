@@ -25,7 +25,9 @@
                 <input type="date" id="endDt">
             </div>
         </div>
-        <button class="btn-search" id="itemListSearchBtn">조회</button>
+        <div class="flex-right">
+            <button class="btn-search" id="itemListSearchBtn">조회</button>
+        </div>
     </section>
     <div id="grid"></div>
 </div>
@@ -88,7 +90,7 @@
                             width: 100,
                             align: 'center',
                             formatter:({value}) => {
-                                return fommatter('yyyy-mm-dd', value);
+                                return fommatter('comma', value);
                             }
                         },
                         {
@@ -97,7 +99,7 @@
                             width: 100,
                             name: 'price2',
                             formatter:({value}) => {
-                                return fommatter('yyyy-mm-dd', value);
+                                return fommatter('comma', value);
                             }
                         },
                         {
