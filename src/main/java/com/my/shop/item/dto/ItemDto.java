@@ -16,6 +16,6 @@ public class ItemDto {
     private Integer price1;
     private Integer price2;
     private Integer price3;
-    private String createAt;
+    private String createdAt;
     private ItemStockDto itemStock;
 }

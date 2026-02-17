@@ -14,6 +14,20 @@
     </header>
 
     <div class="stock-form">
+        <div class="input-group" id="typeGroup">
+            <label>변환 종류</label>
+            <div class="type-group">
+                <div class="type-option">
+                    <input type="radio" name="type" id="type-out" value="OUT" checked>
+                    <label for="type-out" class="type-label">출고 (-)</label>
+                </div>
+                <div class="type-option">
+                    <input type="radio" name="type" id="type-in" value="IN" >
+                    <label for="type-in" class="type-label">입고 (+)</label>
+                </div>
+            </div>
+        </div>
+
         <div class="input-group">
             <label>발생 시간</label>
             <input type="datetime-local" id="dateTime">
@@ -35,23 +49,19 @@
             </button>
         </div>
 
+        <button type="submit" class="btn-submit" id="changeItemBtn">변환 내용 저장</button>
 
-
-        <div class="input-group" id="typeGroup">
-            <label>변환 종류</label>
-            <div class="type-group">
-                <div class="type-option">
-                    <input type="radio" name="type" id="type-out" value="OUT" checked>
-                    <label for="type-out" class="type-label">출고 (-)</label>
-                </div>
-                <div class="type-option">
-                    <input type="radio" name="type" id="type-in" value="IN" >
-                    <label for="type-in" class="type-label">입고 (+)</label>
-                </div>
+        <div class="summary-box">
+            <div class="summary-row">
+                <span>총 품목 수</span>
+                <span id="total-count">0개</span>
+            </div>
+            <div id="receiptBox"></div>
+            <div class="summary-row total">
+                <span>최종 합계</span>
+                <span id="total-price">0원</span>
             </div>
         </div>
-
-        <button type="submit" class="btn-submit" id="changeItemBtn">변환 내용 저장</button>
     </div>
 </div>
 </body>
@@ -64,36 +74,48 @@
         const ItemListBox = document.querySelector('#ItemListBox');
         const changeItemBtn = document.querySelector('#changeItemBtn');
         const typeGroup = document.querySelector('#typeGroup');
-        let i = 1;
+        let index = 1;
 
+        /**
+         * 품목 추가클릭
+         */
         addItemBtn.addEventListener('click',async function() {
-            let div = `<div class="flex-box itemInfo" id="boxIndex_${i}">
+            let div = `<div class="flex-box itemInfo" id="boxIndex_${index}">
                             <div class="input-group itemName">
                                 <label>재고 품목</label>
-                                <input placeholder="품목을 입력하세요" id="itemName_${i}">
-                                <input id="itemNameId_${i}" hidden>
-                                <div id="autocomplete-list_${i}" class="autocomplete-suggestions"></div>
+                                <input placeholder="품목을 입력하세요" id="itemName_${index}">
+                                <input id="itemNameId_${index}" hidden>
+                                <input id="price1_${index}" hidden>
+                                <input id="price2_${index}" hidden>
+                                <div id="autocomplete-list_${index}" class="autocomplete-suggestions"></div>
                             </div>
 
                             <div class="input-group">
                                 <label>수량</label>
-                                <input type="number" placeholder="0" id="itemCnt_${i}">
+                                <input type="number" placeholder="0" id="itemCnt_${index}" oninput="initTotalPrice()">
                             </div>
                         </div>`;
 
             ItemListBox.insertAdjacentHTML('beforeend',div);
-            initSearchEvent(i);
-            i++;
+            initSearchEvent(index);
+            index++;
         });
 
+        /**
+         * 품목 제거 클릭
+         */
         subItemBtn.addEventListener('click', function(){
-            document.querySelector(`#boxIndex_${i-1}`).remove();
-            i--;
+            document.querySelector(`#boxIndex_${index-1}`).remove();
+            index--;
         })
 
-        function initSearchEvent(i){
-            let itemName = document.querySelector(`#itemName_${i}`);
-            let listContainer = document.querySelector(`#autocomplete-list_${i}`);
+        /**
+         * 품목 검색
+         * @param idx
+         */
+        function initSearchEvent(idx){
+            let itemName = document.querySelector(`#itemName_${idx}`);
+            let listContainer = document.querySelector(`#autocomplete-list_${idx}`);
 
             itemName.addEventListener('input',async function() {
                 if(isEmpty(itemName.value) || itemName.value.length < 2){
@@ -109,7 +131,8 @@
                 if(data.code === 200){
                     let html = '';
                     data.data.forEach(item => {
-                        html += `<div class="suggestion-item" onclick="selectItem('${item.id}', '${item.itemName}', '${i}')">
+                        const safeItem = JSON.stringify(item).replace(/"/g, '&quot;');
+                        html += `<div class="suggestion-item" onclick="selectItem('${safeItem}', '${idx}')">
                                 ${item.itemName} (재고수량 : ${item.itemStock.currentCnt})
                             </div>`;
                     });
@@ -119,19 +142,30 @@
             });
         }
 
-        window.selectItem = function(id, name, i){
-            document.querySelector(`#itemNameId_${i}`).value = id;
-            document.querySelector(`#itemName_${i}`).value = name;
-            document.querySelector(`#autocomplete-list_${i}`).innerHTML = '';
+        /**
+         * 검색된 품목 선택
+         * @param item
+         * @param i
+         */
+        window.selectItem = function(item, idx){
+            let data = JSON.parse(item);
+            document.querySelector(`#itemNameId_${idx}`).value = data.id;
+            document.querySelector(`#itemName_${idx}`).value = data.itemName;
+            document.querySelector(`#price1_${idx}`).value = data.price1;
+            document.querySelector(`#price2_${idx}`).value = data.price2;
+            document.querySelector(`#autocomplete-list_${idx}`).innerHTML = '';
         }
 
+        /**
+         * 최종 제출
+         */
         changeItemBtn.addEventListener('click',async function(){
             let list = document.querySelectorAll('.itemInfo');
             let itemInfoList = [];
-            list.forEach((item, index) =>{
-                const id = document.querySelector(`#itemNameId_${index + 1}`)?.value;
-                const name = document.querySelector(`#itemName_${index + 1}`)?.value;
-                const cnt = document.querySelector(`#itemCnt_${index + 1}`)?.value;
+            list.forEach((item, idx) =>{
+                const id = document.querySelector(`#itemNameId_${idx + 1}`)?.value;
+                const name = document.querySelector(`#itemName_${idx + 1}`)?.value;
+                const cnt = document.querySelector(`#itemCnt_${idx + 1}`)?.value;
 
                 // 데이터가 있는 경우만 리스트에 추가
                 if (id && cnt) {
@@ -153,10 +187,17 @@
             let data = await sendRequest("/item/changeCnt",'POST',params);
             if(data.code === 200){
                 alert(data.msg);
+                ItemListBox.innerHTML = '';
+                document.querySelector(`#total-price`).innerHTML = '0원';
+                document.querySelector(`#receiptBox`).innerHTML = '';
+                index = 1;
+                addItemBtn.click();
             }
-
         })
 
+        /**
+         * 출고, 입고 선택지
+         */
         typeGroup.addEventListener('click', function (){
             let customerBox = document.querySelector('#customerBox');
             let type = document.querySelector('input[name="type"]:checked').value;
@@ -166,7 +207,49 @@
             }else{
                 customerBox.style.display = 'block';
             }
+            initTotalPrice();
         })
 
+        /**
+         * 최종 합계 계산서
+         */
+        window.initTotalPrice = function(){
+            let type = document.querySelector('input[name="type"]:checked').value;
+            let receiptBox = document.querySelector(`#receiptBox`);
+            let totalPrice = document.querySelector(`#total-price`);
+
+            let list = document.querySelectorAll('.itemInfo');
+            let div = '';
+            list.forEach((item, idx) =>{
+                let price1 = document.querySelector(`#price1_${idx + 1}`).value;
+                let price2 = document.querySelector(`#price2_${idx + 1}`).value;
+                let cnt = document.querySelector(`#itemCnt_${idx + 1}`).value;
+                let itemName = document.querySelector(`#itemName_${idx + 1}`).value;
+
+                if(type === "IN"){
+                    let price = fommatter('comma', price1 * cnt);
+                    div += `<div class="flex-box2">
+                                <span>${itemName}</span>
+                                <span class="sumPrice">${price}원</span>
+                            </div>`
+                }else{
+                    let price = fommatter('comma', price2 * cnt);
+                    div += `<div class="flex-box2">
+                                <span>${itemName}</span>
+                                <span class="sumPrice">${price}원</span>
+                            </div>`
+                }
+            });
+
+            receiptBox.innerHTML = div;
+
+            let total = Array.from(document.querySelectorAll('.sumPrice')).reduce((acc, el) =>{
+                const price = parseInt(el.innerText.replace(/[^0-9]/g, '')) || 0;
+                return acc + price;
+            },0)
+            totalPrice.innerHTML = fommatter('comma', total) + '원';
+        }
+
+        addItemBtn.click();
     });
 </script>

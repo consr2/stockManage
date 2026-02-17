@@ -1,1 +1,28 @@
 docker run --name mariadb -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -v D:\DB\maria:/var/lib/mysql mariadb
+
+CREATE TABLE items (
+    id INT AUTO_INCREMENT PRIMARY KEY,     -- PK (자동 증가)
+    item_name VARCHAR(300) NOT NULL,       -- 품목명
+    price1 INT DEFAULT 0,                  -- 가격 1
+    price2 INT DEFAULT 0,                  -- 가격 2
+    price3 INT DEFAULT 0,                  -- 가격 3
+    created_at DATETIME DEFAULT NOW()      -- 등록일자
+);
+
+CREATE TABLE item_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    customer VARCHAR(300) NOT NULL,
+    date varchar(30) not null,
+    item_idx INT NOT NULL,
+    item_name VARCHAR(300) NOT NULL,
+    cnt Int NOT NULL,
+    type varchar(8) DEFAULT 0,
+    created_at DATETIME DEFAULT NOW()
+);
+
+CREATE TABLE item_stock (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    item_name VARCHAR(255) NOT NULL,
+    current_cnt INT DEFAULT 0,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

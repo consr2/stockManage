@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>입출고 이력</title>
+    <title>품목조회</title>
     <link rel="stylesheet" href="/js/lib/tui-grid.css" />
-    <link rel="stylesheet" href="/css/item/itemList.css">
+    <link rel="stylesheet" href="/css/item/itemHistory.css">
 </head>
 <body>
 <div class="dashboard">
     <header class="main-header">
         <a href="/index" class="back-link">← 뒤로가기</a>
-        <h1>입출고 이력</h1>
+        <h1>품목조회</h1>
     </header>
 
     <section class="search-container">
@@ -25,17 +25,7 @@
                 <input type="date" id="endDt">
             </div>
         </div>
-        <div class="search-row">
-            <div class="filter-group">
-                <label>품명</label>
-                <input type="text" placeholder="품목 검색" id="itemName">
-            </div>
-            <div class="filter-group">
-                <label>고객/담당자</label>
-                <input type="text" placeholder="성함/업체명" id="customer">
-            </div>
-            <button class="btn-search" id="itemHistorySearchBtn">조회</button>
-        </div>
+        <button class="btn-search" id="itemListSearchBtn">조회</button>
     </section>
     <div id="grid"></div>
 </div>
@@ -45,28 +35,26 @@
 </html>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let itemHistorySearchBtn = document.querySelector('#itemHistorySearchBtn');
+        let itemListSearchBtn = document.querySelector('#itemListSearchBtn');
         let grid = null;
 
 
 
 
-        itemHistorySearchBtn.addEventListener('click',async function(){
+        itemListSearchBtn.addEventListener('click',async function(){
             let startDt = document.querySelector('#startDt').value;
             let endDt = document.querySelector('#endDt').value;
-            let itemName = document.querySelector('#itemName').value;
-            let customer = document.querySelector('#customer').value;
 
             let param = {
                 startDate: startDt,
                 endDate: endDt,
-                itemName: itemName,
-                customer: customer
             }
             let data = await sendRequest('/item/getItemList', 'POST', param);
             console.log(data);
             initGrid(data.data);
         })
+
+
 
         function initGrid(data){
             gridStyle();
@@ -84,7 +72,7 @@
                         {
                             header: '날짜',
                             align: 'center',
-                            name: 'date',
+                            name: 'created_at',
                             formatter:({value}) => {
                                 return fommatter('yyyy-mm-dd HH:mm', value);
                             }
@@ -95,36 +83,22 @@
                             name: 'item_name'
                         },
                         {
-                            header: '타입',
-                            name: 'type',
-                            width: 50,
+                            header: '매입단가',
+                            name: 'price1',
+                            width: 100,
                             align: 'center',
-                            formatter: ({value}) => {
-                                const typeMap = {
-                                    'IN': { text: '입고', color: '#2196F3' }, // 파란색
-                                    'OUT': { text: '출고', color: '#F44336' } // 빨간색
-                                };
-                                const item = typeMap[value];
-                                return `<span style="color: ${item.color}; font-weight: bold;">${item.text}</span>`;
-                            }
                         },
                         {
-                            header: '개수',
+                            header: '매출단가',
                             align: 'center',
-                            width: 50,
-                            name: 'cnt',
-                            formatter: ({ value, row }) =>{
-                                const typeMap = {
-                                    'IN': '+'+value,
-                                    'OUT': '-'+value
-                                }
-                                return typeMap[row.type];
-                            }
+                            width: 100,
+                            name: 'price2',
                         },
                         {
-                            header: '대상',
+                            header: '가격3',
                             align: 'center',
-                            name: 'customer'
+                            width: 100,
+                            name: 'price3'
                         },
                     ]
                 });
@@ -134,7 +108,7 @@
         }
 
 
-        const gridStyle = () => {
+        const gridStyle = (data) => {
             // 1. 테마 즉시 적용 (그리드 생성 전에 실행되어야 함)
             tui.Grid.applyTheme('default', {
                 cell: {

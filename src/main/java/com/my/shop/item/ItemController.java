@@ -2,6 +2,7 @@ package com.my.shop.item;
 
 import com.my.shop.item.dto.ItemDto;
 import com.my.shop.item.dto.ItemHistoryListDto;
+import com.my.shop.item.dto.SearchDto;
 import com.my.shop.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,6 +32,11 @@ public class ItemController {
     @GetMapping("/item/history")
     public String itemHistory(){
         return "/item/itemHistory";
+    }
+
+    @GetMapping("/item/list")
+    public String itemList(){
+        return "/item/itemlist";
     }
 
 
@@ -62,5 +70,25 @@ public class ItemController {
                 .build();
     }
 
+
+    @ResponseBody
+    @PostMapping("/item/getItemHistory")
+    public ResponseUtil getItemHistory(@RequestBody SearchDto searchDto){
+        return ResponseUtil.builder()
+                .data(itemService.getItemHistory(searchDto))
+                .msg("조회성공")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
+    @PostMapping("/item/getItemList")
+    public ResponseUtil getItemList(@RequestBody SearchDto searchDto){
+        return ResponseUtil.builder()
+                .data(itemService.getItemList(searchDto))
+                .msg("조회성공")
+                .code(200)
+                .build();
+    }
 
 }

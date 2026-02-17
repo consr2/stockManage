@@ -26,3 +26,17 @@ function isEmpty(data) {
     }
     return false;
 }
+
+function fommatter(type, data){
+    let cleanData = ''
+    switch (type){
+        case 'comma':
+            cleanData = data.toString().replace(/[^\d]/g, '');
+            return cleanData.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        case 'yyyy-mm-dd HH:mm':
+            cleanData = data.toString().replace(/[^\d]/g, '');
+            return `${cleanData.slice(0,4)}-${cleanData.slice(4,6)}-${cleanData.slice(6,8)} ${cleanData.slice(8,10)}:${cleanData.slice(10,12)}`;
+        default:
+            return data;
+    }
+}

@@ -2,6 +2,7 @@ package com.my.shop.item;
 
 import com.my.shop.item.dto.ItemDto;
 import com.my.shop.item.dto.ItemHistoryListDto;
+import com.my.shop.item.dto.SearchDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +41,14 @@ public class ItemService {
                     break;
             }
         }
-
-
         return i;
+    }
+
+    public List<Map<String, Object>> getItemHistory(SearchDto searchDto){
+        return itemRepository.selectItemHistory(searchDto);
+    }
+
+    public List<Map<String, Object>> getItemList(SearchDto searchDto){
+        return itemRepository.selectItemList(searchDto);
     }
 }
