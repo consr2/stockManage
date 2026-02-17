@@ -1,6 +1,7 @@
 package com.my.shop.item;
 
 import com.my.shop.item.dto.ItemDto;
+import com.my.shop.item.dto.ItemHistoryListDto;
 import com.my.shop.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -47,6 +48,16 @@ public class ItemController {
         return ResponseUtil.builder()
                 .data(itemService.itemSerch(itemDto))
                 .msg("검색완료")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
+    @PostMapping("/item/changeCnt")
+    public ResponseUtil itemSerch(@RequestBody ItemHistoryListDto itemListDto){
+        return ResponseUtil.builder()
+                .data(itemService.changeItemCnt(itemListDto))
+                .msg("저장완료")
                 .code(200)
                 .build();
     }

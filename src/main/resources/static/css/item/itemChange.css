@@ -94,3 +94,44 @@ body {
 .suggestion-item:hover {
     background-color: var(--hover-bg);
 }
+.itemName{
+    width: 140%;
+}
+.flex-box{
+    display: flex;
+}
+.addItem{
+    background: none;
+    border: 1px dashed var(--border-color);
+    padding: 16px;
+    border-radius: 12px;
+    color: var(--text-sub);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: -8px;
+}
+.addItem:hover {
+    background: rgba(161, 161, 161, 0.36);
+    color: white;
+}
+.subItem {
+    background: #fff5f5; /* 아주 연한 빨강 배경 */
+    border: 1px solid #ffa8a8;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: #ff6b6b; /* 삭제 느낌의 붉은색 */
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.subItem:hover {
+    background: #ff6b6b;
+    color: white;
+}
+.w80{
+    width: 80%;
+}
+.w20{
+    width: 20%;
+}

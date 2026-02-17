@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web' // webmvc 대신 일반적인 web 사용
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // 안정적인 버전
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -36,6 +37,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // 통합 테스트 라이브러리
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
 tasks.named('test') {

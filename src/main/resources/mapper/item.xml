@@ -5,22 +5,64 @@
 
 <mapper namespace="com.my.shop.item.ItemRepository">
 
-    <insert id="insertItem" parameterType="com.my.shop.item.dto.ItemDto">
+    <resultMap id="itemMap" type="com.my.shop.item.dto.ItemDto" autoMapping="true">
+        <id property="id" column="id" />
+        <association property="itemStock" javaType="com.my.shop.item.dto.ItemStockDto"
+                     autoMapping="true" columnPrefix="s_" />
+    </resultMap>
+
+
+    <insert id="insertItem" parameterType="com.my.shop.item.dto.ItemDto" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO items
             (item_name, price1, price2, price3)
         VALUES
             (#{itemName}, #{price1}, #{price2}, #{price3})
     </insert>
 
+    <insert id="insertItemStock" parameterType="com.my.shop.item.dto.ItemDto">
+        INSERT INTO item_stock
+        (item_id, item_name, current_cnt, last_updated)
+        VALUES(#{id}, #{itemName}, 0, now())
+    </insert>
 
-    <select id="selectItemByName" parameterType="com.my.shop.item.dto.ItemDto">
+    <select id="selectItemByName" parameterType="com.my.shop.item.dto.ItemDto" resultMap="itemMap">
         SELECT
-            *
-        fROM
-            items
+            i.*,
+            s.item_id s_item_id,
+            s.item_name s_item_name,
+            s.current_cnt s_current_cnt
+        FROM
+            items i
+        LEFT JOIN item_stock s ON s.item_id = i.id
         WHERE
-            item_name like CONCAT('%',#{itemName},'%')
-
+            i.item_name like CONCAT('%',#{itemName},'%')
     </select>
 
+    <insert id="insertItemHistroy" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
+        INSERT INTO itemHistory (customer, date
+            , item_idx, item_name, cnt,
+            type, create_at)
+        VALUES
+        <foreach collection="itemInfoList" item="item" separator=",">
+        (
+            #{customer}, #{date},
+            #{item.itemId}, #{item.itemName}, #{item.cnt},
+            #{type}, now()
+        )
+        </foreach>
+    </insert>
+
+    <update id="addItemCnt" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
+        UPDATE item_stock
+        SET current_cnt = current_cnt + #{cnt},
+        last_updated = NOW()
+        WHERE item_id = #{itemId}
+    </update>
+
+    <update id="subItemCnt" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
+        UPDATE item_stock
+        SET current_cnt = current_cnt - #{cnt},
+        last_updated = NOW()
+        WHERE item_id = #{itemId}
+    </update>
 </mapper>

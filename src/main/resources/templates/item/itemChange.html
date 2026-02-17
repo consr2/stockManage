@@ -15,42 +15,43 @@
 
     <div class="stock-form">
         <div class="input-group">
-            <label>재고 품목</label>
-            <input placeholder="품목을 입력하세요" id="itemName">
-            <input id="itemNameId" hidden>
-            <div id="autocomplete-list" class="autocomplete-suggestions"></div>
+            <label>발생 시간</label>
+            <input type="datetime-local" id="dateTime">
         </div>
 
-        <div class="input-group">
+        <div class="input-group" id="customerBox">
+            <label>대상 (수령인/업체)</label>
+            <input type="text" placeholder="이름을 입력하세요" id="customer">
+        </div>
+
+        <div id="ItemListBox"></div>
+
+        <div class="flex-box">
+            <button class="addItem w80" type="button" id="add-item-btn" style="">
+                + 품목 추가하기
+            </button>
+            <button class="subItem w20" type="button" id="sub-item-btn" style="">
+                - 삭제
+            </button>
+        </div>
+
+
+
+        <div class="input-group" id="typeGroup">
             <label>변환 종류</label>
             <div class="type-group">
                 <div class="type-option">
-                    <input type="radio" name="type" id="type-in" value="IN" checked>
-                    <label for="type-in" class="type-label">입고 (+)</label>
+                    <input type="radio" name="type" id="type-out" value="OUT" checked>
+                    <label for="type-out" class="type-label">출고 (-)</label>
                 </div>
                 <div class="type-option">
-                    <input type="radio" name="type" id="type-out" value="OUT">
-                    <label for="type-out" class="type-label">출고 (-)</label>
+                    <input type="radio" name="type" id="type-in" value="IN" >
+                    <label for="type-in" class="type-label">입고 (+)</label>
                 </div>
             </div>
         </div>
 
-        <div class="input-group">
-            <label>수량</label>
-            <input type="number" placeholder="0">
-        </div>
-
-        <div class="input-group">
-            <label>대상 (수령인/업체)</label>
-            <input type="text" placeholder="이름을 입력하세요">
-        </div>
-
-        <div class="input-group">
-            <label>발생 시간</label>
-            <input type="datetime-local">
-        </div>
-
-        <button type="submit" class="btn-submit">변환 내용 저장</button>
+        <button type="submit" class="btn-submit" id="changeItemBtn">변환 내용 저장</button>
     </div>
 </div>
 </body>
@@ -58,39 +59,114 @@
 <script src="/js/util/util.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const itemName = document.querySelector('#itemName');
-        const itemNameId = document.querySelector('#itemNameId');
-        const listContainer = document.querySelector('#autocomplete-list');
+        const addItemBtn = document.querySelector('#add-item-btn');
+        const subItemBtn = document.querySelector('#sub-item-btn');
+        const ItemListBox = document.querySelector('#ItemListBox');
+        const changeItemBtn = document.querySelector('#changeItemBtn');
+        const typeGroup = document.querySelector('#typeGroup');
+        let i = 1;
 
-        itemName.addEventListener('input',async function() {
-            if(isEmpty(itemName.value) || itemName.value.length < 2){
-                listContainer.innerHTML = '';
-                return;
-            }
+        addItemBtn.addEventListener('click',async function() {
+            let div = `<div class="flex-box itemInfo" id="boxIndex_${i}">
+                            <div class="input-group itemName">
+                                <label>재고 품목</label>
+                                <input placeholder="품목을 입력하세요" id="itemName_${i}">
+                                <input id="itemNameId_${i}" hidden>
+                                <div id="autocomplete-list_${i}" class="autocomplete-suggestions"></div>
+                            </div>
 
-            const params = {
-                itemName: itemName.value,
-            };
+                            <div class="input-group">
+                                <label>수량</label>
+                                <input type="number" placeholder="0" id="itemCnt_${i}">
+                            </div>
+                        </div>`;
 
-            let data = await sendRequest("/item/search",'POST',params);
-            console.log(data);
-            if(data.code === 200){
-                let html = '';
-                data.data.forEach(item => {
-                    html += `<div class="suggestion-item" onclick="selectItem('${item.id}', '${item.itemName}')">
-                                ${item.itemName}
-                            </div>`;
-                });
-
-                listContainer.innerHTML = html;
-            }
+            ItemListBox.insertAdjacentHTML('beforeend',div);
+            initSearchEvent(i);
+            i++;
         });
 
-        window.selectItem = function(id, name){
-            itemName.value = name;
-            itemNameId.value = id;
-            listContainer.innerHTML = '';
+        subItemBtn.addEventListener('click', function(){
+            document.querySelector(`#boxIndex_${i-1}`).remove();
+            i--;
+        })
+
+        function initSearchEvent(i){
+            let itemName = document.querySelector(`#itemName_${i}`);
+            let listContainer = document.querySelector(`#autocomplete-list_${i}`);
+
+            itemName.addEventListener('input',async function() {
+                if(isEmpty(itemName.value) || itemName.value.length < 2){
+                    listContainer.innerHTML = '';
+                    return;
+                }
+
+                const params = {
+                    itemName: itemName.value,
+                };
+
+                let data = await sendRequest("/item/search",'POST',params);
+                if(data.code === 200){
+                    let html = '';
+                    data.data.forEach(item => {
+                        html += `<div class="suggestion-item" onclick="selectItem('${item.id}', '${item.itemName}', '${i}')">
+                                ${item.itemName} (재고수량 : ${item.itemStock.currentCnt})
+                            </div>`;
+                    });
+
+                    listContainer.innerHTML = html;
+                }
+            });
         }
+
+        window.selectItem = function(id, name, i){
+            document.querySelector(`#itemNameId_${i}`).value = id;
+            document.querySelector(`#itemName_${i}`).value = name;
+            document.querySelector(`#autocomplete-list_${i}`).innerHTML = '';
+        }
+
+        changeItemBtn.addEventListener('click',async function(){
+            let list = document.querySelectorAll('.itemInfo');
+            let itemInfoList = [];
+            list.forEach((item, index) =>{
+                const id = document.querySelector(`#itemNameId_${index + 1}`)?.value;
+                const name = document.querySelector(`#itemName_${index + 1}`)?.value;
+                const cnt = document.querySelector(`#itemCnt_${index + 1}`)?.value;
+
+                // 데이터가 있는 경우만 리스트에 추가
+                if (id && cnt) {
+                    itemInfoList.push({
+                        itemId: parseInt(id),
+                        itemName: name,
+                        cnt: parseInt(cnt)
+                    });
+                }
+            })
+
+            const params = {
+                date: document.querySelector('#dateTime').value,
+                customer: document.querySelector('#customer').value,
+                itemInfoList: itemInfoList,
+                type: document.querySelector('input[name="type"]:checked').value,
+            };
+
+            let data = await sendRequest("/item/changeCnt",'POST',params);
+            if(data.code === 200){
+                alert(data.msg);
+            }
+
+        })
+
+        typeGroup.addEventListener('click', function (){
+            let customerBox = document.querySelector('#customerBox');
+            let type = document.querySelector('input[name="type"]:checked').value;
+            if(type === "IN"){
+                customerBox.style.display = 'none';
+                document.querySelector('#customer').value = '';
+            }else{
+                customerBox.style.display = 'block';
+            }
+        })
 
     });
 </script>

@@ -1,12 +1,14 @@
 package com.my.shop.item.dto;
 
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
 @Alias("ItemDto")
 public class ItemDto {
     private Integer id;
@@ -15,4 +17,5 @@ public class ItemDto {
     private Integer price2;
     private Integer price3;
     private String createAt;
+    private ItemStockDto itemStock;
 }
