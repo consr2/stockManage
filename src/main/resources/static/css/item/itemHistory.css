@@ -85,6 +85,12 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
     border-bottom: 1px solid var(--border-color);
     font-size: 14px;
 }
+/* 입고: 파란색 */
+.txt-blue div{ color: #2196F3; font-weight: bold; }
+
+/* 출고: 빨간색 */
+.txt-red div{ color: #F44336; font-weight: bold; }
+
 
 .status-in { color: #007aff; font-weight: 600; }
 .status-out { color: #ff3b30; font-weight: 600; }
