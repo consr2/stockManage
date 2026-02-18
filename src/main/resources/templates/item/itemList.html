@@ -29,6 +29,9 @@
             <button class="btn-search" id="itemListSearchBtn">조회</button>
         </div>
     </section>
+    <div class="excelBtnBox">
+        <button class="btn-search excelBtn" id="excelDownBtn">엑셀다운</button>
+    </div>
     <div id="grid"></div>
 </div>
 </body>
@@ -38,6 +41,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let itemListSearchBtn = document.querySelector('#itemListSearchBtn');
+        let excelDownBtn = document.querySelector('#excelDownBtn');
         let grid = null;
 
 
@@ -75,7 +79,7 @@
                         {
                             header: '날짜',
                             align: 'center',
-                            width: 80,
+                            width: 120,
                             name: 'created_at',
                             formatter:({value}) => {
                                 return fommatter('yyyy-mm-dd', value);
@@ -142,5 +146,17 @@
                 }
             });
         }
+
+        excelDownBtn.addEventListener('click', function(){
+            if(isEmpty(grid)){
+                alert("조회 후 이용 가능합니다");
+                return;
+            }
+            grid.export('xlsx', {
+                fileName: 'customer_list', // 저장될 파일명
+                useFormattedValue: true,    // 포맷터가 적용된 값으로 추출할지 여부
+                includeHeader: true         // 헤더 포함 여부
+            });
+        })
     })
 </script>

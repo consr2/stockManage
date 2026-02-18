@@ -133,33 +133,21 @@ body {
     transition: opacity 0.2s;
 }
 
+.btn-blue {
+    background-color: #2867fa;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 44px;
+    transition: opacity 0.2s;
+}
+
 .btn-search:hover { opacity: 0.9; }
+.btn-blue:hover { opacity: 0.9; }
 
-/* 그리드 테이블(그리드 영역 공통) */
-#grid {
-    margin-top: 10px;
-    width: 100%;
-}
-
-/* 내부에 들어갈 테이블 스타일 */
-.history-grid {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.history-grid th {
-    text-align: left;
-    padding: 12px 8px;
-    border-bottom: 2px solid var(--text-main);
-    font-size: 13px;
-    color: var(--text-sub);
-}
-
-.history-grid td {
-    padding: 16px 8px;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 14px;
-}
 
 /* 모바일 대응 */
 @media screen and (max-width: 600px) {
@@ -171,3 +159,25 @@ body {
         width: 100%;
     }
 }
+
+.excelBtnBox{
+    display: flex;
+    justify-content: flex-end;
+}
+.excelBtn{
+    margin: 10px;
+}
+
+.m-10{
+    margin: 10px;
+}
+
+.p-10{
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+
+.txt-blue div{ color: #2196F3; font-weight: bold; }
+.txt-red div{ color: #F44336; font-weight: bold; }

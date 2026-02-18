@@ -11,5 +11,9 @@ public interface ChairRepository {
 
     Integer saveChairRental(ChairDTO chairDTO);
 
+    Integer updateRentInfo(ChairDTO chairDTO);
+
     List<Map<String, Object>> selectRentalList(ChairDTO chairDTO);
+
+    List<Map<String, Object>> selectEndRentalList();
 }

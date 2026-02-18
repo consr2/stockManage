@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ChairDTO {
 
+    private String rentalId;
     private String wheelchairType;
     private String serialNumber;
     private String startDate;

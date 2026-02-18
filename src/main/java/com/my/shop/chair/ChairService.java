@@ -23,7 +23,13 @@ public class ChairService {
         return chairRepository.selectRentalList(chairDto);
     }
 
+    public List<Map<String, Object>> getEndRentalList(){
+        return chairRepository.selectEndRentalList();
+    }
 
+    public Integer saveRentInfo(ChairDTO chairDto){
+        return chairRepository.updateRentInfo(chairDto);
+    }
 
 
 }

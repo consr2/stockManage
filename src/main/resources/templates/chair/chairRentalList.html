@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wheelchair Dashboard</title>
     <link rel="stylesheet" href="/css/chair/chairRentalList.css">
+    <link rel="stylesheet" href="/js/lib/tui-grid.css" />
 </head>
 <body>
     <div class="dashboard">
@@ -13,30 +14,15 @@
             <h1>휠체어 대여 현황</h1>
         </header>
 
-        <div class="status-list">
-            <div class="status-card">
-                <div class="flex-box2">
-                    <div class="item-info">
-                        <h3>표준형 A-01</h3>
-                        <p>최근 점검: 2026-02-10</p>
-                    </div>
-                    <span class="badge available">대여 가능</span>
-                </div>
-            </div>
-
-            <div class="status-card">
-                <div class="flex-box2">
-                    <div class="item-info">
-                        <h3>전동형 B-05</h3>
-                        <p>대여자: 홍길동 (010-1234-****)</p>
-                    </div>
-                    <span class="badge rented">기간 종료</span>
-                </div>
-            </div>
+        <div >
+            <span class="m-10">검색</span>
+            <input class="m-10 p-10" placeholder="전화번호, 고객명" id="endRentalSearch">
         </div>
 
+        <div class="status-list" id="EndRentListBox"></div>
+
         <div class="stock-form">
-            <section class="search-container">
+            `<section class="search-container">
                 <div class="search-row">
                     <div class="filter-group">
                         <label>시작일</label>
@@ -51,8 +37,11 @@
                     <button class="btn-search" id="itemListSearchBtn">조회</button>
                 </div>
             </section>
-            <div id="grid"></div>
         </div>
+        <div class="excelBtnBox">
+            <button class="btn-search excelBtn" id="excelDownBtn">엑셀다운</button>
+        </div>
+        <div id="grid" style="margin: 0 0 30px;"></div>
     </div>
 </body>
 </html>
@@ -61,8 +50,13 @@
 <script src="/js/util/util.js"></script>
 <script>
     let grid = null;
+    let endRentalList = null;
     document.addEventListener('DOMContentLoaded', function() {
         let itemListSearchBtn = document.querySelector('#itemListSearchBtn');
+        let excelDownBtn = document.querySelector('#excelDownBtn');
+        let endRentalSearch = document.querySelector('#endRentalSearch');
+
+        checkEndRental();
 
         itemListSearchBtn.addEventListener('click', async function(){
             let startDate = document.querySelector('#startDt').value;
@@ -78,7 +72,25 @@
                 console.log(data.data);
                 initGrid(data.data);
             }
+        })
 
+        async function checkEndRental(){
+            let data = await sendRequest('/chair/endRentalList', 'POST');
+            if(data.code === 200){
+                console.log(data.data);
+                endRentalList = data.data;
+                drowEndRentalList(data.data);
+            }
+        }
+
+
+        endRentalSearch.addEventListener('input', function(){
+            let value = this.value;
+            let target = endRentalList.filter(e =>
+                e.customer_tel.includes(value) || e.customer_name.includes(value)
+            );
+
+            drowEndRentalList(target);
         })
 
 
@@ -87,19 +99,21 @@
             if(isEmpty(grid)){
                 grid = new tui.Grid({
                     el: document.getElementById('grid'),
-                    data: data,
-                    scrollX: true,
-                    scrollY: true,
-                    bodyHeight: 400,
-                    columnOptions: {
-                        resizable: true // <--- 모든 컬럼 리사이즈 활성화
+                    scrollY: false,
+                    scrollbarProps: {
+                        autoHide: true,
+                        width: 0,  // 우측 스크롤바 두께 제거
+                        height: 0  // 하단 스크롤바 두께 제거
                     },
+                    bodyHeight: 'auto', // 내용만큼 그리드 높이 자동 조절
+                    data: data,
                     columns: [
                         {
                             header: '대여일',
                             align: 'center',
                             width: 120,
                             name: 'start_date',
+                            sortable: true,
                             formatter:({value}) => {
                                 return fommatter('yyyy-mm-dd', value);
                             }
@@ -109,6 +123,7 @@
                             align: 'center',
                             width: 120,
                             name: 'end_date',
+                            sortable: true,
                             formatter:({value}) => {
                                 return fommatter('yyyy-mm-dd', value);
                             }
@@ -116,7 +131,7 @@
                         {
                             header: '고객명',
                             align: 'center',
-                            name: 'customer',
+                            name: 'customer_name',
                         },
                         {
                             header: '연락처',
@@ -129,6 +144,11 @@
                             align: 'center',
                             name: 'wheelchair_type',
                         },
+                        {
+                            header: '지불상태',
+                            align: 'center',
+                            name: 'payment',
+                        },
                     ]
                 });
             }else{
@@ -137,14 +157,12 @@
 
             //색 주기
             grid.getData().forEach((data) => {
-                if(data.type == 'IN'){
-                    grid.addCellClassName(data.rowKey, 'type', 'txt-blue');
+                if(!isEmpty(data.payment)){
+                    grid.addCellClassName(data.rowKey, 'payment', 'txt-blue');
                 }else{
-                    grid.addCellClassName(data.rowKey, 'type', 'txt-red');
+                    grid.addCellClassName(data.rowKey, 'payment', 'txt-red');
                 }
-
             })
-
         }
 
 
@@ -172,5 +190,54 @@
             });
         }
 
+        excelDownBtn.addEventListener('click', function(){
+            if(isEmpty(grid)){
+                alert("조회 후 이용 가능합니다");
+                return;
+            }
+            grid.export('xlsx', {
+                fileName: 'customer_list', // 저장될 파일명
+                useFormattedValue: true,    // 포맷터가 적용된 값으로 추출할지 여부
+                includeHeader: true         // 헤더 포함 여부
+            });
+        })
     })
+
+
+    function drowEndRentalList(data){
+        let EndRentListBox = document.querySelector('#EndRentListBox');
+        let div = '';
+        data.forEach(item => {
+            div += `<div class="status-card">
+                                <div class="flex-box2">
+                                    <div class="item-info">
+                                        <h3>대여자: ${item.customer_name} (${item.customer_tel})</h3>
+                                        <p>${item.wheelchair_type}</p>
+                                    </div>
+                                    <div>
+                                        <span class="badge rented">기간 종료</span>
+                                        <button class="btn-blue" data-id="${item.rental_id}" onclick="clickReBtn(this)">반납완료</button>
+                                    </div>
+                                </div>
+                            </div>`
+        })
+
+        EndRentListBox.innerHTML = div;
+    }
+
+    async function clickReBtn(btn){
+        let rentalId = btn.dataset.id;
+        let param = {
+            rentalId: rentalId
+        }
+
+        let data = await sendRequest('/chair/saveRentInfo','POST', param);
+        if(data.code === 200){
+            alert(data.msg);
+            endRentalList = endRentalList.filter(item => item.rental_id != rentalId);
+            drowEndRentalList(endRentalList);
+        }
+    }
+
+
 </script>

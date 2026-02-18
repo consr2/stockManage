@@ -53,6 +53,27 @@ public class ChairController {
                 .build();
     }
 
+    @ResponseBody
+    @PostMapping("/chair/endRentalList")
+    public ResponseUtil getEndRentalList(){
+        log.info("POST : /chair/endRentalList");
+        return ResponseUtil.builder()
+                .data(chairService.getEndRentalList())
+                .msg("조회성공")
+                .code(200)
+                .build();
+    }
 
+
+    @ResponseBody
+    @PostMapping("/chair/saveRentInfo")
+    public ResponseUtil saveRentInfo(@RequestBody ChairDTO chairDto){
+        log.info("POST : /chair/rentalList");
+        return ResponseUtil.builder()
+                .data(chairService.saveRentInfo(chairDto))
+                .msg("반납이 완료되었습니다")
+                .code(200)
+                .build();
+    }
 
 }

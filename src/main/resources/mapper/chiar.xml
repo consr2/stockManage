@@ -19,6 +19,15 @@
         )
     </insert>
 
+    <update id="updateRentInfo" parameterType="com.my.shop.chair.dto.ChairDTO">
+        UPDATE
+            wheelchair_rentals
+        SET
+            payment = '지불완료'
+        WHERE
+            rental_id = #{rentalId}
+    </update>
+
     <select id="selectRentalList" resultType="java.util.HashMap">
         SELECT
             *
@@ -28,6 +37,18 @@
         <if test="startDate != null and startDate != ''">
             AND start_date between #{startDate} and #{endDate}
         </if>
+    </select>
+
+    <select id="selectEndRentalList" resultType="java.util.HashMap">
+        SELECT
+            *
+        FROM
+            wheelchair_rentals
+        WHERE
+            (payment is null OR payment = '')
+        <![CDATA[
+            AND DATE(end_date) <= now()
+        ]]>
     </select>
 
 

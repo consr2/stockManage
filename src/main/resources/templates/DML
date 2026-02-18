@@ -36,7 +36,7 @@ CREATE TABLE wheelchair_rentals (
     customer_name   VARCHAR(50) NOT NULL,
     customer_tel    VARCHAR(20) NOT NULL,
     remarks         VARCHAR(4000),
-    Payment			VARCHAR(10),
+    payment			VARCHAR(10),
     created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
