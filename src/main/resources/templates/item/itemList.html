@@ -70,6 +70,7 @@
                     columnOptions: {
                         resizable: true // <--- 모든 컬럼 리사이즈 활성화
                     },
+                    rowHeaders: ['rowNum'],
                     columns: [
                         {
                             header: '날짜',
@@ -82,7 +83,8 @@
                         {
                             header: '품명',
                             align: 'center',
-                            name: 'item_name'
+                            name: 'item_name',
+                            sortable: true
                         },
                         {
                             header: '매입단가',

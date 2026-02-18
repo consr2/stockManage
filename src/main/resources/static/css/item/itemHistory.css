@@ -112,3 +112,38 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
         margin-top: 5px;
     }
 }
+
+/* 셀렉트 박스가 포함된 div도 filter-group 클래스를 사용하는 것이 좋습니다 */
+.filter-group select {
+    padding: 10px;
+    padding-right: 30px; /* 화살표 공간 */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background-color: #ffffff;
+    cursor: pointer;
+
+    /* 기본 화살표 숨기기 */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* 깔끔한 커스텀 화살표 아이콘 (SVG) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+
+    transition: border-color 0.2s;
+}
+
+/* 호버 및 포커스 시 input과 동일한 효과 */
+.filter-group select:focus {
+    border-color: var(--text-main);
+}
+
+.filter-group select:hover {
+    background-color: #fff;
+    border-color: #ccc;
+}

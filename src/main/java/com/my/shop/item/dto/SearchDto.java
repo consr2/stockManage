@@ -11,4 +11,5 @@ public class SearchDto {
     private String endDate;
     private String itemName;
     private String customer;
+    private String type;
 }

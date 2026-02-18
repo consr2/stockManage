@@ -24,6 +24,14 @@
                 <label>종료일</label>
                 <input type="date" id="endDt">
             </div>
+            <div class="filter-group">
+                <label>구분</label>
+                <select id="typeSelect">
+                    <option value="">전체</option>
+                    <option value="IN">입고</option>
+                    <option value="OUT">출고</option>
+                </select>
+            </div>
         </div>
         <div class="search-row">
             <div class="filter-group">
@@ -81,12 +89,14 @@
             let endDt = document.querySelector('#endDt').value;
             let itemName = document.querySelector('#itemName').value;
             let customer = document.querySelector('#customer').value;
+            let type = document.getElementById('typeSelect').value;
 
             let param = {
                 startDate: startDt,
                 endDate: endDt,
                 itemName: itemName,
-                customer: customer
+                customer: customer,
+                type: type
             }
             let data = await sendRequest('/item/getItemHistory', 'POST', param);
             console.log(data);
@@ -137,6 +147,28 @@
                             name: 'item_name'
                         },
                         {
+                            header: '수량',
+                            align: 'center',
+                            width: 50,
+                            name: 'cnt',
+                        },
+                        {
+                            header: '단가',
+                            align: 'center',
+                            name: 'price2',
+                            formatter:({value}) => {
+                                return fommatter('comma', value);
+                            }
+                        },
+                        {
+                            header: '공급가액',
+                            align: 'center',
+                            name: 'total_price',
+                            formatter:({value}) => {
+                                return fommatter('comma', value);
+                            }
+                        },
+                        {
                             header: '대상',
                             align: 'center',
                             name: 'customer'
@@ -162,19 +194,7 @@
                                 return typeMap[value];
                             }
                         },
-                        {
-                            header: '개수',
-                            align: 'center',
-                            width: 50,
-                            name: 'cnt',
-                            formatter: ({ value, row }) =>{
-                                const typeMap = {
-                                    'IN': '+'+value,
-                                    'OUT': '-'+value
-                                }
-                                return typeMap[row.type];
-                            }
-                        },
+
                     ]
                 });
             }else{

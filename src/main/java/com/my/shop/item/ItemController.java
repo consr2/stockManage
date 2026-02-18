@@ -5,6 +5,7 @@ import com.my.shop.item.dto.ItemHistoryListDto;
 import com.my.shop.item.dto.SearchDto;
 import com.my.shop.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ItemController {
@@ -21,21 +23,25 @@ public class ItemController {
 
     @GetMapping("/item/manage")
     public String itemManage(){
+        log.info("GET : /item/manage");
         return "item/itemManage";
     }
 
     @GetMapping("/item/change")
     public String itemChange(){
+        log.info("GET : /item/change");
         return "item/itemChange";
     }
 
     @GetMapping("/item/history")
     public String itemHistory(){
+        log.info("GET : /item/history");
         return "item/itemHistory";
     }
 
     @GetMapping("/item/list")
     public String itemList(){
+        log.info("GET : /item/list");
         return "item/itemList";
     }
 
@@ -43,6 +49,7 @@ public class ItemController {
     @ResponseBody
     @PostMapping("/item/save")
     public ResponseUtil itemSave(@RequestBody ItemDto itemDto){
+        log.info("POST : /item/save");
         return ResponseUtil.builder()
                 .data(itemService.saveItem(itemDto))
                 .msg("저장완료")
@@ -53,6 +60,7 @@ public class ItemController {
     @ResponseBody
     @PostMapping("/item/search")
     public ResponseUtil itemSerch(@RequestBody ItemDto itemDto){
+        log.info("POST : /item/search");
         return ResponseUtil.builder()
                 .data(itemService.itemSerch(itemDto))
                 .msg("검색완료")
@@ -63,6 +71,7 @@ public class ItemController {
     @ResponseBody
     @PostMapping("/item/changeCnt")
     public ResponseUtil itemSerch(@RequestBody ItemHistoryListDto itemListDto){
+        log.info("POST : /item/changeCnt");
         return ResponseUtil.builder()
                 .data(itemService.changeItemCnt(itemListDto))
                 .msg("저장완료")
@@ -74,6 +83,7 @@ public class ItemController {
     @ResponseBody
     @PostMapping("/item/getItemHistory")
     public ResponseUtil getItemHistory(@RequestBody SearchDto searchDto){
+        log.info("POST : /item/getItemHistory");
         return ResponseUtil.builder()
                 .data(itemService.getItemHistory(searchDto))
                 .msg("조회성공")
@@ -84,6 +94,7 @@ public class ItemController {
     @ResponseBody
     @PostMapping("/item/getCustomer")
     public ResponseUtil getCustomer(@RequestBody SearchDto searchDto){
+        log.info("POST : /item/getCustomer");
         return ResponseUtil.builder()
                 .data(itemService.getCustomer(searchDto))
                 .msg("조회성공")
@@ -94,6 +105,7 @@ public class ItemController {
     @ResponseBody
     @PostMapping("/item/getItemList")
     public ResponseUtil getItemList(@RequestBody SearchDto searchDto){
+        log.info("POST : /item/getItemList");
         return ResponseUtil.builder()
                 .data(itemService.getItemList(searchDto))
                 .msg("조회성공")

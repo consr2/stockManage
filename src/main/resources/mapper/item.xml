@@ -81,17 +81,23 @@
 
     <select id="selectItemHistory" resultType="java.util.HashMap">
         SELECT
-            *
-        FROM item_history
+            h.*,
+            i.*,
+            i.price2 * h.cnt as total_price
+        FROM item_history h
+        LEFT JOIN items i ON i.id = h.item_idx
         WHERE 1=1
         <if test="startDate != null and startDate != ''">
-            AND date between #{startDate} and #{endDate}
+            AND h.date between #{startDate} and #{endDate}
         </if>
         <if test="itemName != null and itemName != ''">
-            AND item_name like concat('%',#{itemName},'%')
+            AND h.item_name like concat('%',#{itemName},'%')
         </if>
         <if test="customer != null and customer != ''">
-            AND customer like concat('%',#{customer},'%')
+            AND h.customer like concat('%',#{customer},'%')
+        </if>
+        <if test="type != null and type != ''">
+            AND h.type = #{type}
         </if>
         ORDER BY date desc
     </select>
@@ -106,7 +112,7 @@
         <if test="startDate != null and startDate != ''">
             AND created_at between #{startDate} and #{endDate}
         </if>
-        ORDER BY created_at desc
+        ORDER BY s.item_name
     </select>
 
 </mapper>

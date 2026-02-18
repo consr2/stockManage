@@ -19,7 +19,15 @@ public class MainController {
 
     @GetMapping("/index")
     public String main(HttpServletRequest request){
-        log.info("유저 접속 : {}", request.getRemoteAddr());
+        String clientIp = request.getHeader("X-Forwarded-For");
+
+        if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+            clientIp = request.getRemoteAddr();
+        } else {
+            // 여러 IP가 있을 경우 첫 번째가 실제 클라이언트 IP
+            clientIp = clientIp.split(",")[0].trim();
+        }
+        log.info("유저 접속 : {}", clientIp);
         return "main/main";
     }
 
