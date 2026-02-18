@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheelchair Dashboard</title>
+    <link rel="stylesheet" href="/css/chair/chairRentalList.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="main-header">
+            <a href="/" class="back-link">← 뒤로가기</a>
+            <h1>휠체어 대여 현황</h1>
+        </header>
+
+        <div class="status-list">
+            <div class="status-card">
+                <div class="flex-box2">
+                    <div class="item-info">
+                        <h3>표준형 A-01</h3>
+                        <p>최근 점검: 2026-02-10</p>
+                    </div>
+                    <span class="badge available">대여 가능</span>
+                </div>
+            </div>
+
+            <div class="status-card">
+                <div class="flex-box2">
+                    <div class="item-info">
+                        <h3>전동형 B-05</h3>
+                        <p>대여자: 홍길동 (010-1234-****)</p>
+                    </div>
+                    <span class="badge rented">기간 종료</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stock-form">
+            <section class="search-container">
+                <div class="search-row">
+                    <div class="filter-group">
+                        <label>시작일</label>
+                        <input type="date" id="startDt">
+                    </div>
+                    <div class="filter-group">
+                        <label>종료일</label>
+                        <input type="date" id="endDt">
+                    </div>
+                </div>
+                <div class="flex-right">
+                    <button class="btn-search" id="itemListSearchBtn">조회</button>
+                </div>
+            </section>
+            <div id="grid"></div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="/js/lib/xlsx.js"></script>
+<script src="/js/lib/tui-grid.js"></script>
+<script src="/js/util/util.js"></script>
+<script>
+    let grid = null;
+    document.addEventListener('DOMContentLoaded', function() {
+        let itemListSearchBtn = document.querySelector('#itemListSearchBtn');
+
+        itemListSearchBtn.addEventListener('click', async function(){
+            let startDate = document.querySelector('#startDt').value;
+            let endDate = document.querySelector('#endDt').value;
+
+            let param = {
+                startDate: startDate,
+                endDate: endDate
+            }
+
+            let data = await sendRequest('/chair/rentalList', 'POST', param);
+            if(data.code === 200){
+                console.log(data.data);
+                initGrid(data.data);
+            }
+
+        })
+
+
+        function initGrid(data){
+            gridStyle();
+            if(isEmpty(grid)){
+                grid = new tui.Grid({
+                    el: document.getElementById('grid'),
+                    data: data,
+                    scrollX: true,
+                    scrollY: true,
+                    bodyHeight: 400,
+                    columnOptions: {
+                        resizable: true // <--- 모든 컬럼 리사이즈 활성화
+                    },
+                    columns: [
+                        {
+                            header: '대여일',
+                            align: 'center',
+                            width: 120,
+                            name: 'start_date',
+                            formatter:({value}) => {
+                                return fommatter('yyyy-mm-dd', value);
+                            }
+                        },
+                        {
+                            header: '반납일',
+                            align: 'center',
+                            width: 120,
+                            name: 'end_date',
+                            formatter:({value}) => {
+                                return fommatter('yyyy-mm-dd', value);
+                            }
+                        },
+                        {
+                            header: '고객명',
+                            align: 'center',
+                            name: 'customer',
+                        },
+                        {
+                            header: '연락처',
+                            align: 'center',
+                            name: 'customer_tel',
+
+                        },
+                        {
+                            header: '휠체어 종류',
+                            align: 'center',
+                            name: 'wheelchair_type',
+                        },
+                    ]
+                });
+            }else{
+                grid.resetData(data);
+            }
+
+            //색 주기
+            grid.getData().forEach((data) => {
+                if(data.type == 'IN'){
+                    grid.addCellClassName(data.rowKey, 'type', 'txt-blue');
+                }else{
+                    grid.addCellClassName(data.rowKey, 'type', 'txt-red');
+                }
+
+            })
+
+        }
+
+
+        const gridStyle = () => {
+            // 1. 테마 즉시 적용 (그리드 생성 전에 실행되어야 함)
+            tui.Grid.applyTheme('default', {
+                cell: {
+                    normal: {
+                        background: '#ffffff',
+                        border: '#e0e0e0',
+                        showVerticalBorder: true,
+                        showHorizontalBorder: true,
+                        fontSize: '15px',
+                    },
+                    header: {
+                        background: '#ededed', // 헤더도 하얗게 원하시면 #ffffff
+                        border: '#e0e0e0',
+                        fontSize: '16px',
+                        fontWeight: 'bold',
+                    },
+                    selectedHeader: {
+                        background: '#ffffff'
+                    }
+                }
+            });
+        }
+
+    })
+</script>

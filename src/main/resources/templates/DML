@@ -28,4 +28,16 @@ CREATE TABLE item_stock (
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+CREATE TABLE wheelchair_rentals (
+    rental_id       INT AUTO_INCREMENT PRIMARY KEY,
+    wheelchair_type VARCHAR(50) NOT NULL,
+    start_date      VARCHAR(20),
+    end_date        VARCHAR(20),
+    customer_name   VARCHAR(50) NOT NULL,
+    customer_tel    VARCHAR(20) NOT NULL,
+    remarks         VARCHAR(4000),
+    Payment			VARCHAR(10),
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 docker run -d --name shop --network db -p 80:80 -e SPRING_PROFILES_ACTIVE=prop shop
