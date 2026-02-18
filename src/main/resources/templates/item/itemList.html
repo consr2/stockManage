@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>품목조회</title>
+    <title>품목재고조회</title>
     <link rel="stylesheet" href="/js/lib/tui-grid.css" />
     <link rel="stylesheet" href="/css/item/itemList.css">
 </head>
@@ -11,7 +11,7 @@
 <div class="dashboard">
     <header class="main-header">
         <a href="/index" class="back-link">← 뒤로가기</a>
-        <h1>품목조회</h1>
+        <h1>품목재고조회</h1>
     </header>
 
     <section class="search-container">
@@ -64,7 +64,7 @@
                 grid = new tui.Grid({
                     el: document.getElementById('grid'),
                     data: data,
-                    scrollX: false,
+                    scrollX: true,
                     scrollY: true,
                     bodyHeight: 400,
                     columnOptions: {
