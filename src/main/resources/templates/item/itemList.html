@@ -75,6 +75,7 @@
                         {
                             header: '날짜',
                             align: 'center',
+                            width: 80,
                             name: 'created_at',
                             formatter:({value}) => {
                                 return fommatter('yyyy-mm-dd', value);
@@ -83,6 +84,7 @@
                         {
                             header: '품명',
                             align: 'center',
+                            width: 130,
                             name: 'item_name',
                             sortable: true
                         },
@@ -107,7 +109,7 @@
                         {
                             header: '재고',
                             align: 'center',
-                            width: 100,
+                            width: 60,
                             name: 'current_cnt'
                         },
                     ]
