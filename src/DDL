@@ -49,7 +49,7 @@ CREATE TABLE `wheelchair_rentals` (
 
 
 docekr create network db
-docker run --name mariadb -d -p 3306:3306 --network db -e MYSQL_ROOT_PASSWORD=root -v D:\DB\maria:/var/lib/mysql mariadb
+docker run --name mariadb -d -p 3306:3306 --network db -e MYSQL_ROOT_PASSWORD=root2459 -v D:\DB\maria:/var/lib/mysql mariadb
 docker run -d --name shop --network db -p 80:80 -e SPRING_PROFILES_ACTIVE=prop shop
 
 
