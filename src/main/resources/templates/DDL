@@ -1,0 +1,57 @@
+docker run --name mariadb -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -v D:\DB\maria:/var/lib/mysql mariadb
+
+CREATE TABLE `items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(300) NOT NULL,
+  `price1` int(11) DEFAULT 0,
+  `price2` int(11) DEFAULT 0,
+  `price3` int(11) DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+CREATE TABLE `item_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customer` varchar(300) NOT NULL,
+  `customer_tel` varchar(30) NOT NULL,
+  `date` varchar(30) NOT NULL,
+  `item_idx` int(11) NOT NULL,
+  `item_name` varchar(300) NOT NULL,
+  `cnt` int(11) NOT NULL,
+  `type` varchar(8) DEFAULT '0',
+  `created_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+CREATE TABLE `item_stock` (
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(255) NOT NULL,
+  `current_cnt` int(11) DEFAULT 0,
+  `last_updated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+
+CREATE TABLE `wheelchair_rentals` (
+  `rental_id` int(11) NOT NULL AUTO_INCREMENT,
+  `wheelchair_type` varchar(50) NOT NULL,
+  `start_date` varchar(20) DEFAULT NULL,
+  `end_date` varchar(20) DEFAULT NULL,
+  `customer_name` varchar(50) NOT NULL,
+  `customer_tel` varchar(20) NOT NULL,
+  `remarks` varchar(4000) DEFAULT NULL,
+  `payment` varchar(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`rental_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+
+
+docker run -d --name shop --network db -p 80:80 -e SPRING_PROFILES_ACTIVE=prop shop
+
+
+-- shop.item_history definition
+
