@@ -1,4 +1,4 @@
-docker run --name mariadb -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -v D:\DB\maria:/var/lib/mysql mariadb
+
 
 CREATE TABLE `items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -48,10 +48,9 @@ CREATE TABLE `wheelchair_rentals` (
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
-
-
+docekr create network db
+docker run --name mariadb -d -p 3306:3306 --network db -e MYSQL_ROOT_PASSWORD=root -v D:\DB\maria:/var/lib/mysql mariadb
 docker run -d --name shop --network db -p 80:80 -e SPRING_PROFILES_ACTIVE=prop shop
 
 
--- shop.item_history definition
 
