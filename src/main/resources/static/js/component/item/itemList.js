@@ -24,7 +24,7 @@ const itemChange_JS = (() =>{
             }
             let data = await sendRequest('/item/getItemList', 'POST', param);
             console.log(data);
-            grid = tuiGrid_JS.initGrid(grid, data.data, tuiGrid_JS.P_Type.itemList);
+            grid = tuiGrid_JS.initGrid(grid, data.data, tuiGrid_JS.Type.itemList);
         })
 
         excelDownBtn.addEventListener('click', function(){
@@ -33,16 +33,12 @@ const itemChange_JS = (() =>{
                 return;
             }
             grid.export('xlsx', {
-                fileName: 'customer_list', // 저장될 파일명
+                fileName: '품목제고조회', // 저장될 파일명
                 useFormattedValue: true,    // 포맷터가 적용된 값으로 추출할지 여부
                 includeHeader: true         // 헤더 포함 여부
             });
         })
     }
-
-
-
-
 
 
     return {

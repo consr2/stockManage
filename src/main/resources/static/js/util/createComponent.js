@@ -38,9 +38,17 @@ const createComponent = (() => {
         return div;
     }
 
+    function customerDiv(item){
+        let div = `<div class="suggestion-item" onclick="itemHistory_JS.setCustomer('${item.customer}')">
+                            ${item.customer}
+                        </div>`
+        return div;
+    }
+
     return {
         searchItem: searchItem,
         searchItemInfo: searchItemInfo,
         priceBox: priceBox,
+        customerDiv: customerDiv,
     }
 })();

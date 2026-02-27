@@ -122,7 +122,7 @@ const itemChange_JS = (() =>{
 
         itemName.addEventListener('input',async function() {
 
-            if(isEmpty(itemName.value) || itemName.value.length < 2){
+            if(!checkAutoComplete(itemName.value)){
                 listContainer.innerHTML = '';
                 return;
             }
@@ -132,13 +132,12 @@ const itemChange_JS = (() =>{
             };
 
             let data = await sendRequest("/item/search",'POST',params);
-
             if(data.code === 200){
+                console.log(data);
                 let div = '';
                 data.data.forEach(item => {
                     div += createComponent.searchItemInfo(item, idx);
                 });
-
                 listContainer.innerHTML = div;
             }
         });

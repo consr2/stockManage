@@ -43,3 +43,14 @@ function fommatter(type, data){
             return data;
     }
 }
+
+function checkAutoComplete(value){
+    let lastChar = value.charAt(value.length-1);
+    let validate = /[가-힣a-zA-Z]/.test(lastChar)
+
+    if(value.length > 1 && validate){
+        return true;
+    }else{
+        return false;
+    }
+}

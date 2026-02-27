@@ -1,9 +1,5 @@
 const tuiGrid_JS = (() =>{
 
-    let P_Type= {
-        itemList: 'itemList',
-    }
-
     function setGridStyle(){
         tui.Grid.applyTheme('default', {
             cell: {
@@ -40,7 +36,7 @@ const tuiGrid_JS = (() =>{
             return new tui.Grid(getGridOption(data, type));
         }else{
             grid.resetData(data);
-            return 'exist';
+            return grid;
         }
     }
 
@@ -100,6 +96,83 @@ const tuiGrid_JS = (() =>{
                     },
                 ]
             },
+            itemHistory: {
+                el: document.getElementById('grid'),
+                data: G_data,
+                scrollX: true,
+                scrollY: true,
+                bodyHeight: 400,
+                columnOptions: {
+                    resizable: true // <--- 모든 컬럼 리사이즈 활성화
+                },
+                columns: [
+                    {
+                        header: '날짜',
+                        align: 'center',
+                        width: 80,
+                        name: 'date',
+                        sortable: true,
+                        formatter:({value}) => {
+                            return fommatter('yyyy-mm-dd', value);
+                        }
+                    },
+                    {
+                        header: '품명',
+                        align: 'center',
+                        name: 'item_name',
+                        width: 100,
+                    },
+                    {
+                        header: '수량',
+                        align: 'center',
+                        width: 50,
+                        name: 'cnt',
+                    },
+                    {
+                        header: '단가',
+                        align: 'center',
+                        name: 'price2',
+                        formatter:({value}) => {
+                            return fommatter('comma', value);
+                        }
+                    },
+                    {
+                        header: '공급가액',
+                        align: 'center',
+                        name: 'total_price',
+                        formatter:({value}) => {
+                            return fommatter('comma', value);
+                        }
+                    },
+                    {
+                        header: '대상',
+                        align: 'center',
+                        name: 'customer'
+                    },
+                    {
+                        header: '연락처',
+                        align: 'center',
+                        name: 'customer_tel',
+                        formatter:({value}) => {
+                            return fommatter('tel', value);
+                        }
+                    },
+                    {
+                        header: '타입',
+                        name: 'type',
+                        width: 50,
+                        align: 'center',
+                        formatter: ({value}) => {
+                            const typeMap = {
+                                'IN': '입고',
+                                'OUT': '출고'
+                            }
+                            return typeMap[value];
+                        }
+                    },
+
+                ]
+            }
         }
 
         return optionList[type];
@@ -107,6 +180,9 @@ const tuiGrid_JS = (() =>{
 
     return {
         initGrid: initGrid,
-        P_Type: P_Type,
+        Type: {
+            itemList: 'itemList',
+            itemHistory: 'itemHistory',
+        },
     }
 })();

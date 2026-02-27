@@ -101,3 +101,6 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
 .excelBtn{
     margin: 10px;
 }
+.gridBox{
+    margin-bottom: 50px;
+}

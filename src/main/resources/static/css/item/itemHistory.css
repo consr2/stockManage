@@ -147,3 +147,7 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
     background-color: #fff;
     border-color: #ccc;
 }
+
+.gridBox{
+    margin-bottom: 50px;
+}
