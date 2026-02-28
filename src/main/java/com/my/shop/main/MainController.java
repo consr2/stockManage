@@ -15,8 +15,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final MainService mainService;
-
     @GetMapping("/index")
     public String main(HttpServletRequest request){
         String clientIp = request.getHeader("X-Forwarded-For");

@@ -86,9 +86,7 @@
     <select id="selectItemHistory" resultType="com.my.shop.item.dto.ItemResponseDTO$ItemHistory">
         SELECT
             h.id,
-            h.created_at,
-            p.start_date,
-            p.end_date,
+            h.date,
             i.item_name,
             h.cnt,
             h.customer,
@@ -101,14 +99,18 @@
         left join items i on h.item_idx = i.id
         LEFT JOIN (
                     SELECT item_id,price1,price2,price3,
-                        create_at AS start_date,
+                        CASE
+                            WHEN ROW_NUMBER() OVER (PARTITION BY item_id ORDER BY create_at) = 1
+                            THEN '0000-01-01'
+                            ELSE create_at
+                        END AS start_date,
                         LEAD(create_at) OVER (PARTITION BY item_id ORDER BY create_at) AS end_date
                     FROM item_price
                 ) p ON i.id = p.item_id
         WHERE 1=1
     <![CDATA[
-        AND h.created_at >= p.start_date
-        AND (h.created_at < p.end_date or p.end_date is null)
+        AND h.date >= p.start_date
+        AND (h.date < p.end_date or p.end_date is null)
     ]]>
         <if test="startDate != null and startDate != ''">
             AND h.date between #{startDate} and #{endDate}

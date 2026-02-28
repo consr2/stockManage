@@ -5,37 +5,46 @@
 
 <mapper namespace="com.my.shop.chair.ChairRepository">
 
-    <insert id="saveChairRental" parameterType="com.my.shop.chair.dto.ChairDTO">
+    <insert id="saveChairRental">
         INSERT INTO wheelchair_rentals (
-            wheelchair_type, start_date, end_date,
+            wheelchair_type, start_date, expect_date,
             customer_name, customer_tel, remarks
         ) VALUES (
             #{wheelchairType},
             #{startDate},
-            #{endDate},
+            #{expectDate},
             #{customerName},
             #{customerTel},
             #{remarks}
         )
     </insert>
 
-    <update id="updateRentInfo" parameterType="com.my.shop.chair.dto.ChairDTO">
+    <update id="updateRentInfo">
         UPDATE
             wheelchair_rentals
         SET
-            payment = #{payment}
+            payment = #{payment},
+            end_date = #{endDate}
         WHERE
             rental_id = #{rentalId}
     </update>
 
-    <select id="selectRentalList" resultType="java.util.HashMap">
+    <select id="selectRentalList" resultType="com.my.shop.chair.dto.ChairResponseDTO$Chair">
         SELECT
-            *
+            rental_id,
+            start_date,
+            expect_date,
+            end_date,
+            customer_name,
+            customer_tel,
+            wheelchair_type,
+            remarks,
+            payment
         FROM
             wheelchair_rentals
         WHERE 1=1
         <if test="startDate != null and startDate != ''">
-            AND end_date between #{startDate} and #{endDate}
+            AND expect_date between #{startDate} and #{endDate}
         </if>
         <if test="customerName != null and customerName != ''">
             AND customer_name like concat('%',#{customerName},'%')
@@ -45,15 +54,23 @@
         </if>
     </select>
 
-    <select id="selectEndRentalList" resultType="java.util.HashMap">
+    <select id="selectEndRentalList" resultType="com.my.shop.chair.dto.ChairResponseDTO$Chair">
         SELECT
-            *
+            rental_id,
+            start_date,
+            expect_date,
+            end_date,
+            customer_name,
+            customer_tel,
+            wheelchair_type,
+            remarks,
+            payment
         FROM
             wheelchair_rentals
         WHERE
             (payment is null OR payment = '')
         <![CDATA[
-            AND DATE(end_date) <= now()
+            AND DATE(expect_date) <= now()
         ]]>
     </select>
 

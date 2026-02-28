@@ -15,7 +15,7 @@ const chairRental_JS = (() =>{
         rentalBtn.addEventListener('click',async function(){
             let wheelchairType = document.querySelector('#wheelchairType').value;
             let startDate = document.querySelector('#startDate').value;
-            let endDate = document.querySelector('#endDate').value;
+            let expectDate = document.querySelector('#expectDate').value;
             let customerName = document.querySelector('#customerName').value;
             let customerTel = document.querySelector('#customerTel').value;
             let remarks = document.querySelector('#remarks').value;
@@ -23,7 +23,7 @@ const chairRental_JS = (() =>{
             let param = {
                 wheelchairType: wheelchairType,
                 startDate: startDate,
-                endDate: endDate,
+                expectDate: expectDate,
                 customerName: customerName,
                 customerTel: customerTel,
                 remarks: remarks
@@ -51,7 +51,7 @@ const chairRental_JS = (() =>{
 
         let result = `${year}-${month}-${day}`;
 
-        document.querySelector('#endDate').value = result;
+        document.querySelector('#expectDate').value = result;
     }
 
     return {

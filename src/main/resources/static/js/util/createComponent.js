@@ -49,12 +49,12 @@ const createComponent = (() => {
         let div = `<div class="status-card">
                                 <div class="flex-box2">
                                     <div class="item-info">
-                                        <h3>대여자: ${item.customer_name} (${item.customer_tel})</h3>
-                                        <p>${item.wheelchair_type}</p>
+                                        <h3>대여자: ${item.customerName} (${item.customerTel})</h3>
+                                        <p>${item.wheelchairType}</p>
                                     </div>
                                     <div class="returnBtn">
                                         <span class="badge rented">기간 종료</span>
-                                        <button class="btn-blue" data-id="${item.rental_id}" onclick="chairRentalList_JS.chairReturnBtn(this.dataset.id, 'top')">반납완료</button>
+                                        <button class="btn-blue" data-id="${item.rentalId}" onclick="chairRentalList_JS.chairReturnBtn(this.dataset.id, 'top')">반납완료</button>
                                     </div>
                                 </div>
                             </div>`;

@@ -27,7 +27,7 @@ public class ItemResponseDTO {
     @Data
     public static class ItemHistory{
         private Integer id;
-        private String createdAt;
+        private String date;
         private String itemName;
         private Integer cnt;
         private String customer;

@@ -1,6 +1,7 @@
 package com.my.shop.chair;
 
 import com.my.shop.chair.dto.ChairDTO;
+import com.my.shop.chair.dto.ChairRequsetDTO;
 import com.my.shop.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +32,10 @@ public class ChairController {
 
     @ResponseBody
     @PostMapping("/chair/submit")
-    public ResponseUtil chairSubmit(@RequestBody ChairDTO chairDto){
+    public ResponseUtil chairSubmit(@RequestBody ChairRequsetDTO.InsertChair insertChair){
         log.info("POST : /chair/submit");
         return ResponseUtil.builder()
-                .data(chairService.chairSubmit(chairDto))
+                .data(chairService.chairSubmit(insertChair))
                 .msg("저장성공")
                 .code(200)
                 .build();
@@ -43,10 +44,10 @@ public class ChairController {
 
     @ResponseBody
     @PostMapping("/chair/rentalList")
-    public ResponseUtil getRentalList(@RequestBody ChairDTO chairDto){
+    public ResponseUtil getRentalList(@RequestBody ChairRequsetDTO.SearchChairList searchChairList){
         log.info("POST : /chair/rentalList");
         return ResponseUtil.builder()
-                .data(chairService.getRentalList(chairDto))
+                .data(chairService.getRentalList(searchChairList))
                 .msg("저장성공")
                 .code(200)
                 .build();
@@ -66,10 +67,10 @@ public class ChairController {
 
     @ResponseBody
     @PostMapping("/chair/saveRentInfo")
-    public ResponseUtil saveRentInfo(@RequestBody ChairDTO chairDto){
+    public ResponseUtil saveRentInfo(@RequestBody ChairRequsetDTO.UpdateChair updateChair){
         log.info("POST : /chair/saveRentInfo");
         return ResponseUtil.builder()
-                .data(chairService.saveRentInfo(chairDto))
+                .data(chairService.saveRentInfo(updateChair))
                 .msg("반납이 완료되었습니다")
                 .code(200)
                 .build();
@@ -77,10 +78,10 @@ public class ChairController {
 
     @ResponseBody
     @PostMapping("/chair/returnRentInfo")
-    public ResponseUtil returnRentInfo(@RequestBody ChairDTO chairDto){
+    public ResponseUtil returnRentInfo(@RequestBody ChairRequsetDTO.UpdateChair updateChair){
         log.info("POST : /chair/returnRentInfo");
         return ResponseUtil.builder()
-                .data(chairService.returnRentInfo(chairDto))
+                .data(chairService.returnRentInfo(updateChair))
                 .msg("철회가 완료되었습니다")
                 .code(200)
                 .build();

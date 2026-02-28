@@ -110,7 +110,7 @@ const tuiGrid_JS = (() =>{
                         header: '날짜',
                         align: 'center',
                         width: 80,
-                        name: 'createdAt',
+                        name: 'date',
                         sortable: true,
                         formatter:({value}) => {
                             return fommatter('yyyy-mm-dd', value);
@@ -205,8 +205,18 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '대여일',
                         align: 'center',
-                        width: 100,
-                        name: 'start_date',
+                        width: 90,
+                        name: 'startDate',
+                        sortable: true,
+                        formatter:({value}) => {
+                            return fommatter('yyyy-mm-dd', value);
+                        }
+                    },
+                    {
+                        header: '반납예정일',
+                        align: 'center',
+                        width: 90,
+                        name: 'expectDate',
                         sortable: true,
                         formatter:({value}) => {
                             return fommatter('yyyy-mm-dd', value);
@@ -215,8 +225,8 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '반납일',
                         align: 'center',
-                        width: 100,
-                        name: 'end_date',
+                        width: 90,
+                        name: 'endDate',
                         sortable: true,
                         formatter:({value}) => {
                             return fommatter('yyyy-mm-dd', value);
@@ -225,19 +235,19 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '고객명',
                         align: 'center',
-                        name: 'customer_name',
+                        name: 'customerName',
                     },
                     {
                         header: '연락처',
                         align: 'center',
-                        name: 'customer_tel',
+                        name: 'customerTel',
 
                     },
                     {
                         header: '휠체어 종류',
                         align: 'center',
                         width: 200,
-                        name: 'wheelchair_type',
+                        name: 'wheelchairType',
                         sortable: true,
                     },
                     {
