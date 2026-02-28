@@ -27,4 +27,8 @@ public interface ItemRepository {
 
     List<ItemResponseDTO.Item> selectItemList(ItemRequestDTO.ItemListSearch itemListSearch);
 
+    List<ItemResponseDTO.ItemPrice> selectItemPriceList(ItemRequestDTO.ItemPrice itemPrice);
+
+    Integer saveItemPriceList(List<ItemRequestDTO.InsertItemPrice> insertItemPrice);
+
 }

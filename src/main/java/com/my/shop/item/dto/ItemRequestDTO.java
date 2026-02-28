@@ -30,6 +30,7 @@ public class ItemRequestDTO {
     @Data
     @Builder
     public static class InsertItemPrice{
+        private Integer id;
         private Integer itemId;
         private Integer price1;
         private Integer price2;
@@ -68,6 +69,11 @@ public class ItemRequestDTO {
     public static class ItemListSearch{
         private String startDate;
         private String endDate;
+    }
+
+    @Data
+    public static class ItemPrice{
+        private Integer id;
     }
 
 

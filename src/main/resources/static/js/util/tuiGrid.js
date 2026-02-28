@@ -240,13 +240,14 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '연락처',
                         align: 'center',
+                        width: 120,
                         name: 'customerTel',
 
                     },
                     {
                         header: '휠체어 종류',
                         align: 'center',
-                        width: 200,
+                        width: 150,
                         name: 'wheelchairType',
                         sortable: true,
                     },

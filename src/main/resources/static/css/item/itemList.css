@@ -104,3 +104,107 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
 .gridBox{
     margin-bottom: 50px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 1. 모달 전체 배경 (애니메이션 추가) */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+
+    /* 배경 서서히 어두워지는 효과 */
+    animation: fadeInBg 0.3s ease-out;
+}
+
+/* 2. 모달 컨텐츠 박스 (애니메이션 추가) */
+.modal-content {
+    background-color: var(--bg-color);
+    width: 90%;
+    max-width: 700px;
+    padding: 30px;
+    border-radius: 24px;       /* 기존 디자인과 통일 */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+
+    /* 아래에서 위로 올라오며 나타나는 효과 */
+    animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+/* --- 애니메이션 정의 --- */
+
+/* 배경 페이드 인 */
+@keyframes fadeInBg {
+    from { background-color: rgba(0, 0, 0, 0); }
+    to { background-color: rgba(0, 0, 0, 0.5); }
+}
+
+/* 박스 슬라이드 업 */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- 테이블 및 버튼 스타일 (기존 유지) --- */
+.table-wrapper {
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border-top: 2px solid var(--text-main);
+}
+
+.history-table { width: 100%; border-collapse: collapse; }
+.history-table th {
+    text-align: left;
+    padding: 12px 8px;
+    font-size: 13px;
+    color: var(--text-sub);
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-color);
+}
+
+.history-table td { padding: 12px 8px; border-bottom: 1px solid var(--border-color); }
+.history-table input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    text-align: right;
+    outline: none;
+}
+.history-table th{
+    text-align: center;
+}
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+.btn-save { background-color: var(--text-main); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.btn-close { background-color: var(--bg-color); color: var(--text-sub); border: 1px solid var(--border-color); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+
+

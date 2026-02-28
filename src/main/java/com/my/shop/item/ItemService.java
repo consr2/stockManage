@@ -60,4 +60,13 @@ public class ItemService {
     public List<ItemResponseDTO.Item> getItemList(ItemRequestDTO.ItemListSearch itemListSearch){
         return itemRepository.selectItemList(itemListSearch);
     }
+
+    public List<ItemResponseDTO.ItemPrice> getItemPriceList(ItemRequestDTO.ItemPrice itemPrice){
+        return itemRepository.selectItemPriceList(itemPrice);
+    }
+
+    public Integer saveItemPriceList(List<ItemRequestDTO.InsertItemPrice> insertItemPrice){
+        return itemRepository.saveItemPriceList(insertItemPrice);
+    }
+
 }

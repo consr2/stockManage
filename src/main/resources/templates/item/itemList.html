@@ -33,11 +33,44 @@
         <button class="btn-search excelBtn" id="excelDownBtn">엑셀다운</button>
     </div>
     <div class="gridBox" id="grid"></div>
+
+
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <header>
+                <h3>단가 이력 수정</h3>
+                <div class="item-info">
+                    <strong>품목명</strong>
+                    <span id="modalItemName">품목 데이터 대기 중...</span>
+                </div>
+            </header>
+            <div class="table-wrapper">
+                <table class="history-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 180px;">적용일시</th>
+                        <th>매입단가</th>
+                        <th>매출단가</th>
+                        <th>가격3</th>
+                    </tr>
+                    </thead>
+                    <tbody id="modalHistoryBody"></tbody>
+                </table>
+            </div>
+
+            <footer class="modal-footer">
+                <button type="button" class="btn-close" onclick="document.getElementById('itemModal').style.display = 'none'">취소</button>
+                <button type="button" id="addPriceTr" class="btn-save" onclick="itemList_JS.단가수정()">추가</button>
+                <button type="button" id="savePriceBtn" class="btn-save">전체 저장</button>
+            </footer>
+        </div>
+    </div>
 </div>
 </body>
 <script src="/js/lib/xlsx.js"></script>
 <script src="/js/lib/tui-grid.js"></script>
 <script src="/js/util/util.js"></script>
 <script src="/js/util/tuiGrid.js"></script>
+<script src="/js/util/createComponent.js"></script>
 <script src="/js/component/item/itemList.js"></script>
 </html>

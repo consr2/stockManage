@@ -18,7 +18,6 @@ public class ItemResponseDTO {
         private String createAt;
     }
 
-
     @Data
     public static class Customer{
         private String customer;
@@ -36,7 +35,16 @@ public class ItemResponseDTO {
         private Integer price1;
         private Integer price2;
         private Integer price3;
+    }
 
+    @Data
+    public static class ItemPrice{
+        private Integer id;
+        private Integer itemId;
+        private Integer price1;
+        private Integer price2;
+        private Integer price3;
+        private String createAt;
     }
 
 }

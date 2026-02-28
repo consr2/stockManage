@@ -147,4 +147,43 @@
         ORDER BY i.item_name
     </select>
 
+    <select id="selectItemPriceList" resultType="com.my.shop.item.dto.ItemResponseDTO$ItemPrice">
+        SELECT
+            id,
+            item_id,
+            price1,
+            price2,
+            price3,
+            create_at
+        FROM
+            item_price
+        WHERE
+            item_id = #{id}
+        ORDER BY
+            create_at desc
+    </select>
+
+
+    <insert id="saveItemPriceList">
+        INSERT INTO item_price (
+            id,item_id,
+            price1,price2,price3,
+            create_at
+        )
+        VALUES
+        <foreach collection="insertItemPrice" item="item" separator=",">
+            (
+            #{item.id},#{item.itemId},
+            #{item.price1},#{item.price2},#{item.price3},
+            #{item.createAt}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        price1 = VALUES(price1),
+        price2 = VALUES(price2),
+        price3 = VALUES(price3),
+        create_at = VALUES(create_at)
+    </insert>
+
+
 </mapper>

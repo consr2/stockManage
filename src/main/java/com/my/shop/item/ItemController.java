@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -105,6 +107,28 @@ public class ItemController {
         return ResponseUtil.builder()
                 .data(itemService.getItemList(itemListSearch))
                 .msg("조회성공")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
+    @PostMapping("/item/getItemPriceList")
+    public ResponseUtil getItemPriceList(@RequestBody ItemRequestDTO.ItemPrice itemPrice){
+        log.info("POST : /item/getItemPriceList");
+        return ResponseUtil.builder()
+                .data(itemService.getItemPriceList(itemPrice))
+                .msg("조회성공")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
+    @PostMapping("/item/saveItemPriceList")
+    public ResponseUtil saveItemPriceList(@RequestBody List<ItemRequestDTO.InsertItemPrice> insertItemPrice){
+        log.info("POST : /item/saveItemPriceList");
+        return ResponseUtil.builder()
+                .data(itemService.saveItemPriceList(insertItemPrice))
+                .msg("저장성공")
                 .code(200)
                 .build();
     }

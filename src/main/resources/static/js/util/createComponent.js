@@ -61,11 +61,33 @@ const createComponent = (() => {
         return div;
     }
 
+    function 단가이력수정목록(item){
+        let div = `<tr>
+                                <td hidden>
+                                    <input data-id="${item.id ?? ''}" data-itemid="${item.itemId ?? ''}">
+                                </td>
+                                <td>
+                                    <input value="${item.createAt ?? getCurrentTime()}">
+                                </td>
+                                <td>
+                                    <input value="${fommatter('comma',item.price1)}" oninput="this.value = fommatter('comma',this.value)">
+                                </td>
+                                <td>
+                                    <input value="${fommatter('comma',item?.price2)}" oninput="this.value = fommatter('comma',this.value)">
+                                </td>
+                                <td>
+                                    <input value="${fommatter('comma',item?.price3)}" oninput="this.value = fommatter('comma',this.value)">
+                                </td>
+                            </tr>`;
+        return div;
+    }
+
     return {
         품목추가: 품목추가,
         검색된품목: 검색된품목,
         합계금액: 합계금액,
         검색된고객명단: 검색된고객명단,
         만료된휠체어목록: 만료된휠체어목록,
+        단가이력수정목록: 단가이력수정목록,
     }
 })();
