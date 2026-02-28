@@ -162,9 +162,9 @@ const itemChange_JS = (() =>{
             let price = '';
 
             if(type === "IN"){
-                let price = fommatter('comma', price1 * cnt);
+                price = fommatter('comma', price1 * cnt);
             }else{
-                let price = fommatter('comma', price2 * cnt);
+                price = fommatter('comma', price2 * cnt);
             }
 
             div += createComponent.합계금액(itemName, price);

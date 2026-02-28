@@ -1,8 +1,6 @@
 package com.my.shop.item;
 
-import com.my.shop.item.dto.ItemDto;
-import com.my.shop.item.dto.ItemHistoryListDto;
-import com.my.shop.item.dto.SearchDto;
+import com.my.shop.item.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,22 +15,29 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public Integer saveItem(ItemDto itemDto){
-        itemRepository.insertItem(itemDto);
-        Integer i = itemRepository.insertItemStock(itemDto);
+    public Integer saveItem(ItemRequestDTO.InsertItem insertItem){
+        itemRepository.insertItem(insertItem);
+        ItemRequestDTO.InsertItemPrice itemPriceDto = ItemRequestDTO.InsertItemPrice.builder()
+                                        .itemId(insertItem.getId())
+                                        .price1(insertItem.getPrice1())
+                                        .price2(insertItem.getPrice2())
+                                        .price3(insertItem.getPrice3())
+                                        .build();
 
-        return i;
+        itemRepository.insertItemPrice(itemPriceDto);
+
+        return 1;
     }
 
-    public List<ItemDto> itemSerch(ItemDto itemDto){
-        return itemRepository.selectItemByName(itemDto);
+    public List<ItemResponseDTO.Item> itemSerch(ItemRequestDTO.SearchItem searchItem){
+        return itemRepository.selectItemByName(searchItem);
     }
 
-    public Integer changeItemCnt(ItemHistoryListDto itemListDto){
-        Integer i = itemRepository.insertItemHistroy(itemListDto);
+    public Integer changeItemCnt(ItemRequestDTO.InsertItemHistory insertItemHistory){
+        Integer i = itemRepository.insertItemHistroy(insertItemHistory);
 
-        for(ItemHistoryListDto.ItemInfo item : itemListDto.getItemInfoList()){
-            switch(itemListDto.getType()){
+        for(ItemRequestDTO.ItemInfo item : insertItemHistory.getItemInfoList()){
+            switch(insertItemHistory.getType()){
                 case "IN":
                     itemRepository.addItemCnt(item);
                     break;
@@ -44,15 +49,15 @@ public class ItemService {
         return i;
     }
 
-    public List<Map<String, Object>> getItemHistory(SearchDto searchDto){
-        return itemRepository.selectItemHistory(searchDto);
+    public List<ItemResponseDTO.ItemHistory> getItemHistory(ItemRequestDTO.ItemHistorySearch itemHistorySearch){
+        return itemRepository.selectItemHistory(itemHistorySearch);
     }
 
-    public List<Map<String, Object>> getCustomer(SearchDto searchDto){
-        return itemRepository.selectCustomer(searchDto);
+    public List<ItemResponseDTO.Customer> getCustomer(ItemRequestDTO.SearchCustomer searchCustomer){
+        return itemRepository.selectCustomer(searchCustomer);
     }
 
-    public List<Map<String, Object>> getItemList(SearchDto searchDto){
-        return itemRepository.selectItemList(searchDto);
+    public List<ItemResponseDTO.Item> getItemList(ItemRequestDTO.ItemListSearch itemListSearch){
+        return itemRepository.selectItemList(itemListSearch);
     }
 }

@@ -29,6 +29,9 @@ function isEmpty(data) {
 
 function fommatter(type, data){
     let cleanData = ''
+    if(isEmpty(data)){
+        return '';
+    }
     switch (type){
         case 'comma':
             cleanData = data.toString().replace(/[^\d]/g, '');

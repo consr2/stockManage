@@ -1,8 +1,6 @@
 package com.my.shop.item;
 
-import com.my.shop.item.dto.ItemDto;
-import com.my.shop.item.dto.ItemHistoryListDto;
-import com.my.shop.item.dto.SearchDto;
+import com.my.shop.item.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,22 +9,22 @@ import java.util.Map;
 @Mapper
 public interface ItemRepository {
 
-    Integer insertItem(ItemDto itemDto);
+    Integer insertItem(ItemRequestDTO.InsertItem insertItem);
 
-    Integer insertItemStock(ItemDto itemDto);
+    Integer insertItemPrice(ItemRequestDTO.InsertItemPrice itemPriceDto);
 
-    List<ItemDto> selectItemByName(ItemDto itemDto);
+    List<ItemResponseDTO.Item> selectItemByName(ItemRequestDTO.SearchItem searchItem);
 
-    Integer insertItemHistroy(ItemHistoryListDto itemListDto);
+    Integer insertItemHistroy(ItemRequestDTO.InsertItemHistory insertItemHistory);
 
-    Integer addItemCnt(ItemHistoryListDto.ItemInfo itemListDto);
+    Integer addItemCnt(ItemRequestDTO.ItemInfo itemListDto);
 
-    Integer subItemCnt(ItemHistoryListDto.ItemInfo itemListDto);
+    Integer subItemCnt(ItemRequestDTO.ItemInfo itemListDto);
 
-    List<Map<String, Object>> selectItemHistory(SearchDto searchDto);
+    List<ItemResponseDTO.ItemHistory> selectItemHistory(ItemRequestDTO.ItemHistorySearch itemHistorySearch);
 
-    List<Map<String, Object>> selectCustomer(SearchDto searchDto);
+    List<ItemResponseDTO.Customer> selectCustomer(ItemRequestDTO.SearchCustomer searchCustomer);
 
-    List<Map<String, Object>> selectItemList(SearchDto searchDto);
+    List<ItemResponseDTO.Item> selectItemList(ItemRequestDTO.ItemListSearch itemListSearch);
 
 }

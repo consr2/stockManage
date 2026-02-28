@@ -25,7 +25,7 @@ const createComponent = (() => {
     function 검색된품목(item, idx){
         const jsonItem = JSON.stringify(item).replace(/"/g, '&quot;');
         let div = `<div class="suggestion-item" onclick="itemChange_JS.selectItem('${jsonItem}', '${idx}')">
-                                ${item.itemName} (재고수량 : ${item.itemStock.currentCnt})
+                                ${item.itemName} (재고수량 : ${item.currentCnt})
                             </div>`;
         return div;
     }

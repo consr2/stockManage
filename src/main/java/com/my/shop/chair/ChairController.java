@@ -1,7 +1,6 @@
 package com.my.shop.chair;
 
 import com.my.shop.chair.dto.ChairDTO;
-import com.my.shop.item.dto.SearchDto;
 import com.my.shop.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

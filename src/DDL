@@ -1,14 +1,23 @@
-
-
 CREATE TABLE `items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_name` varchar(300) NOT NULL,
-  `price1` int(11) DEFAULT 0,
-  `price2` int(11) DEFAULT 0,
-  `price3` int(11) DEFAULT 0,
+  `current_cnt` int(11) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+  PRIMARY KEY (id)
+)
+
+
+CREATE TABLE item_price (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    item_id INT(11) NOT NULL,
+    price1 INT(11) NOT NULL,
+    price2 INT(11) NOT NULL,
+    price3 INT(11) NOT NULL,
+    create_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+
 
 CREATE TABLE `item_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -24,15 +33,6 @@ CREATE TABLE `item_history` (
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
-CREATE TABLE `item_stock` (
-  `item_id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_name` varchar(255) NOT NULL,
-  `current_cnt` int(11) DEFAULT 0,
-  `last_updated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
-
 
 CREATE TABLE `wheelchair_rentals` (
   `rental_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -46,6 +46,9 @@ CREATE TABLE `wheelchair_rentals` (
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`rental_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+
 
 
 docekr create network db

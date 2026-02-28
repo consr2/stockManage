@@ -5,41 +5,47 @@
 
 <mapper namespace="com.my.shop.item.ItemRepository">
 
-    <resultMap id="itemMap" type="com.my.shop.item.dto.ItemDto" autoMapping="true">
-        <id property="id" column="id" />
-        <association property="itemStock" javaType="com.my.shop.item.dto.ItemStockDto"
-                     autoMapping="true" columnPrefix="s_" />
-    </resultMap>
 
-
-    <insert id="insertItem" parameterType="com.my.shop.item.dto.ItemDto" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertItem"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO items
-            (item_name, price1, price2, price3)
+            (item_name)
         VALUES
-            (#{itemName}, #{price1}, #{price2}, #{price3})
+            (#{itemName})
     </insert>
 
-    <insert id="insertItemStock" parameterType="com.my.shop.item.dto.ItemDto">
+    <insert id="insertItemPrice">
+        INSERT INTO item_price
+        (item_id, price1, price2, price3)
+        VALUES
+        (#{itemId}, #{price1}, #{price2}, #{price3})
+    </insert>
+
+    <insert id="insertItemStock">
         INSERT INTO item_stock
         (item_id, item_name, current_cnt, last_updated)
         VALUES(#{id}, #{itemName}, 0, now())
     </insert>
 
-    <select id="selectItemByName" parameterType="com.my.shop.item.dto.ItemDto" resultMap="itemMap">
+    <select id="selectItemByName"  resultType="com.my.shop.item.dto.ItemResponseDTO$Item">
         SELECT
-            i.*,
-            s.item_id s_item_id,
-            s.item_name s_item_name,
-            s.current_cnt s_current_cnt
+            i.id,
+            i.item_name,
+            i.current_cnt,
+            p.price1,
+            p.price2,
+            p.price3,
+            p.create_at
         FROM
             items i
-        LEFT JOIN item_stock s ON s.item_id = i.id
+            LEFT JOIN (select p2.* From
+                            (SELECT *, ROW_NUMBER() OVER (PARTITION BY item_id ORDER BY create_at DESC) AS rn FROM item_price) p2
+                        where p2.rn = 1) p ON p.item_id = i.id
         WHERE
             i.item_name like CONCAT('%',#{itemName},'%')
     </select>
 
 
-    <select id="selectCustomer" parameterType="com.my.shop.item.dto.ItemDto" resultType="java.util.HashMap">
+    <select id="selectCustomer" resultType="com.my.shop.item.dto.ItemResponseDTO$Customer">
         SELECT
             customer
         FROM
@@ -48,7 +54,7 @@
         GROUP BY customer
     </select>
 
-    <insert id="insertItemHistroy" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
+    <insert id="insertItemHistroy">
         INSERT INTO item_history
         (
             customer, customer_tel,date
@@ -64,29 +70,46 @@
         </foreach>
     </insert>
 
-    <update id="addItemCnt" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
-        UPDATE item_stock
-        SET current_cnt = current_cnt + #{cnt},
-        last_updated = NOW()
-        WHERE item_id = #{itemId}
+    <update id="addItemCnt" >
+        UPDATE items
+        SET current_cnt = current_cnt + #{cnt}
+        WHERE id = #{itemId}
     </update>
 
-    <update id="subItemCnt" parameterType="com.my.shop.item.dto.ItemHistoryListDto">
-        UPDATE item_stock
-        SET current_cnt = current_cnt - #{cnt},
-        last_updated = NOW()
-        WHERE item_id = #{itemId}
+    <update id="subItemCnt">
+        UPDATE items
+        SET current_cnt = current_cnt - #{cnt}
+        WHERE id = #{itemId}
     </update>
 
 
-    <select id="selectItemHistory" resultType="java.util.HashMap">
+    <select id="selectItemHistory" resultType="com.my.shop.item.dto.ItemResponseDTO$ItemHistory">
         SELECT
-            h.*,
-            i.*,
-            i.price2 * h.cnt as total_price
+            h.id,
+            h.created_at,
+            p.start_date,
+            p.end_date,
+            i.item_name,
+            h.cnt,
+            h.customer,
+            h.customer_tel,
+            h.type,
+            p.price1,
+            p.price2,
+            p.price3
         FROM item_history h
-        LEFT JOIN items i ON i.id = h.item_idx
+        left join items i on h.item_idx = i.id
+        LEFT JOIN (
+                    SELECT item_id,price1,price2,price3,
+                        create_at AS start_date,
+                        LEAD(create_at) OVER (PARTITION BY item_id ORDER BY create_at) AS end_date
+                    FROM item_price
+                ) p ON i.id = p.item_id
         WHERE 1=1
+    <![CDATA[
+        AND h.created_at >= p.start_date
+        AND (h.created_at < p.end_date or p.end_date is null)
+    ]]>
         <if test="startDate != null and startDate != ''">
             AND h.date between #{startDate} and #{endDate}
         </if>
@@ -102,17 +125,24 @@
         ORDER BY date desc
     </select>
 
-    <select id="selectItemList" resultType="java.util.HashMap">
+    <select id="selectItemList" resultType="com.my.shop.item.dto.ItemResponseDTO$Item">
         SELECT
-            i.*,
-            s.*
+            i.id,
+            i.item_name,
+            i.current_cnt,
+            p.price1,
+            p.price2,
+            p.price3,
+            p.create_at
         FROM items i
-        LEFT JOIN item_stock s ON s.item_id = i.id
+        LEFT JOIN (select p2.* From
+                        (SELECT *, ROW_NUMBER() OVER (PARTITION BY item_id ORDER BY create_at DESC) AS rn FROM item_price) p2
+                        where p2.rn = 1) p ON p.item_id = i.id
         WHERE 1=1
         <if test="startDate != null and startDate != ''">
-            AND created_at between #{startDate} and #{endDate}
+            AND i.created_at between #{startDate} and #{endDate}
         </if>
-        ORDER BY s.item_name
+        ORDER BY i.item_name
     </select>
 
 </mapper>

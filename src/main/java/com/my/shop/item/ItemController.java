@@ -1,8 +1,6 @@
 package com.my.shop.item;
 
-import com.my.shop.item.dto.ItemDto;
-import com.my.shop.item.dto.ItemHistoryListDto;
-import com.my.shop.item.dto.SearchDto;
+import com.my.shop.item.dto.ItemRequestDTO;
 import com.my.shop.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -48,10 +44,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/save")
-    public ResponseUtil itemSave(@RequestBody ItemDto itemDto){
+    public ResponseUtil itemSave(@RequestBody ItemRequestDTO.InsertItem insertItem){
         log.info("POST : /item/save");
         return ResponseUtil.builder()
-                .data(itemService.saveItem(itemDto))
+                .data(itemService.saveItem(insertItem))
                 .msg("저장완료")
                 .code(200)
                 .build();
@@ -59,10 +55,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/search")
-    public ResponseUtil itemSerch(@RequestBody ItemDto itemDto){
+    public ResponseUtil itemSerch(@RequestBody ItemRequestDTO.SearchItem searchItem){
         log.info("POST : /item/search");
         return ResponseUtil.builder()
-                .data(itemService.itemSerch(itemDto))
+                .data(itemService.itemSerch(searchItem))
                 .msg("검색완료")
                 .code(200)
                 .build();
@@ -70,10 +66,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/changeCnt")
-    public ResponseUtil itemSerch(@RequestBody ItemHistoryListDto itemListDto){
+    public ResponseUtil itemSerch(@RequestBody ItemRequestDTO.InsertItemHistory insertItemHistory){
         log.info("POST : /item/changeCnt");
         return ResponseUtil.builder()
-                .data(itemService.changeItemCnt(itemListDto))
+                .data(itemService.changeItemCnt(insertItemHistory))
                 .msg("저장완료")
                 .code(200)
                 .build();
@@ -82,10 +78,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/getItemHistory")
-    public ResponseUtil getItemHistory(@RequestBody SearchDto searchDto){
+    public ResponseUtil getItemHistory(@RequestBody ItemRequestDTO.ItemHistorySearch itemHistorySearch){
         log.info("POST : /item/getItemHistory");
         return ResponseUtil.builder()
-                .data(itemService.getItemHistory(searchDto))
+                .data(itemService.getItemHistory(itemHistorySearch))
                 .msg("조회성공")
                 .code(200)
                 .build();
@@ -93,10 +89,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/getCustomer")
-    public ResponseUtil getCustomer(@RequestBody SearchDto searchDto){
+    public ResponseUtil getCustomer(@RequestBody ItemRequestDTO.SearchCustomer searchCustomer){
         log.info("POST : /item/getCustomer");
         return ResponseUtil.builder()
-                .data(itemService.getCustomer(searchDto))
+                .data(itemService.getCustomer(searchCustomer))
                 .msg("조회성공")
                 .code(200)
                 .build();
@@ -104,10 +100,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/getItemList")
-    public ResponseUtil getItemList(@RequestBody SearchDto searchDto){
+    public ResponseUtil getItemList(@RequestBody ItemRequestDTO.ItemListSearch itemListSearch){
         log.info("POST : /item/getItemList");
         return ResponseUtil.builder()
-                .data(itemService.getItemList(searchDto))
+                .data(itemService.getItemList(itemListSearch))
                 .msg("조회성공")
                 .code(200)
                 .build();

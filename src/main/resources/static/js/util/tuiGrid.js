@@ -59,7 +59,7 @@ const tuiGrid_JS = (() =>{
                         header: '날짜',
                         align: 'center',
                         width: 120,
-                        name: 'created_at',
+                        name: 'createAt',
                         formatter: ({value}) => {
                             return fommatter('yyyy-mm-dd', value);
                         }
@@ -67,7 +67,7 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '품명',
                         align: 'center',
-                        name: 'item_name',
+                        name: 'itemName',
                         sortable: true
                     },
                     {
@@ -92,7 +92,7 @@ const tuiGrid_JS = (() =>{
                         header: '재고',
                         align: 'center',
                         width: 60,
-                        name: 'current_cnt'
+                        name: 'currentCnt'
                     },
                 ]
             },
@@ -110,7 +110,7 @@ const tuiGrid_JS = (() =>{
                         header: '날짜',
                         align: 'center',
                         width: 80,
-                        name: 'date',
+                        name: 'createdAt',
                         sortable: true,
                         formatter:({value}) => {
                             return fommatter('yyyy-mm-dd', value);
@@ -119,7 +119,7 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '품명',
                         align: 'center',
-                        name: 'item_name',
+                        name: 'itemName',
                     },
                     {
                         header: '수량',
@@ -130,9 +130,15 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '단가',
                         align: 'center',
-                        name: 'price2',
+                        name: 'price1',
                         width: 110,
-                        formatter:({value}) => {
+                        formatter:(data) => {
+                            let value = 0;
+                            if(data.row.type === 'IN'){
+                                value = data.row.price1;
+                            }else{
+                                value = data.row.price2;
+                            }
                             return fommatter('comma', value);
                         }
                     },
@@ -140,7 +146,13 @@ const tuiGrid_JS = (() =>{
                         header: '공급가액',
                         align: 'center',
                         name: 'total_price',
-                        formatter:({value}) => {
+                        formatter:(data) => {
+                            let value = 0;
+                            if(data.row.type === 'IN'){
+                                value = data.row.price1 * data.row.cnt;
+                            }else{
+                                value = data.row.price2 * data.row.cnt;
+                            }
                             return fommatter('comma', value);
                         }
                     },
@@ -152,7 +164,7 @@ const tuiGrid_JS = (() =>{
                     {
                         header: '연락처',
                         align: 'center',
-                        name: 'customer_tel',
+                        name: 'customerTel',
                         width: 130,
                         formatter:({value}) => {
                             return fommatter('tel', value);
