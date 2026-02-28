@@ -91,7 +91,7 @@ const chairRentalList_JS = (() =>{
     }
 
 
-    async function chairReturnBtn(rentalId, where){
+    async function chairReturnBtn(rentalId){
         let param = {
             rentalId: rentalId
         }
@@ -99,13 +99,8 @@ const chairRentalList_JS = (() =>{
         let data = await sendRequest('/chair/saveRentInfo','POST', param);
         if(data.code === 200){
             alert(data.msg);
-            if(where === 'grid'){
-                chairListSearchBtn.click();
-            }else{
-                endRentalList = endRentalList.filter(item => item.rental_id != rentalId);
-                drowEndRentalList(endRentalList);
-            }
-
+            chairListSearchBtn.click();
+            checkEndRental();
         }
     }
 
@@ -118,6 +113,7 @@ const chairRentalList_JS = (() =>{
         if(data.code === 200){
             alert(data.msg);
             chairListSearchBtn.click();
+            checkEndRental();
         }
     }
 
