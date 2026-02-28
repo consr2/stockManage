@@ -33,7 +33,7 @@ const itemChange_JS = (() =>{
          * 품목 추가클릭
          */
         addItemBtn.addEventListener('click',async function() {
-            let div = createComponent.searchItem(index);
+            let div = createComponent.품목추가(index);
             ItemListBox.insertAdjacentHTML('beforeend',div);
 
             initSearchEvent(index);
@@ -136,7 +136,7 @@ const itemChange_JS = (() =>{
                 console.log(data);
                 let div = '';
                 data.data.forEach(item => {
-                    div += createComponent.searchItemInfo(item, idx);
+                    div += createComponent.검색된품목(item, idx);
                 });
                 listContainer.innerHTML = div;
             }
@@ -167,7 +167,7 @@ const itemChange_JS = (() =>{
                 let price = fommatter('comma', price2 * cnt);
             }
 
-            div += createComponent.priceBox(itemName, price);
+            div += createComponent.합계금액(itemName, price);
         });
 
         receiptBox.innerHTML = div;

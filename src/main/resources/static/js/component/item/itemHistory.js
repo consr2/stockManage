@@ -31,7 +31,7 @@ const itemHistory_JS = (() =>{
 
             let div = '';
             data.data.forEach((item)=> {
-                div += createComponent.customerDiv(item);
+                div += createComponent.검색된고객명단(item);
             })
 
             autocompleteList.innerHTML = div;

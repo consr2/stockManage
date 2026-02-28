@@ -1,7 +1,7 @@
 const createComponent = (() => {
 
 
-    function searchItem(idx){
+    function 품목추가(idx){
 
         let div = `<div class="flex-box itemInfo" id="boxIndex_${idx}">
                             <div class="input-group itemName">
@@ -22,7 +22,7 @@ const createComponent = (() => {
         return div;
     }
 
-    function searchItemInfo(item, idx){
+    function 검색된품목(item, idx){
         const jsonItem = JSON.stringify(item).replace(/"/g, '&quot;');
         let div = `<div class="suggestion-item" onclick="itemChange_JS.selectItem('${jsonItem}', '${idx}')">
                                 ${item.itemName} (재고수량 : ${item.itemStock.currentCnt})
@@ -30,7 +30,7 @@ const createComponent = (() => {
         return div;
     }
 
-    function priceBox(itemName, price){
+    function 합계금액(itemName, price){
         let div = `<div class="flex-box2">
                             <span>${itemName}</span>
                             <span class="sumPrice">${price}원</span>
@@ -38,21 +38,21 @@ const createComponent = (() => {
         return div;
     }
 
-    function customerDiv(item){
+    function 검색된고객명단(item){
         let div = `<div class="suggestion-item" onclick="itemHistory_JS.setCustomer('${item.customer}')">
                             ${item.customer}
                         </div>`
         return div;
     }
 
-    function endChairRental(item){
+    function 만료된휠체어목록(item){
         let div = `<div class="status-card">
                                 <div class="flex-box2">
                                     <div class="item-info">
                                         <h3>대여자: ${item.customer_name} (${item.customer_tel})</h3>
                                         <p>${item.wheelchair_type}</p>
                                     </div>
-                                    <div>
+                                    <div class="returnBtn">
                                         <span class="badge rented">기간 종료</span>
                                         <button class="btn-blue" data-id="${item.rental_id}" onclick="chairRentalList_JS.chairReturnBtn(this.dataset.id, 'top')">반납완료</button>
                                     </div>
@@ -62,10 +62,10 @@ const createComponent = (() => {
     }
 
     return {
-        searchItem: searchItem,
-        searchItemInfo: searchItemInfo,
-        priceBox: priceBox,
-        customerDiv: customerDiv,
-        endChairRental: endChairRental,
+        품목추가: 품목추가,
+        검색된품목: 검색된품목,
+        합계금액: 합계금액,
+        검색된고객명단: 검색된고객명단,
+        만료된휠체어목록: 만료된휠체어목록,
     }
 })();

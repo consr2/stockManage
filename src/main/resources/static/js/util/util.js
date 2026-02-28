@@ -35,7 +35,7 @@ function fommatter(type, data){
             return cleanData.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         case 'yyyy-mm-dd':
             cleanData = data.toString().replace(/[^\d]/g, '');
-            return `${cleanData.slice(0,4)}-${cleanData.slice(4,6)}-${cleanData.slice(6,8)} ${cleanData.slice(8,10)}`;
+            return `${cleanData.slice(0,4)}-${cleanData.slice(4,6)}-${cleanData.slice(6,8)}`;
         case 'tel':
             cleanData = data.toString().replace(/[^\d]/g, '');
             return cleanData.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, "$1-$2-$3");

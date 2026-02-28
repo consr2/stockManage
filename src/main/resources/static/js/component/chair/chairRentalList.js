@@ -84,7 +84,7 @@ const chairRentalList_JS = (() =>{
         let EndRentListBox = document.querySelector('#EndRentListBox');
         let div = '';
         data.forEach(item => {
-            div += createComponent.endChairRental(item);
+            div += createComponent.만료된휠체어목록(item);
         })
 
         EndRentListBox.innerHTML = div;

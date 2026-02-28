@@ -120,7 +120,6 @@ const tuiGrid_JS = (() =>{
                         header: '품명',
                         align: 'center',
                         name: 'item_name',
-                        width: 100,
                     },
                     {
                         header: '수량',
@@ -132,6 +131,7 @@ const tuiGrid_JS = (() =>{
                         header: '단가',
                         align: 'center',
                         name: 'price2',
+                        width: 110,
                         formatter:({value}) => {
                             return fommatter('comma', value);
                         }
@@ -153,6 +153,7 @@ const tuiGrid_JS = (() =>{
                         header: '연락처',
                         align: 'center',
                         name: 'customer_tel',
+                        width: 130,
                         formatter:({value}) => {
                             return fommatter('tel', value);
                         }
