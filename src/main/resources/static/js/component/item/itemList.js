@@ -73,6 +73,7 @@ const itemList_JS = (() =>{
             let result = await sendRequest('/item/saveItemPriceList', 'POST', params);
             if (result.code === 200) {
                 alert(result.msg);
+                document.getElementById('itemModal').style.display = 'none'
             }
         })
     }
