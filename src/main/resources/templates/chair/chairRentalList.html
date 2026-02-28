@@ -34,7 +34,15 @@
                     </div>
                 </div>
                 <div class="flex-right">
-                    <button class="btn-search" id="itemListSearchBtn">조회</button>
+                    <div class="filter-group2">
+                        <label>고객명</label>
+                        <input type="text" id="customerName">
+                    </div>
+                    <div class="filter-group2">
+                        <label>연락처</label>
+                        <input type="text" id="customerTel">
+                    </div>
+                    <button class="btn-search" id="chairListSearchBtn">조회</button>
                 </div>
             </section>
         </div>
@@ -48,196 +56,6 @@
 <script src="/js/lib/xlsx.js"></script>
 <script src="/js/lib/tui-grid.js"></script>
 <script src="/js/util/util.js"></script>
-<script>
-    let grid = null;
-    let endRentalList = null;
-    document.addEventListener('DOMContentLoaded', function() {
-        let itemListSearchBtn = document.querySelector('#itemListSearchBtn');
-        let excelDownBtn = document.querySelector('#excelDownBtn');
-        let endRentalSearch = document.querySelector('#endRentalSearch');
-
-        checkEndRental();
-
-        itemListSearchBtn.addEventListener('click', async function(){
-            let startDate = document.querySelector('#startDt').value;
-            let endDate = document.querySelector('#endDt').value;
-
-            let param = {
-                startDate: startDate,
-                endDate: endDate
-            }
-
-            let data = await sendRequest('/chair/rentalList', 'POST', param);
-            if(data.code === 200){
-                console.log(data.data);
-                initGrid(data.data);
-            }
-        })
-
-        async function checkEndRental(){
-            let data = await sendRequest('/chair/endRentalList', 'POST');
-            if(data.code === 200){
-                console.log(data.data);
-                endRentalList = data.data;
-                drowEndRentalList(data.data);
-            }
-        }
-
-
-        endRentalSearch.addEventListener('input', function(){
-            let value = this.value;
-            let target = endRentalList.filter(e =>
-                e.customer_tel.includes(value) || e.customer_name.includes(value)
-            );
-
-            drowEndRentalList(target);
-        })
-
-
-        function initGrid(data){
-            gridStyle();
-            if(isEmpty(grid)){
-                grid = new tui.Grid({
-                    el: document.getElementById('grid'),
-                    scrollY: false,
-                    scrollbarProps: {
-                        autoHide: true,
-                        width: 0,  // 우측 스크롤바 두께 제거
-                        height: 0  // 하단 스크롤바 두께 제거
-                    },
-                    bodyHeight: 'auto', // 내용만큼 그리드 높이 자동 조절
-                    data: data,
-                    columns: [
-                        {
-                            header: '대여일',
-                            align: 'center',
-                            width: 120,
-                            name: 'start_date',
-                            sortable: true,
-                            formatter:({value}) => {
-                                return fommatter('yyyy-mm-dd', value);
-                            }
-                        },
-                        {
-                            header: '반납일',
-                            align: 'center',
-                            width: 120,
-                            name: 'end_date',
-                            sortable: true,
-                            formatter:({value}) => {
-                                return fommatter('yyyy-mm-dd', value);
-                            }
-                        },
-                        {
-                            header: '고객명',
-                            align: 'center',
-                            name: 'customer_name',
-                        },
-                        {
-                            header: '연락처',
-                            align: 'center',
-                            name: 'customer_tel',
-
-                        },
-                        {
-                            header: '휠체어 종류',
-                            align: 'center',
-                            name: 'wheelchair_type',
-                        },
-                        {
-                            header: '지불상태',
-                            align: 'center',
-                            name: 'payment',
-                        },
-                    ]
-                });
-            }else{
-                grid.resetData(data);
-            }
-
-            //색 주기
-            grid.getData().forEach((data) => {
-                if(!isEmpty(data.payment)){
-                    grid.addCellClassName(data.rowKey, 'payment', 'txt-blue');
-                }else{
-                    grid.addCellClassName(data.rowKey, 'payment', 'txt-red');
-                }
-            })
-        }
-
-
-        const gridStyle = () => {
-            // 1. 테마 즉시 적용 (그리드 생성 전에 실행되어야 함)
-            tui.Grid.applyTheme('default', {
-                cell: {
-                    normal: {
-                        background: '#ffffff',
-                        border: '#e0e0e0',
-                        showVerticalBorder: true,
-                        showHorizontalBorder: true,
-                        fontSize: '15px',
-                    },
-                    header: {
-                        background: '#ededed', // 헤더도 하얗게 원하시면 #ffffff
-                        border: '#e0e0e0',
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                    },
-                    selectedHeader: {
-                        background: '#ffffff'
-                    }
-                }
-            });
-        }
-
-        excelDownBtn.addEventListener('click', function(){
-            if(isEmpty(grid)){
-                alert("조회 후 이용 가능합니다");
-                return;
-            }
-            grid.export('xlsx', {
-                fileName: 'customer_list', // 저장될 파일명
-                useFormattedValue: true,    // 포맷터가 적용된 값으로 추출할지 여부
-                includeHeader: true         // 헤더 포함 여부
-            });
-        })
-    })
-
-
-    function drowEndRentalList(data){
-        let EndRentListBox = document.querySelector('#EndRentListBox');
-        let div = '';
-        data.forEach(item => {
-            div += `<div class="status-card">
-                                <div class="flex-box2">
-                                    <div class="item-info">
-                                        <h3>대여자: ${item.customer_name} (${item.customer_tel})</h3>
-                                        <p>${item.wheelchair_type}</p>
-                                    </div>
-                                    <div>
-                                        <span class="badge rented">기간 종료</span>
-                                        <button class="btn-blue" data-id="${item.rental_id}" onclick="clickReBtn(this)">반납완료</button>
-                                    </div>
-                                </div>
-                            </div>`
-        })
-
-        EndRentListBox.innerHTML = div;
-    }
-
-    async function clickReBtn(btn){
-        let rentalId = btn.dataset.id;
-        let param = {
-            rentalId: rentalId
-        }
-
-        let data = await sendRequest('/chair/saveRentInfo','POST', param);
-        if(data.code === 200){
-            alert(data.msg);
-            endRentalList = endRentalList.filter(item => item.rental_id != rentalId);
-            drowEndRentalList(endRentalList);
-        }
-    }
-
-
-</script>
+<script src="/js/util/tuiGrid.js"></script>
+<script src="/js/util/createComponent.js"></script>
+<script src="/js/component/chair/chairRentalList.js"></script>

@@ -13,5 +13,6 @@ public class ChairDTO {
     private String customerName;
     private String customerTel;
     private String remarks;
+    private String payment;
 
 }

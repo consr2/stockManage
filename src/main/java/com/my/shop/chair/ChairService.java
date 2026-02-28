@@ -28,6 +28,12 @@ public class ChairService {
     }
 
     public Integer saveRentInfo(ChairDTO chairDto){
+        chairDto.setPayment("지불완료");
+        return chairRepository.updateRentInfo(chairDto);
+    }
+
+    public Integer returnRentInfo(ChairDTO chairDto){
+        chairDto.setPayment("");
         return chairRepository.updateRentInfo(chairDto);
     }
 

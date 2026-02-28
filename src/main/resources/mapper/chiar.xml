@@ -23,7 +23,7 @@
         UPDATE
             wheelchair_rentals
         SET
-            payment = '지불완료'
+            payment = #{payment}
         WHERE
             rental_id = #{rentalId}
     </update>
@@ -35,7 +35,13 @@
             wheelchair_rentals
         WHERE 1=1
         <if test="startDate != null and startDate != ''">
-            AND start_date between #{startDate} and #{endDate}
+            AND end_date between #{startDate} and #{endDate}
+        </if>
+        <if test="customerName != null and customerName != ''">
+            AND customer_name like concat('%',#{customerName},'%')
+        </if>
+        <if test="customerTel != null and customerTel != ''">
+            AND customer_tel like concat('%',#{customerTel},'%')
         </if>
     </select>
 

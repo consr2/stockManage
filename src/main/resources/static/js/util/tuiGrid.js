@@ -172,7 +172,81 @@ const tuiGrid_JS = (() =>{
                     },
 
                 ]
-            }
+            },
+            chairList: {
+                el: document.getElementById('grid'),
+                scrollY: false,
+                scrollbarProps: {
+                    autoHide: true,
+                    width: 0,  // 우측 스크롤바 두께 제거
+                    height: 0  // 하단 스크롤바 두께 제거
+                },
+                rowHeaders: ['rowNum'],
+                columnOptions: {
+                    resizable: true // <--- 모든 컬럼 리사이즈 활성화
+                },
+                bodyHeight: 'auto', // 내용만큼 그리드 높이 자동 조절
+                data: G_data,
+                columns: [
+
+                    {
+                        header: '대여일',
+                        align: 'center',
+                        width: 100,
+                        name: 'start_date',
+                        sortable: true,
+                        formatter:({value}) => {
+                            return fommatter('yyyy-mm-dd', value);
+                        }
+                    },
+                    {
+                        header: '반납일',
+                        align: 'center',
+                        width: 100,
+                        name: 'end_date',
+                        sortable: true,
+                        formatter:({value}) => {
+                            return fommatter('yyyy-mm-dd', value);
+                        }
+                    },
+                    {
+                        header: '고객명',
+                        align: 'center',
+                        name: 'customer_name',
+                    },
+                    {
+                        header: '연락처',
+                        align: 'center',
+                        name: 'customer_tel',
+
+                    },
+                    {
+                        header: '휠체어 종류',
+                        align: 'center',
+                        width: 200,
+                        name: 'wheelchair_type',
+                        sortable: true,
+                    },
+                    {
+                        header: '지불상태',
+                        align: 'center',
+                        name: 'payment',
+                        sortable: true,
+                    },
+                    {
+                        header: '복구',
+                        align: 'center',
+                        name: 'return',
+                        formatter:(data) => {
+                            if(data.row.payment?.length > 1){
+                                return `<button class="tui-btn-red" onclick="chairRentalList_JS.휠체어반납철회(${data.row.rental_id})">철회</button>`;
+                            }else{
+                                return `<button class="tui-btn-blue" onclick="chairRentalList_JS.chairReturnBtn(${data.row.rental_id}, 'grid')">반납</button>`;
+                            }
+                        }
+                    },
+                ]
+            },
         }
 
         return optionList[type];
@@ -183,6 +257,7 @@ const tuiGrid_JS = (() =>{
         Type: {
             itemList: 'itemList',
             itemHistory: 'itemHistory',
+            chairList: 'chairList',
         },
     }
 })();

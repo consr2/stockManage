@@ -32,7 +32,7 @@
             <div class="flex-box2" style="gap: 12px;">
                 <div class="input-group" style="flex: 1;">
                     <label>대여 시작일</label>
-                    <input type="date" id="startDate" onchange="set30Days(this)">
+                    <input type="date" id="startDate" onchange="chairRental_JS.set30Days(this)">
                 </div>
                 <div class="input-group" style="flex: 1;">
                     <label>대여 종료일</label>
@@ -63,46 +63,5 @@
 </body>
 </html>
 <script src="/js/util/util.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let rentalBtn = document.querySelector('#rentalBtn');
+<script src="/js/component/chair/chairRental.js"></script>
 
-        rentalBtn.addEventListener('click',async function(){
-            let wheelchairType = document.querySelector('#wheelchairType').value;
-            let startDate = document.querySelector('#startDate').value;
-            let endDate = document.querySelector('#endDate').value;
-            let customerName = document.querySelector('#customerName').value;
-            let customerTel = document.querySelector('#customerTel').value;
-            let remarks = document.querySelector('#remarks').value;
-
-            let param = {
-                wheelchairType: wheelchairType,
-                startDate: startDate,
-                endDate: endDate,
-                customerName: customerName,
-                customerTel: customerTel,
-                remarks: remarks
-            };
-
-            let data = await sendRequest('/chair/submit', "POST", param);
-            if(data.code === 200){
-                alert(data.msg);
-            }
-        })
-
-    });
-
-    function set30Days(el){
-        let value = el.value;
-        console.log(value);
-        let date = new Date(value);
-        date.setDate(date.getDate() + 30);
-        let year = date.getFullYear();
-        let month = String(date.getMonth() + 1).padStart(2, '0');
-        let day = String(date.getDate()).padStart(2, '0');
-
-        let result = `${year}-${month}-${day}`;
-
-        document.querySelector('#endDate').value = result;
-    }
-</script>
