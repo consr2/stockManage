@@ -1,7 +1,11 @@
 const itemChange_JS = (() =>{
 
-    let addItemBtn, subItemBtn, ItemListBox, changeItemBtn, typeGroup;
     let index = 1;
+    let selector = {
+        addItemBtn, subItemBtn, ItemListBox, changeItemBtn, typeGroup,
+        date, customer, customerTel, itemInfoList, type,
+        totalPrice, receiptBox,
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         onLoad();
@@ -11,11 +15,17 @@ const itemChange_JS = (() =>{
 
 
     function onLoad(){
-        addItemBtn = document.querySelector('#add-item-btn');
-        subItemBtn = document.querySelector('#sub-item-btn');
-        ItemListBox = document.querySelector('#ItemListBox');
-        changeItemBtn = document.querySelector('#changeItemBtn');
-        typeGroup = document.querySelector('#typeGroup');
+        selector.addItemBtn = document.querySelector('#add-item-btn');
+        selector.subItemBtn = document.querySelector('#sub-item-btn');
+        selector.ItemListBox = document.querySelector('#ItemListBox');
+        selector.changeItemBtn = document.querySelector('#changeItemBtn');
+        selector.typeGroup = document.querySelector('#typeGroup');
+        selector.date = document.querySelector('#dateTime');
+        selector.customer = document.querySelector('#customer');
+        selector.customerTel = document.querySelector('#customerTel');
+        selector.type = document.querySelector('input[name="type"]:checked');
+        selector.totalPrice = document.querySelector('#totalPrice');
+        selector.receiptBox = document.querySelector('#receiptBox');
         index = 1;
     }
 
@@ -25,14 +35,14 @@ const itemChange_JS = (() =>{
         /**
          * 출고, 입고 선택지
          */
-        typeGroup.addEventListener('click', function (){
+        selector.typeGroup.addEventListener('click', function (){
             initTotalPrice();
         })
 
         /**
          * 품목 추가클릭
          */
-        addItemBtn.addEventListener('click',async function() {
+        selector.addItemBtn.addEventListener('click',async function() {
             let div = createComponent.품목추가(index);
             ItemListBox.insertAdjacentHTML('beforeend',div);
 
@@ -43,7 +53,7 @@ const itemChange_JS = (() =>{
         /**
          * 품목 제거 클릭
          */
-        subItemBtn.addEventListener('click', function(){
+        selector.subItemBtn.addEventListener('click', function(){
             document.querySelector(`#boxIndex_${index-1}`).remove();
             index--;
         });
@@ -51,7 +61,7 @@ const itemChange_JS = (() =>{
         /**
          * 최종 제출
          */
-        changeItemBtn.addEventListener('click',async function(){
+        selector.changeItemBtn.addEventListener('click',async function(){
             if(!fn_validate()){
                 return;
             }
@@ -74,23 +84,23 @@ const itemChange_JS = (() =>{
             })
 
             const params = {
-                date: document.querySelector('#dateTime').value,
-                customer: document.querySelector('#customer').value,
-                customerTel: document.querySelector(`#customerTel`).value.replaceAll('-',''),
+                date: selector.date.value,
+                customer: selector.customer.value,
+                customerTel: selector.customerTel.value.replaceAll('-',''),
                 itemInfoList: itemInfoList,
-                type: document.querySelector('input[name="type"]:checked').value,
+                type: selector.type.value,
             };
 
             let data = await sendRequest("/item/changeCnt",'POST',params);
             if(data.code === 200){
                 alert(data.msg);
                 ItemListBox.innerHTML = '';
-                document.querySelector(`#total-price`).innerHTML = '0원';
-                document.querySelector(`#receiptBox`).innerHTML = '';
-                document.querySelector(`#customer`).value  = '';
-                document.querySelector(`#customerTel`).value  = '';
+                selector.totalPrice.innerHTML = '0원';
+                selector.receiptBox.innerHTML = '';
+                selector.customer.value  = '';
+                selector.customerTel.value  = '';
                 index = 1;
-                addItemBtn.click();
+                selector.addItemBtn.click();
             }
         })
     }
@@ -148,11 +158,8 @@ const itemChange_JS = (() =>{
      * 최종 합계 계산서
      */
     function initTotalPrice(){
-        let type = document.querySelector('input[name="type"]:checked').value;
-        let receiptBox = document.querySelector(`#receiptBox`);
-        let totalPrice = document.querySelector(`#total-price`);
-
         let list = document.querySelectorAll('.itemInfo');
+
         let div = '';
         list.forEach((item, idx) =>{
             let price1 = document.querySelector(`#price1_${idx + 1}`).value;
@@ -161,7 +168,7 @@ const itemChange_JS = (() =>{
             let itemName = document.querySelector(`#itemName_${idx + 1}`).value;
             let price = '';
 
-            if(type === "IN"){
+            if(selector.type.value === "IN"){
                 price = fommatter('comma', price1 * cnt);
             }else{
                 price = fommatter('comma', price2 * cnt);
@@ -170,13 +177,13 @@ const itemChange_JS = (() =>{
             div += createComponent.합계금액(itemName, price);
         });
 
-        receiptBox.innerHTML = div;
+        selector.receiptBox.innerHTML = div;
 
         let total = Array.from(document.querySelectorAll('.sumPrice')).reduce((acc, el) =>{
             const price = parseInt(el.innerText.replace(/[^0-9]/g, '')) || 0;
             return acc + price;
         },0)
-        totalPrice.innerHTML = fommatter('comma', total) + '원';
+        selector.totalPrice.innerHTML = fommatter('comma', total) + '원';
     }
 
     /**
@@ -184,15 +191,15 @@ const itemChange_JS = (() =>{
      * @returns {boolean}
      */
     function fn_validate(){
-        if(isEmpty(document.querySelector('#dateTime').value)){
+        if(isEmpty(selector.dateTime.value)){
             alert("날짜가 비었습니다");
             return false;
         }
-        if(isEmpty(document.querySelector('#customer').value)){
+        if(isEmpty(selector.customer.value)){
             alert("매출, 매입처가 비었습니다");
             return false;
         }
-        if(isEmpty(document.querySelector('#customerTel').value)){
+        if(isEmpty(selector.customerTel.value)){
             alert("연락처가 비었습니다");
             return false;
         }

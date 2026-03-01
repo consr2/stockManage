@@ -1,7 +1,16 @@
 const itemList_JS = (() =>{
 
-    let itemListSearchBtn, excelDownBtn, savePriceBtn;
-    let grid, 한번만실행=true;
+    let grid;
+    let selector = {
+        itemListSearchBtn: null,
+        excelDownBtn: null,
+        savePriceBtn: null,
+        startDt: null,
+        endDt: null,
+        itemModal: null,
+        modalHistoryBody: null,
+        modalItemName: null,
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         onLoad();
@@ -9,30 +18,32 @@ const itemList_JS = (() =>{
     })
 
     function onLoad(){
-        itemListSearchBtn = document.querySelector('#itemListSearchBtn');
-        excelDownBtn = document.querySelector('#excelDownBtn');
-        savePriceBtn = document.querySelector('#savePriceBtn');
+        selector.itemListSearchBtn = document.querySelector('#itemListSearchBtn');
+        selector.excelDownBtn = document.querySelector('#excelDownBtn');
+        selector.savePriceBtn = document.querySelector('#savePriceBtn');
+        selector.startDt = document.querySelector('#startDt');
+        selector.endDt = document.querySelector('#endDt');
+        selector.itemModal = document.querySelector('#itemModal');
+        selector.modalHistoryBody = document.querySelector('#modalHistoryBody');
+        selector.modalItemName = document.querySelector('#modalItemName');
     }
 
     function initEventListener(){
-        itemListSearchBtn.addEventListener('click',async function(){
-            let startDt = document.querySelector('#startDt').value;
-            let endDt = document.querySelector('#endDt').value;
-
+        selector.itemListSearchBtn.addEventListener('click',async function(){
             let param = {
-                startDate: startDt,
-                endDate: endDt,
+                startDate: selector.startDt.value,
+                endDate: selector.endDt.value,
             }
             let data = await sendRequest('/item/getItemList', 'POST', param);
             console.log(data);
             grid = tuiGrid_JS.initGrid(grid, data.data, tuiGrid_JS.Type.itemList);
-            if(한번만실행){
+            if(!grid.eventBound){
                 intiGridEvent();
-                한번만실행 = false;
+                grid.eventBound = true;
             }
         })
 
-        excelDownBtn.addEventListener('click', function(){
+        selector.excelDownBtn.addEventListener('click', function(){
             if(isEmpty(grid)){
                 alert("조회 후 이용 가능합니다");
                 return;
@@ -44,20 +55,20 @@ const itemList_JS = (() =>{
             });
         })
 
-        savePriceBtn.addEventListener('click', async function () {
+        selector.savePriceBtn.addEventListener('click', async function () {
             let priceList = document.querySelectorAll('#modalHistoryBody tr');
             let params = [];
             let 빈값있나요 = false;
 
             priceList.forEach(row => {
-                const firstRow = row.querySelector('input');
+                const inputRow = row.querySelectorAll('input');
                 const rowData = {
-                    id: firstRow.dataset.id,
-                    itemId: firstRow.dataset.itemid,
-                    createAt: row.querySelectorAll('input')[1].value,
-                    price1: row.querySelectorAll('input')[2].value.replace(/[^0-9]/g, ''),
-                    price2: row.querySelectorAll('input')[3].value.replace(/[^0-9]/g, ''),
-                    price3: row.querySelectorAll('input')[4].value.replace(/[^0-9]/g, '')
+                    id: inputRow[0].dataset.id,
+                    itemId: inputRow[0].dataset.itemid,
+                    createAt: inputRow[1].value,
+                    price1: inputRow[2].value.replace(/[^0-9]/g, ''),
+                    price2: inputRow[3].value.replace(/[^0-9]/g, ''),
+                    price3: inputRow[4].value.replace(/[^0-9]/g, '')
                 };
                 if(isEmpty(rowData.price1) || isEmpty(rowData.price2)){
                     빈값있나요 = true;
@@ -73,7 +84,8 @@ const itemList_JS = (() =>{
             let result = await sendRequest('/item/saveItemPriceList', 'POST', params);
             if (result.code === 200) {
                 alert(result.msg);
-                document.getElementById('itemModal').style.display = 'none'
+                selector.itemModal.style.display = 'none'
+                selector.itemListSearchBtn.click();
             }
         })
     }
@@ -92,21 +104,21 @@ const itemList_JS = (() =>{
             data.data.forEach(item => {
                 div += createComponent.단가이력수정목록(item);
             })
-            document.querySelector('#modalHistoryBody').innerHTML = div;
-            document.querySelector('#modalItemName').innerHTML = rowData.itemName;
-            document.querySelector('#itemModal').style.display = 'flex';
+            selector.modalHistoryBody.innerHTML = div;
+            selector.modalItemName.innerHTML = rowData.itemName;
+            selector.itemModal.style.display = 'flex';
         })
     }
 
-    function 단가수정(){
+    function 단가이력추가(){
         let itemId = document.querySelectorAll('#modalHistoryBody tr')[0].querySelector('input').dataset.itemid;
         let div = createComponent.단가이력수정목록({itemId:itemId});
-        document.querySelector('#modalHistoryBody').insertAdjacentHTML('afterbegin', div);
+        selector.modalHistoryBody.insertAdjacentHTML('afterbegin', div);
     }
 
 
     return {
         onLoad: onLoad,
-        단가수정: 단가수정,
+        단가이력추가: 단가이력추가,
     }
 })();

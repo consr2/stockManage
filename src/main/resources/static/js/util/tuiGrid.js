@@ -265,7 +265,7 @@ const tuiGrid_JS = (() =>{
                             if(data.row.payment?.length > 1){
                                 return `<button class="tui-btn-red" onclick="chairRentalList_JS.휠체어반납철회(${data.row.rentalId})">철회</button>`;
                             }else{
-                                return `<button class="tui-btn-blue" onclick="chairRentalList_JS.chairReturnBtn(${data.row.rentalId})">반납</button>`;
+                                return `<button class="tui-btn-blue" onclick="chairRentalList_JS.휠체어반납(${data.row.rentalId})">반납</button>`;
                             }
                         }
                     },

@@ -54,7 +54,7 @@ const createComponent = (() => {
                                     </div>
                                     <div class="returnBtn">
                                         <span class="badge rented">기간 종료</span>
-                                        <button class="btn-blue" data-id="${item.rentalId}" onclick="chairRentalList_JS.chairReturnBtn(this.dataset.id, 'top')">반납완료</button>
+                                        <button class="btn-blue" data-id="${item.rentalId}" onclick="chairRentalList_JS.휠체어반납(this.dataset.id, 'top')">반납완료</button>
                                     </div>
                                 </div>
                             </div>`;

@@ -12,7 +12,10 @@ async function sendRequest(url, method = 'GET', data = null) {
     };
     try {
         const response = await fetch(url, options);
-        if (!response.ok) alert("서버 작업에 실패했습니다");
+        if (!response.ok) {
+            alert("서버 작업에 실패했습니다");
+            return;
+        }
         return await response.json(); // JSON 결과 반환
     } catch (error) {
         console.error("Fetch Error:", error);

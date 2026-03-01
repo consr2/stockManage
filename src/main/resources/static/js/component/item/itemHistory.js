@@ -1,6 +1,18 @@
 const itemHistory_JS = (() =>{
 
-    let itemHistorySearchBtn, customerInput, autocompleteList, excelDownBtn, grid
+    let itemHistorySearchBtn, customerInput, autocompleteList, excelDownBtn;
+    let grid
+    let selector = {
+        itemHistorySearchBtn: null,
+        customerInput: null,
+        autocompleteList: null,
+        excelDownBtn: null,
+        startDt: null,
+        endDt: null,
+        itemName: null,
+        customer: null,
+        typeSelect: null,
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         onLoad();
@@ -9,17 +21,22 @@ const itemHistory_JS = (() =>{
 
 
     function onLoad(){
-        itemHistorySearchBtn = document.querySelector('#itemHistorySearchBtn');
-        customerInput = document.querySelector('#customer');
-        autocompleteList = document.querySelector('#autocomplete-list');
-        excelDownBtn = document.querySelector('#excelDownBtn');
+        selector.itemHistorySearchBtn = document.querySelector('#itemHistorySearchBtn');
+        selector.customerInput = document.querySelector('#customer');
+        selector.autocompleteList = document.querySelector('#autocompleteList');
+        selector.excelDownBtn = document.querySelector('#excelDownBtn');
+        selector.startDt = document.querySelector('#startDt');
+        selector.endDt = document.querySelector('#endDt');
+        selector.itemName = document.querySelector('#itemName');
+        selector.customer = document.querySelector('#customer');
+        selector.typeSelect = document.querySelector('#typeSelect');
     }
 
     function initEventListener(){
-        customerInput.addEventListener('input',async function(){
+        selector.customerInput.addEventListener('input',async function(){
 
             if(!checkAutoComplete(this.value)){
-                autocompleteList.innerHTML = '';
+                selector.autocompleteList.innerHTML = '';
                 return;
             }
 
@@ -34,29 +51,23 @@ const itemHistory_JS = (() =>{
                 div += createComponent.검색된고객명단(item);
             })
 
-            autocompleteList.innerHTML = div;
+            selector.autocompleteList.innerHTML = div;
         })
 
-        itemHistorySearchBtn.addEventListener('click',async function(){
-            let startDt = document.querySelector('#startDt').value;
-            let endDt = document.querySelector('#endDt').value;
-            let itemName = document.querySelector('#itemName').value;
-            let customer = document.querySelector('#customer').value;
-            let type = document.getElementById('typeSelect').value;
-
+        selector.itemHistorySearchBtn.addEventListener('click',async function(){
             let param = {
-                startDate: startDt,
-                endDate: endDt,
-                itemName: itemName,
-                customer: customer,
-                type: type
+                startDate: selector.startDt.value,
+                endDate: selector.endDt.value,
+                itemName: selector.itemName.value,
+                customer: selector.customer.value,
+                type: selector.typeSelect.value
             }
             let data = await sendRequest('/item/getItemHistory', 'POST', param);
             console.log(data);
             initGrid(data.data);
         })
 
-        excelDownBtn.addEventListener('click', function(){
+        selector.excelDownBtn.addEventListener('click', function(){
             if(isEmpty(grid)){
                 alert("조회 후 이용 가능합니다");
                 return;
@@ -70,8 +81,8 @@ const itemHistory_JS = (() =>{
     }
 
     function setCustomer(name){
-        document.querySelector('#customer').value = name;
-        document.querySelector('#autocomplete-list').innerHTML = '';
+        selector.customer.value = name;
+        selector.autocompleteList.innerHTML = '';
     }
 
     function initGrid(data){

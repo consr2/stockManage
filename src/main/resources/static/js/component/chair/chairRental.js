@@ -1,6 +1,14 @@
 const chairRental_JS = (() =>{
 
-    let rentalBtn;
+    let selector = {
+        rentalBtn: null,
+        wheelchairType: null,
+        startDate: null,
+        expectDate: null,
+        customerName: null,
+        customerTel: null,
+        remarks: null
+    };
 
     document.addEventListener('DOMContentLoaded', function() {
         onLoad();
@@ -8,33 +16,36 @@ const chairRental_JS = (() =>{
     });
 
     function onLoad(){
-        rentalBtn = document.querySelector('#rentalBtn');
+        selector.rentalBtn = document.querySelector('#rentalBtn');
+        selector.wheelchairType = document.querySelector('#wheelchairType')
+        selector.startDate = document.querySelector('#startDate')
+        selector.expectDate = document.querySelector('#expectDate')
+        selector.customerName = document.querySelector('#customerName')
+        selector.customerTel = document.querySelector('#customerTel')
+        selector.remarks = document.querySelector('#remarks')
     }
 
     function initEventListener(){
-        rentalBtn.addEventListener('click',async function(){
-            let wheelchairType = document.querySelector('#wheelchairType').value;
-            let startDate = document.querySelector('#startDate').value;
-            let expectDate = document.querySelector('#expectDate').value;
-            let customerName = document.querySelector('#customerName').value;
-            let customerTel = document.querySelector('#customerTel').value;
-            let remarks = document.querySelector('#remarks').value;
+        selector.rentalBtn.addEventListener('click',async function(){
+            if(!fn_validate()){
+                return;
+            }
 
             let param = {
-                wheelchairType: wheelchairType,
-                startDate: startDate,
-                expectDate: expectDate,
-                customerName: customerName,
-                customerTel: customerTel,
-                remarks: remarks
+                wheelchairType: selector.wheelchairType.value,
+                startDate: selector.startDate.value,
+                expectDate: selector.expectDate.value,
+                customerName: selector.customerName.value,
+                customerTel: selector.customerTel.value,
+                remarks: selector.remarks.value
             };
 
             let data = await sendRequest('/chair/submit', "POST", param);
             if(data.code === 200){
                 alert(data.msg);
-                document.querySelector('#customerName').value = '';
-                document.querySelector('#customerTel').value = '';
-                document.querySelector('#remarks').value = '';
+                selector.customerName.value = '';
+                selector.customerTel.value = '';
+                selector.remarks.value = '';
             }
         })
     }
@@ -42,8 +53,8 @@ const chairRental_JS = (() =>{
 
     function set30Days(el){
         let value = el.value;
-        console.log(value);
         let date = new Date(value);
+
         date.setDate(date.getDate() + 30);
         let year = date.getFullYear();
         let month = String(date.getMonth() + 1).padStart(2, '0');
@@ -51,7 +62,27 @@ const chairRental_JS = (() =>{
 
         let result = `${year}-${month}-${day}`;
 
-        document.querySelector('#expectDate').value = result;
+        selector.expectDate.value = result;
+    }
+
+    function fn_validate(){
+        if(isEmpty(selector.wheelchairType.value)){
+            alert("휠체어 종류가 비었습니다");
+            return false;
+        }
+        if(isEmpty(selector.startDate.value)){
+            alert("대여시작일이 비었습니다");
+            return false;
+        }
+        if(isEmpty(selector.customerName.value)){
+            alert("고객명이 비었습니다");
+            return false;
+        }
+        if(isEmpty(selector.customerTel.value)){
+            alert("연락처가 비었습니다");
+            return false;
+        }
+        return true;
     }
 
     return {

@@ -2,7 +2,16 @@ const chairRentalList_JS = (() =>{
 
     let grid = null;
     let endRentalList = null;
-    let chairListSearchBtn, excelDownBtn, endRentalSearch;
+    let selector = {
+        chairListSearchBtn: null,
+        excelDownBtn: null,
+        endRentalSearch: null,
+        startDate: null,
+        endDate: null,
+        customerName: null,
+        customerTel: null,
+        EndRentListBox: null
+    };
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -13,23 +22,23 @@ const chairRentalList_JS = (() =>{
 
 
     function onLoad(){
-        chairListSearchBtn = document.querySelector('#chairListSearchBtn');
-        excelDownBtn = document.querySelector('#excelDownBtn');
-        endRentalSearch = document.querySelector('#endRentalSearch');
+        selector.chairListSearchBtn = document.querySelector('#chairListSearchBtn');
+        selector.excelDownBtn = document.querySelector('#excelDownBtn');
+        selector.endRentalSearch = document.querySelector('#endRentalSearch');
+        selector.startDate = document.querySelector('#startDate');
+        selector.endDate = document.querySelector('#endDate');
+        selector.customerName = document.querySelector('#customerName');
+        selector.customerTel = document.querySelector('#customerTel');
+        selector.EndRentListBox = document.querySelector('#EndRentListBox');
     }
 
     function initEventListener(){
-        chairListSearchBtn.addEventListener('click', async function(){
-            let startDate = document.querySelector('#startDt').value;
-            let endDate = document.querySelector('#endDt').value;
-            let customerName = document.querySelector('#customerName').value;
-            let customerTel = document.querySelector('#customerTel').value;
-
+        selector.chairListSearchBtn.addEventListener('click', async function(){
             let param = {
-                startDate: startDate,
-                endDate: endDate,
-                customerName: customerName,
-                customerTel: customerTel,
+                startDate: selector.startDate.value,
+                endDate: selector.endDate.value,
+                customerName: selector.customerName.value,
+                customerTel: selector.customerTel.value,
             }
 
             let data = await sendRequest('/chair/rentalList', 'POST', param);
@@ -49,16 +58,16 @@ const chairRentalList_JS = (() =>{
             }
         })
 
-        endRentalSearch.addEventListener('input', function(){
+        selector.endRentalSearch.addEventListener('input', function(){
             let value = this.value;
             let target = endRentalList.filter(e =>
-                e.customer_tel.includes(value) || e.customer_name.includes(value)
+                e.customerTel.includes(value) || e.customerName.includes(value)
             );
 
             drowEndRentalList(target);
         })
 
-        excelDownBtn.addEventListener('click', function(){
+        selector.excelDownBtn.addEventListener('click', function(){
             if(isEmpty(grid)){
                 alert("조회 후 이용 가능합니다");
                 return;
@@ -81,17 +90,15 @@ const chairRentalList_JS = (() =>{
     }
 
     function drowEndRentalList(data){
-        let EndRentListBox = document.querySelector('#EndRentListBox');
         let div = '';
         data.forEach(item => {
             div += createComponent.만료된휠체어목록(item);
         })
-
-        EndRentListBox.innerHTML = div;
+        selector.EndRentListBox.innerHTML = div;
     }
 
 
-    async function chairReturnBtn(rentalId){
+    async function 휠체어반납(rentalId){
         let param = {
             rentalId: rentalId
         }
@@ -99,7 +106,7 @@ const chairRentalList_JS = (() =>{
         let data = await sendRequest('/chair/saveRentInfo','POST', param);
         if(data.code === 200){
             alert(data.msg);
-            chairListSearchBtn.click();
+            selector.chairListSearchBtn.click();
             checkEndRental();
         }
     }
@@ -112,14 +119,14 @@ const chairRentalList_JS = (() =>{
         let data = await sendRequest('/chair/returnRentInfo','POST', param);
         if(data.code === 200){
             alert(data.msg);
-            chairListSearchBtn.click();
+            selector.chairListSearchBtn.click();
             checkEndRental();
         }
     }
 
     return{
         onLoad:onLoad,
-        chairReturnBtn:chairReturnBtn,
+        휠체어반납:휠체어반납,
         휠체어반납철회:휠체어반납철회,
     }
 
