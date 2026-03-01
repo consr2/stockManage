@@ -11,7 +11,7 @@ const itemChange_JS = (() =>{
         customer: null,
         customerTel: null,
         itemInfoList: null,
-        type: null,
+        type: () => document.querySelector('input[name="type"]:checked'),
         totalPrice: null,
         receiptBox: null,
     };
@@ -32,7 +32,6 @@ const itemChange_JS = (() =>{
         selector.date = document.querySelector('#dateTime');
         selector.customer = document.querySelector('#customer');
         selector.customerTel = document.querySelector('#customerTel');
-        selector.type = document.querySelector('input[name="type"]:checked');
         selector.totalPrice = document.querySelector('#totalPrice');
         selector.receiptBox = document.querySelector('#receiptBox');
         index = 1;
@@ -44,7 +43,7 @@ const itemChange_JS = (() =>{
         /**
          * 출고, 입고 선택지
          */
-        selector.typeGroup.addEventListener('click', function (){
+        selector.typeGroup.addEventListener('change', function (){
             initTotalPrice();
         })
 
@@ -97,7 +96,7 @@ const itemChange_JS = (() =>{
                 customer: selector.customer.value,
                 customerTel: selector.customerTel.value.replaceAll('-',''),
                 itemInfoList: itemInfoList,
-                type: selector.type.value,
+                type: selector.type().value,
             };
 
             let data = await sendRequest("/item/changeCnt",'POST',params);
@@ -177,7 +176,7 @@ const itemChange_JS = (() =>{
             let itemName = document.querySelector(`#itemName_${idx + 1}`).value;
             let price = '';
 
-            if(selector.type.value === "IN"){
+            if(selector.type().value === "IN"){
                 price = fommatter('comma', price1 * cnt);
             }else{
                 price = fommatter('comma', price2 * cnt);
