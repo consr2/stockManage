@@ -2,15 +2,24 @@ const itemChange_JS = (() =>{
 
     let index = 1;
     let selector = {
-        addItemBtn, subItemBtn, ItemListBox, changeItemBtn, typeGroup,
-        date, customer, customerTel, itemInfoList, type,
-        totalPrice, receiptBox,
-    }
+        addItemBtn: null,
+        subItemBtn: null,
+        ItemListBox: null,
+        changeItemBtn: null,
+        typeGroup: null,
+        date: null,
+        customer: null,
+        customerTel: null,
+        itemInfoList: null,
+        type: null,
+        totalPrice: null,
+        receiptBox: null,
+    };
 
     document.addEventListener('DOMContentLoaded', function() {
         onLoad();
         initEventListener();
-        addItemBtn.click();
+        selector.addItemBtn.click();
     })
 
 
