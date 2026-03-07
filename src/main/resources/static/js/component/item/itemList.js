@@ -116,9 +116,18 @@ const itemList_JS = (() =>{
         selector.modalHistoryBody.insertAdjacentHTML('afterbegin', div);
     }
 
+    async function 품목삭제(id){
+        let param ={
+            id:id,
+        }
+        await sendRequest('/item/deleteItem','POST', param);
+
+        selector.itemListSearchBtn.click();
+    }
 
     return {
         onLoad: onLoad,
         단가이력추가: 단가이력추가,
+        품목삭제:품목삭제,
     }
 })();

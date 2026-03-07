@@ -31,4 +31,6 @@ public interface ItemRepository {
 
     Integer saveItemPriceList(List<ItemRequestDTO.InsertItemPrice> insertItemPrice);
 
+    Integer deleteItem(ItemRequestDTO.ItemPrice itemPrice);
+
 }

@@ -42,6 +42,7 @@
                         where p2.rn = 1) p ON p.item_id = i.id
         WHERE
             i.item_name like CONCAT('%',#{itemName},'%')
+        AND i.use_yn = 'Y'
     </select>
 
 
@@ -144,6 +145,7 @@
         <if test="startDate != null and startDate != ''">
             AND i.created_at between #{startDate} and #{endDate}
         </if>
+        AND i.use_yn = 'Y'
         ORDER BY i.item_name
     </select>
 
@@ -185,5 +187,10 @@
         create_at = VALUES(create_at)
     </insert>
 
+    <update id="deleteItem">
+        UPDATE items
+        SET use_yn = 'N'
+        WHERE id = #{id}
+    </update>
 
 </mapper>

@@ -69,4 +69,8 @@ public class ItemService {
         return itemRepository.saveItemPriceList(insertItemPrice);
     }
 
+    public Integer deleteItem(ItemRequestDTO.ItemPrice itemPrice){
+        return itemRepository.deleteItem(itemPrice);
+    }
+
 }

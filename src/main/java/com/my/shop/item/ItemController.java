@@ -133,4 +133,15 @@ public class ItemController {
                 .build();
     }
 
+    @ResponseBody
+    @PostMapping("/item/deleteItem")
+    public ResponseUtil deleteItem(@RequestBody ItemRequestDTO.ItemPrice itemPrice){
+        log.info("POST : /item/deleteItem");
+        return ResponseUtil.builder()
+                .data(itemService.deleteItem(itemPrice))
+                .msg("저장성공")
+                .code(200)
+                .build();
+    }
+
 }

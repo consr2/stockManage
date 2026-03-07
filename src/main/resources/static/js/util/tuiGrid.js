@@ -94,6 +94,16 @@ const tuiGrid_JS = (() =>{
                         width: 60,
                         name: 'currentCnt'
                     },
+                    {
+                        header: '삭제',
+                        align: 'center',
+                        width: 60,
+                        name: 'delete',
+                        formatter: (data) => {
+
+                            return `<button class="tui-btn-red" onclick="itemList_JS.품목삭제(${data.row.id})">삭제</button>`
+                        }
+                    }
                 ]
             },
             itemHistory: {

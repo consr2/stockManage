@@ -208,3 +208,15 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
 .btn-close { background-color: var(--bg-color); color: var(--text-sub); border: 1px solid var(--border-color); padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; }
 
 
+.tui-btn-red{
+    background: #fff5f5;
+    color: #ff3b30;
+    border: none;
+    padding: 0 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 25px;
+    transition: opacity 0.2s;
+}
+.tui-btn-red:hover { background: #ffd0d0; }
