@@ -42,5 +42,11 @@ public class ChairService {
         return chairRepository.updateRentInfo(updateChair);
     }
 
+    public Integer extensionRent(ChairRequsetDTO.UpdateChair updateChair){
+        updateChair.setPayment("");
+        updateChair.setPayment("");
+        return chairRepository.extensionRent(updateChair);
+    }
+
 
 }

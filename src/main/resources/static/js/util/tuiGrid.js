@@ -280,6 +280,16 @@ const tuiGrid_JS = (() =>{
                             }
                         }
                     },
+                    {
+                        header: '연장',
+                        align: 'center',
+                        name: 'extend',
+                        formatter:(data) => {
+                            if(data.row.payment !== '지불완료'){
+                                return `<button class="tui-btn-green" onclick="chairRentalList_JS.휠체어연장(${data.row.rentalId}, '${data.row.expectDate}')">연장</button>`;
+                            }
+                        }
+                    },
                 ]
             },
         }

@@ -22,6 +22,7 @@ public class ChairRequsetDTO {
         private Integer rentalId;
         private String payment;
         private String endDate;
+        private String expectDate;
     }
 
     @Data

@@ -29,6 +29,17 @@
             rental_id = #{rentalId}
     </update>
 
+    <insert id="extensionRent">
+        UPDATE
+            wheelchair_rentals
+        SET
+            expect_date = #{expectDate}
+        WHERE
+            rental_id = #{rentalId}
+    </insert>
+
+
+
     <select id="selectRentalList" resultType="com.my.shop.chair.dto.ChairResponseDTO$Chair">
         SELECT
             rental_id,

@@ -38,9 +38,19 @@
             <input type="text" placeholder="이름을 입력하세요" id="customer">
         </div>
 
+        <div class="input-group" id="custNumBox">
+            <label>사업자번호</label>
+            <input type="text" maxlength="12" placeholder="xxx-xx-xxxxx" id="custNum" oninput="this.value = fommatter('custNum',this.value)">
+        </div>
+
         <div class="input-group" id="customerTelBox">
             <label>연락처</label>
             <input type="text" placeholder="010-xxxx-xxxx" id="customerTel" oninput="this.value = fommatter('tel',this.value)">
+        </div>
+
+        <div class="input-group" id="addressBox">
+            <label>주소</label>
+            <input type="text" id="address">
         </div>
 
         <div id="ItemListBox"></div>
@@ -71,7 +81,8 @@
 </div>
 </body>
 </html>
-<script src="/js/util/util.js"></script>
-<script src="/js/component/item/itemChange.js"></script>
-<script src="/js/util/createComponent.js"></script>
+<script th:src="@{/js/util/util.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/tuiGrid.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/createComponent.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/component/item/itemChange.js(v=${#dates.createNow().getTime()})}"></script>
 

@@ -14,6 +14,8 @@ const itemChange_JS = (() =>{
         type: () => document.querySelector('input[name="type"]:checked'),
         totalPrice: null,
         receiptBox: null,
+        custNum: null,
+        address: null,
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -34,6 +36,8 @@ const itemChange_JS = (() =>{
         selector.customerTel = document.querySelector('#customerTel');
         selector.totalPrice = document.querySelector('#totalPrice');
         selector.receiptBox = document.querySelector('#receiptBox');
+        selector.custNum = document.querySelector('#receiptBox');
+        selector.address = document.querySelector('#address');
         index = 1;
     }
 
@@ -96,6 +100,8 @@ const itemChange_JS = (() =>{
                 customer: selector.customer.value,
                 customerTel: selector.customerTel.value.replaceAll('-',''),
                 itemInfoList: itemInfoList,
+                custNum: selector.custNum.value,
+                address: selector.address.value,
                 type: selector.type().value,
             };
 
@@ -107,6 +113,8 @@ const itemChange_JS = (() =>{
                 selector.receiptBox.innerHTML = '';
                 selector.customer.value  = '';
                 selector.customerTel.value  = '';
+                selector.custNum.value  = '';
+                selector.address.value  = '';
                 index = 1;
                 selector.addItemBtn.click();
             }
@@ -199,7 +207,7 @@ const itemChange_JS = (() =>{
      * @returns {boolean}
      */
     function fn_validate(){
-        if(isEmpty(selector.dateTime.value)){
+        if(isEmpty(selector.date.value)){
             alert("날짜가 비었습니다");
             return false;
         }

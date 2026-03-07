@@ -60,13 +60,13 @@
         (
             customer, customer_tel,date
             , item_idx, item_name, cnt,
-            type, created_at)
+            type, created_at, cust_num, address)
         VALUES
         <foreach collection="itemInfoList" item="item" separator=",">
         (
             #{customer}, #{customerTel}, #{date},
             #{item.itemId}, #{item.itemName}, #{item.cnt},
-            #{type}, now()
+            #{type}, now(), #{custNum}, #{address}
         )
         </foreach>
     </insert>
@@ -95,7 +95,10 @@
             h.type,
             p.price1,
             p.price2,
-            p.price3
+            p.price3,
+            h.created_at,
+            h.cust_num,
+            h.address
         FROM item_history h
         left join items i on h.item_idx = i.id
         LEFT JOIN (
@@ -144,6 +147,9 @@
         WHERE 1=1
         <if test="startDate != null and startDate != ''">
             AND i.created_at between #{startDate} and #{endDate}
+        </if>
+        <if test="itemName != null and itemName != ''">
+        AND i.item_name like CONCAT('%',#{itemName},'%')
         </if>
         AND i.use_yn = 'Y'
         ORDER BY i.item_name

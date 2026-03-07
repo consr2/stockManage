@@ -15,6 +15,8 @@ public interface ChairRepository {
 
     Integer updateRentInfo(ChairRequsetDTO.UpdateChair updateChair);
 
+    Integer extensionRent(ChairRequsetDTO.UpdateChair updateChair);
+
     List<ChairResponseDTO.Chair> selectRentalList(ChairRequsetDTO.SearchChairList searchChairList);
 
     List<ChairResponseDTO.Chair> selectEndRentalList();

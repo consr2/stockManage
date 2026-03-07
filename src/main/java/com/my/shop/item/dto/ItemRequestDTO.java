@@ -44,7 +44,9 @@ public class ItemRequestDTO {
         private String date;
         private String customer;
         private String customerTel;
+        private String custNum;
         private String type;
+        private String address;
         private List<ItemInfo> itemInfoList;
 
     }
@@ -69,6 +71,7 @@ public class ItemRequestDTO {
     public static class ItemListSearch{
         private String startDate;
         private String endDate;
+        private String itemName;
     }
 
     @Data

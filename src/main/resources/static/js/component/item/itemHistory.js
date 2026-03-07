@@ -12,6 +12,8 @@ const itemHistory_JS = (() =>{
         itemName: null,
         customer: null,
         typeSelect: null,
+        paymentReportBtn: null,
+        paymentTemplate: null,
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -30,6 +32,8 @@ const itemHistory_JS = (() =>{
         selector.itemName = document.querySelector('#itemName');
         selector.customer = document.querySelector('#customer');
         selector.typeSelect = document.querySelector('#typeSelect');
+        selector.paymentReportBtn = document.querySelector('#paymentReportBtn');
+        selector.paymentTemplate = document.querySelector('#paymentTemplate');
     }
 
     function initEventListener(){
@@ -77,6 +81,49 @@ const itemHistory_JS = (() =>{
                 useFormattedValue: true,    // 포맷터가 적용된 값으로 추출할지 여부
                 includeHeader: true         // 헤더 포함 여부
             });
+        })
+
+        selector.paymentReportBtn.addEventListener('click', function(){
+            if(!grid){
+                alert("검색 후 명세표를 출력 할 수 있습니다");
+                return;
+            }
+
+            let data = grid.getData();
+            let template = selector.paymentTemplate.cloneNode(true);
+            template.style.display = 'block'
+
+            let result = '';
+            data.forEach((item,idx) => {
+                result += createComponent.명세표출력(item, idx);
+            })
+
+            //정보 세팅
+            let totalPrice = data.reduce((acc, e) =>{
+                return acc + (Number(e.price2) * Number(e.cnt));
+            }, 0)
+            let totalCnt = data.reduce((acc, e) =>{
+                return acc +  Number(e.cnt);
+            }, 0)
+            let vat = Math.trunc(Number(totalCnt) * 0.1);
+            let totalAmount = totalPrice + vat;
+
+            template.querySelector('#paymentBody').innerHTML = result;
+            template.querySelector('#report_customer').innerHTML = data[0].customer;
+            template.querySelector('#report_customerTel').innerHTML = fommatter('tel' ,data[0].customerTel);
+            template.querySelector('#report_address').innerHTML = data[0].address;
+            template.querySelector('#report_totalPriceKR').innerHTML = convertToKoreanWon(totalPrice);
+            template.querySelector('#report_totalPrice').innerHTML = fommatter('comma',totalPrice);
+
+            template.querySelector('#report_totalCnt').innerHTML = totalCnt;
+            template.querySelector('#report_totalPrice2').innerHTML = fommatter('comma',totalPrice);
+            template.querySelector('#report_totalVat').innerHTML = fommatter('comma',vat);
+            template.querySelector('#report_totalAmount').innerHTML = fommatter('comma',totalAmount);
+
+            const printWindow = window.open('', '_blank', 'width=870,height=600');
+            printWindow.document.body.appendChild(template);
+            printWindow.document.close();
+            printWindow.print();
         })
     }
 

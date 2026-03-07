@@ -62,6 +62,5 @@
 </div>
 </body>
 </html>
-<script src="/js/util/util.js"></script>
-<script src="/js/component/chair/chairRental.js"></script>
-
+<script th:src="@{/js/util/util.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/component/chair/chairRental.js(v=${#dates.createNow().getTime()})}"></script>

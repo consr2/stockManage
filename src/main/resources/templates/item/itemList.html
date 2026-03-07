@@ -26,6 +26,10 @@
             </div>
         </div>
         <div class="flex-right">
+            <div class="filter-group">
+                <label>품명</label>
+                <input style="width: 400px;" id="itemName">
+            </div>
             <button class="btn-search" id="itemListSearchBtn">조회</button>
         </div>
     </section>
@@ -69,8 +73,8 @@
 </body>
 <script src="/js/lib/xlsx.js"></script>
 <script src="/js/lib/tui-grid.js"></script>
-<script src="/js/util/util.js"></script>
-<script src="/js/util/tuiGrid.js"></script>
-<script src="/js/util/createComponent.js"></script>
-<script src="/js/component/item/itemList.js"></script>
+<script th:src="@{/js/util/util.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/tuiGrid.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/createComponent.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/component/item/itemList.js(v=${#dates.createNow().getTime()})}"></script>
 </html>

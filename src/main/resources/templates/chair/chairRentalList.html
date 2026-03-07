@@ -55,7 +55,7 @@
 </html>
 <script src="/js/lib/xlsx.js"></script>
 <script src="/js/lib/tui-grid.js"></script>
-<script src="/js/util/util.js"></script>
-<script src="/js/util/tuiGrid.js"></script>
-<script src="/js/util/createComponent.js"></script>
-<script src="/js/component/chair/chairRentalList.js"></script>
+<script th:src="@{/js/util/util.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/tuiGrid.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/createComponent.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/component/chair/chairRentalList.js(v=${#dates.createNow().getTime()})}"></script>

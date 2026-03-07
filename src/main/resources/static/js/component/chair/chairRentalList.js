@@ -124,10 +124,26 @@ const chairRentalList_JS = (() =>{
         }
     }
 
+    async function 휠체어연장(rentalId, expectDate){
+        this.disabled = true;
+        let param = {
+            rentalId: rentalId,
+            expectDate: addDays(expectDate, 31)
+        }
+
+        let data = await sendRequest('/chair/extensionRent','POST', param);
+        if(data.code === 200){
+            alert(data.msg);
+            selector.chairListSearchBtn.click();
+            checkEndRental();
+        }
+    }
+
     return{
         onLoad:onLoad,
         휠체어반납:휠체어반납,
         휠체어반납철회:휠체어반납철회,
+        휠체어연장:휠체어연장,
     }
 
 })();

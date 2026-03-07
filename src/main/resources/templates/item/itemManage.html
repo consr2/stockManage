@@ -40,5 +40,7 @@
 </div>
 </body>
 </html>
-<script src="/js/util/util.js"></script>
-<script src="/js/component/item/itemManage.js"></script>
+<script th:src="@{/js/util/util.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/tuiGrid.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/createComponent.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/component/item/itemManage.js(v=${#dates.createNow().getTime()})}"></script>

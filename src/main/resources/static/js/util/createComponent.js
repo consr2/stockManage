@@ -6,7 +6,7 @@ const createComponent = (() => {
         let div = `<div class="flex-box itemInfo" id="boxIndex_${idx}">
                             <div class="input-group itemName">
                                 <label>재고 품목</label>
-                                <input placeholder="품목을 입력하세요" id="itemName_${idx}">
+                                <input placeholder="품목을 입력하세요" id="itemName_${idx}" autocomplete="off">
                                 <input id="itemNameId_${idx}" hidden>
                                 <input id="price1_${idx}" hidden>
                                 <input id="price2_${idx}" hidden>
@@ -15,7 +15,7 @@ const createComponent = (() => {
 
                             <div class="input-group">
                                 <label>수량</label>
-                                <input type="number" placeholder="0" id="itemCnt_${idx}" oninput="itemChange_JS.initTotalPrice()">
+                                <input autocomplete="off" type="number" placeholder="0" id="itemCnt_${idx}" oninput="itemChange_JS.initTotalPrice()">
                             </div>
                         </div>`;
 
@@ -54,7 +54,8 @@ const createComponent = (() => {
                                     </div>
                                     <div class="returnBtn">
                                         <span class="badge rented">기간 종료</span>
-                                        <button class="btn-blue" data-id="${item.rentalId}" onclick="chairRentalList_JS.휠체어반납(this.dataset.id, 'top')">반납완료</button>
+                                        <button class="btn-blue" onclick="chairRentalList_JS.휠체어반납(${item.rentalId})">반납완료</button>
+                                        <button class="btn-green" onclick="chairRentalList_JS.휠체어연장(${item.rentalId}, '${item.expectDate}')">연장</button>
                                     </div>
                                 </div>
                             </div>`;
@@ -82,6 +83,19 @@ const createComponent = (() => {
         return div;
     }
 
+    function 명세표출력(item, idx){
+        let div = `<tr>
+                            <td>${idx}</td>
+                            <td>${item.itemName}</td>
+                            <td>${item.cnt}</td>
+                            <td class="text-right">${fommatter('comma',item.price1)}</td>
+                            <td class="text-right">${fommatter('comma',item.price2)}</td>
+                            <td></td>
+                        </tr>`;
+
+        return div;
+    }
+
     return {
         품목추가: 품목추가,
         검색된품목: 검색된품목,
@@ -89,5 +103,6 @@ const createComponent = (() => {
         검색된고객명단: 검색된고객명단,
         만료된휠체어목록: 만료된휠체어목록,
         단가이력수정목록: 단가이력수정목록,
+        명세표출력: 명세표출력,
     }
 })();

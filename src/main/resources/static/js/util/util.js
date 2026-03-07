@@ -45,6 +45,9 @@ function fommatter(type, data){
         case 'tel':
             cleanData = data.toString().replace(/[^\d]/g, '');
             return cleanData.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, "$1-$2-$3");
+        case 'custNum':
+            cleanData = data.toString().replace(/[^\d]/g, '');
+            return cleanData.replace(/^(\d{3})(\d{2})(\d{5})$/, "$1-$2-$3");
         default:
             return data;
     }
@@ -72,4 +75,42 @@ function getCurrentTime(){
     const seconds = String(now.getSeconds()).padStart(2, '0');
 
     return`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+
+function addDays(dateString, days) {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+
+    return date.toISOString().split('T')[0];
+}
+
+function convertToKoreanWon(num) {
+    if (num == 0) return '영';
+
+    const unitWords = ['', '만', '억', '조', '경'];
+    const digitWords = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+    const positionWords = ['', '십', '백', '천'];
+
+    let result = '';
+    let numStr = num.toString();
+
+    // 4자리씩 끊어서 처리
+    for (let i = 0; i < numStr.length; i += 4) {
+        let chunk = numStr.substring(Math.max(0, numStr.length - i - 4), numStr.length - i);
+        let chunkResult = '';
+
+        for (let j = 0; j < chunk.length; j++) {
+            let digit = parseInt(chunk[chunk.length - 1 - j]);
+            if (digit !== 0) {
+                chunkResult = digitWords[digit] + positionWords[j] + chunkResult;
+            }
+        }
+
+        if (chunkResult !== '') {
+            result = chunkResult + unitWords[i / 4] + result;
+        }
+    }
+
+    return `${result}원정`;
 }

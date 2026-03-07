@@ -87,4 +87,15 @@ public class ChairController {
                 .build();
     }
 
+    @ResponseBody
+    @PostMapping("/chair/extensionRent")
+    public ResponseUtil extensionRent(@RequestBody ChairRequsetDTO.UpdateChair updateChair){
+        log.info("POST : /chair/extensionRent");
+        return ResponseUtil.builder()
+                .data(chairService.extensionRent(updateChair))
+                .msg("연장이 완료되었습니다")
+                .code(200)
+                .build();
+    }
+
 }

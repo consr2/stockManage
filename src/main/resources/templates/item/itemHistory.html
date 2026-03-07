@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>입출고 이력(계산서)</title>
+    <title>입출고 이력(명세서)</title>
     <link rel="stylesheet" href="/js/lib/tui-grid.css" />
     <link rel="stylesheet" href="/css/item/itemHistory.css">
 </head>
@@ -47,15 +47,350 @@
         </div>
     </section>
     <div class="excelBtnBox">
+        <button class="btn-search excelBtn" id="paymentReportBtn">명세서 출력</button>
         <button class="btn-search excelBtn" id="excelDownBtn">엑셀다운</button>
     </div>
     <div class="gridBox" id="grid"></div>
+
+    <div id="paymentTemplate" class="paymentTemplate" style="display: none">
+        <style>
+            /* 명세서 헤더 레이아웃 */
+            .report-header {
+                display: flex;
+                width: 850px;
+                border: 1px solid #000;
+                align-items: stretch;
+            }
+
+            /* 좌측 영역: 제목 및 귀하 정보 */
+            .header-left {
+                flex: 2;
+                display: flex;
+                flex-direction: column;
+                border-right: 1px solid #000;
+            }
+
+            .report-title {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 22px;
+                font-weight: bold;
+                border-bottom: 1px solid #000;
+            }
+
+            .client-info {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            /* 중앙: 공급자 세로바 */
+            .supplier-vertical-bar {
+                width: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f2f2f2;
+                border-right: 1px solid #000;
+                font-size: 12px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            /* 우측 영역: 등록번호 및 상호 정보 */
+            .header-right {
+                flex: 3;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .reg-info-row {
+                display: flex;
+                border-bottom: 1px solid #000;
+            }
+
+            .reg-label {
+                width: 80px;
+                background: #f2f2f2;
+                padding: 5px;
+                text-align: center;
+                border-right: 1px solid #000;
+                font-size: 11px;
+            }
+
+            .reg-value {
+                flex: 1;
+                padding: 5px;
+                font-size: 11px;
+            }
+
+            /* 우측 하단 상세 정보 */
+            .provider-detail {
+                flex: 1;
+                display: flex;
+                position: relative;
+                font-size: 12px;
+                line-height: 1.6;
+                align-items: flex-start;
+            }
+
+            .detail-label-group {
+                width: 80px;
+                color: #555;
+                font-weight: bold;
+                border-right: 1px solid black;
+                padding: 10px;
+                text-align: center;
+                background: #f2f2f2;
+            }
+
+            .detail-value-group {
+                flex: 1;
+                z-index: 1;
+                padding: 10px;
+            }
+
+            .detail-company-name {
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            /* 직인 이미지 */
+            .stamp-image {
+                position: absolute;
+                right: 20px;
+                bottom: 5px;
+                width: 65px;
+                height: 65px;
+                opacity: 0.7;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .flex{
+                display: flex;
+            }
+            .flex1{
+                flex:1;
+            }
+
+            .border{
+                border: 1px solid black;
+            }
+            .padding5{
+                padding: 5px;
+            }
+            /* 기타 및 하단 요약 테이블 */
+            .report-footer {
+                width: 850px;
+                margin-top: 10px;
+                border: 1px solid #000;
+                font-size: 12px;
+            }
+
+            .etc-row {
+                padding: 5px 10px;
+                border-bottom: 1px solid #000;
+                min-height: 25px;
+            }
+
+            .summary-table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .summary-table td {
+                border-right: 1px solid #000;
+                border-bottom: 1px solid #000;
+                padding: 5px;
+                text-align: center;
+                font-size: 14px;
+            }
+
+            .summary-label {
+                background-color: #f2f2f2;
+                font-weight: bold;
+                width: 80px;
+            }
+
+            .summary-value {
+                text-align: right !important;
+                padding-right: 10px !important;
+                width: 120px;
+            }
+
+            .account-row {
+                display: flex;
+                align-items: stretch;
+            }
+
+            .account-label {
+                width: 161px; /* 수량+공급가액 라벨 합계와 맞춤 */
+                background-color: #f2f2f2;
+                font-weight: bold;
+                text-align: center;
+                padding: 5px 0;
+                border-right: 1px solid #000;
+            }
+
+            .account-value {
+                flex: 1;
+                padding: 5px 10px;
+            }
+
+            .font-size14{
+                font-size: 14px;
+                font-weight: 800;
+            }
+            /* 테이블 기본 설정 */
+            .item-table {
+                width: 850px;
+                border-collapse: collapse;
+                border: 1px solid #000;
+                font-size: 12px;
+            }
+
+            /* 테이블 헤더 (월/일, 품목명 등) */
+            .item-table th {
+                background-color: #f2f2f2;
+                border: 1px solid #000;
+                padding: 8px 5px;
+                font-weight: 800; /* 굵게 */
+                text-align: center;
+            }
+
+            /* 데이터가 들어가는 각 셀 */
+            .item-table td {
+                border: 1px solid #000;
+                padding: 5px;
+                height: 25px; /* 빈 칸도 일정하게 높이 유지 */
+                text-align: center;
+            }
+
+            /* 금액과 관련된 열은 우측 정렬 */
+            .text-right {
+                text-align: right !important;
+                padding-right: 10px !important;
+            }
+
+            /* 품목명이나 규격명 등 텍스트 긴 곳은 좌측 정렬 */
+            .text-left {
+                text-align: left !important;
+                padding-left: 10px !important;
+            }
+            .client-info p {
+                margin: 0;
+                padding: 0;
+                line-height: 1.2;
+            }
+        </style>
+        <div>
+            <div class="report-header">
+                <div class="header-left">
+                    <div class="report-title">거 래 명 세 서</div>
+                    <div class="client-info">
+                        <strong id="report_customer"></strong>
+                        <p><span>☎ </span><span id="report_customerTel"></span></p>
+                        <p id="report_address"></p>
+                    </div>
+                </div>
+
+                <div class="supplier-vertical-bar">
+                    공<br>급<br>자
+                </div>
+
+                <div class="header-right">
+                    <div style="display: flex; flex-direction: column; border-bottom: 1px solid #000;">
+                        <div class="reg-info-row">
+                            <div class="reg-label">일련번호</div>
+                            <div class="reg-value" id="report_serialNum">20260309 - 44</div>
+                        </div>
+                        <div class="reg-info-row" style="border-bottom: none;">
+                            <div class="reg-label">사업자번호</div>
+                            <div class="reg-value">744-20-02727</div>
+                        </div>
+                    </div>
+
+                    <div class="provider-detail">
+                        <div class="detail-label-group">
+                            <div>상 호</div>
+                            <div>전화번호</div>
+                            <div>주 소</div>
+                        </div>
+
+                        <div class="detail-value-group">
+                            <div class="detail-company-name">(주) 이레의료기</div>
+                            <div>☎ 051-521-2779</div>
+                            <div style="word-break: keep-all;">부산광역시 동래구 충렬대로 391, 1층(안락동)</div>
+                        </div>
+
+                        <img src="data:image/png;base64,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" class="stamp-image">
+                    </div>
+                </div>
+            </div>
+            <div class="report-header">
+                <div class="flex1 padding5 font-size14">
+                    <span>금액 : </span>
+                    <span id="report_totalPriceKR">심삼만오천육백원</span>
+                </div>
+                <div class="flex1 padding5 font-size14">
+                    <span>W </span>
+                    <span id="report_totalPrice">135,600</span>
+                    <span> VAT포함</span>
+
+                </div>
+            </div>
+        </div>
+        <table class="item-table" style="margin-top: 10px;">
+            <thead>
+            <tr>
+                <th style="width: 50px;">No</th>
+                <th style="width: 250px;">품명</th>
+                <th style="width: 50px;">수량</th>
+                <th style="width: 80px;">단가</th>
+                <th style="width: 80px;">공급가액</th>
+                <th style="width: 100px;">비고</th>
+            </tr>
+            </thead>
+            <tbody id="paymentBody"></tbody>
+        </table>
+        <div class="report-footer">
+            <div class="etc-row">
+                <strong>기 타 :</strong> <span id="print-etc"></span>
+            </div>
+
+            <table class="summary-table">
+                <tr>
+                    <td class="summary-label">수 량</td>
+                    <td class="summary-value" id="report_totalCnt">1</td>
+                    <td class="summary-label">공급가액</td>
+                    <td class="summary-value" id="report_totalPrice2">13,090</td>
+                    <td class="summary-label">VAT</td>
+                    <td class="summary-value" id="report_totalVat">1,309</td>
+                    <td class="summary-label">합 계</td>
+                    <td class="summary-value" style="width: 150px;" id="report_totalAmount">14,399</td>
+                    <td class="summary-label" style="width: 60px;">인수</td>
+                    <td style="border-right: none; width: 60px; text-align: right;">인</td>
+                </tr>
+            </table>
+
+            <div class="account-row">
+                <div class="account-label">결 제 계 좌</div>
+                <div class="account-value">
+                    <span id="print-bank-name">부산은행</span>
+                    <span id="print-account-num">101-2095-2568-08</span>
+                    <span id="print-account-holder">이레의료기(박서연)</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script src="/js/lib/xlsx.js"></script>
 <script src="/js/lib/tui-grid.js"></script>
-<script src="/js/util/util.js"></script>
-<script src="/js/util/tuiGrid.js"></script>
-<script src="/js/util/createComponent.js"></script>
-<script src="/js/component/item/itemHistory.js"></script>
+<script th:src="@{/js/util/util.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/tuiGrid.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/util/createComponent.js(v=${#dates.createNow().getTime()})}"></script>
+<script th:src="@{/js/component/item/itemHistory.js(v=${#dates.createNow().getTime()})}"></script>
 </html>

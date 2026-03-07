@@ -35,6 +35,9 @@ public class ItemResponseDTO {
         private Integer price1;
         private Integer price2;
         private Integer price3;
+        private String createdAt;
+        private String custNum;
+        private String address;
     }
 
     @Data

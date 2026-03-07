@@ -10,6 +10,7 @@ const itemList_JS = (() =>{
         itemModal: null,
         modalHistoryBody: null,
         modalItemName: null,
+        itemName: null,
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -26,6 +27,7 @@ const itemList_JS = (() =>{
         selector.itemModal = document.querySelector('#itemModal');
         selector.modalHistoryBody = document.querySelector('#modalHistoryBody');
         selector.modalItemName = document.querySelector('#modalItemName');
+        selector.itemName = document.querySelector('#itemName');
     }
 
     function initEventListener(){
@@ -33,6 +35,7 @@ const itemList_JS = (() =>{
             let param = {
                 startDate: selector.startDt.value,
                 endDate: selector.endDt.value,
+                itemName: selector.itemName.value,
             }
             let data = await sendRequest('/item/getItemList', 'POST', param);
             console.log(data);
