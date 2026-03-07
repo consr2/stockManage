@@ -92,7 +92,8 @@ const tuiGrid_JS = (() =>{
                         header: '재고',
                         align: 'center',
                         width: 60,
-                        name: 'currentCnt'
+                        name: 'currentCnt',
+                        sortable: true
                     },
                     {
                         header: '삭제',
