@@ -34,7 +34,7 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
     background: #ededed;
     padding: 10px;
     position: absolute;
-    width: 28%;
+    width: 19%;
 }
 .suggestion-item:hover {
     background-color: var(--hover-bg);

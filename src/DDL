@@ -44,6 +44,13 @@ CREATE TABLE `wheelchair_rentals` (
 
 
 
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `customer_name` varchar(300) NOT NULL,
+   `cust_num` varchar(300),
+  `customer_tel` varchar(300),
+  `cust_address` varchar(300)
+);
 
 
 docekr create network db
