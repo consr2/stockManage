@@ -100,13 +100,13 @@ const itemHistory_JS = (() =>{
 
             //정보 세팅
             let totalPrice = data.reduce((acc, e) =>{
-                return acc + (Number(e.price2) * Number(e.cnt));
+                return acc + (Number(e.price) * Number(e.cnt));
             }, 0)
             let totalCnt = data.reduce((acc, e) =>{
                 return acc +  Number(e.cnt);
             }, 0)
-            let vat = Math.trunc(Number(totalCnt) * 0.1);
-            let totalAmount = totalPrice + vat;
+            let realPrice = Math.trunc(totalPrice / 1.1);
+            let vat = Math.trunc(Number(realPrice) * 0.1);
 
             template.querySelector('#paymentBody').innerHTML = result;
             template.querySelector('#report_customer').innerHTML = data[0].customer;
@@ -116,9 +116,9 @@ const itemHistory_JS = (() =>{
             template.querySelector('#report_totalPrice').innerHTML = fommatter('comma',totalPrice);
 
             template.querySelector('#report_totalCnt').innerHTML = totalCnt;
-            template.querySelector('#report_totalPrice2').innerHTML = fommatter('comma',totalPrice);
+            template.querySelector('#report_totalPrice2').innerHTML = fommatter('comma',realPrice);
             template.querySelector('#report_totalVat').innerHTML = fommatter('comma',vat);
-            template.querySelector('#report_totalAmount').innerHTML = fommatter('comma',totalAmount);
+            template.querySelector('#report_totalAmount').innerHTML = fommatter('comma',totalPrice);
 
             const printWindow = window.open('', '_blank', 'width=870,height=600');
             printWindow.document.body.appendChild(template);
@@ -142,6 +142,20 @@ const itemHistory_JS = (() =>{
             }else{
                 grid.addCellClassName(data.rowKey, 'type', 'txt-red');
             }
+        })
+
+        if(!isEmpty(grid)){
+            initGridEvent();
+        }
+    }
+
+    function initGridEvent(){
+        grid.on('dblclick', async (e) => {
+            const rowData = grid.getRow(e.rowKey);
+            console.log(rowData);
+            selector.itemId.value = rowData.id;
+            selector.price2.value = rowData.price2;
+            selector.itemModal.style.display = 'flex';
         })
     }
 

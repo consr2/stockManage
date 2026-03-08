@@ -11,6 +11,9 @@ const itemList_JS = (() =>{
         modalHistoryBody: null,
         modalItemName: null,
         itemName: null,
+        itemId: null,
+        price1: null,
+        price2: null,
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -28,6 +31,9 @@ const itemList_JS = (() =>{
         selector.modalHistoryBody = document.querySelector('#modalHistoryBody');
         selector.modalItemName = document.querySelector('#modalItemName');
         selector.itemName = document.querySelector('#itemName');
+        selector.itemId = document.querySelector('#itemId');
+        selector.price1 = document.querySelector('#price1');
+        selector.price2 = document.querySelector('#price2');
     }
 
     function initEventListener(){
@@ -59,32 +65,13 @@ const itemList_JS = (() =>{
         })
 
         selector.savePriceBtn.addEventListener('click', async function () {
-            let priceList = document.querySelectorAll('#modalHistoryBody tr');
-            let params = [];
-            let 빈값있나요 = false;
-
-            priceList.forEach(row => {
-                const inputRow = row.querySelectorAll('input');
-                const rowData = {
-                    id: inputRow[0].dataset.id,
-                    itemId: inputRow[0].dataset.itemid,
-                    createAt: inputRow[1].value,
-                    price1: inputRow[2].value.replace(/[^0-9]/g, ''),
-                    price2: inputRow[3].value.replace(/[^0-9]/g, ''),
-                    price3: inputRow[4].value.replace(/[^0-9]/g, '')
-                };
-                if(isEmpty(rowData.price1) || isEmpty(rowData.price2)){
-                    빈값있나요 = true;
-                }
-                params.push(rowData);
-            });
-            console.log(params);
-            if(빈값있나요){
-                alert('금액을 입력해 주세요');
-                return;
+            let param = {
+                id: selector.itemId.value,
+                price1: selector.price1.value,
+                price2: selector.price2.value,
             }
 
-            let result = await sendRequest('/item/saveItemPriceList', 'POST', params);
+            let result = await sendRequest('/item/saveItemPriceList', 'POST', param);
             if (result.code === 200) {
                 alert(result.msg);
                 selector.itemModal.style.display = 'none'
@@ -98,26 +85,13 @@ const itemList_JS = (() =>{
         grid.on('dblclick', async (e) => {
             const rowData = grid.getRow(e.rowKey);
             console.log(rowData);
-            let param = {
-                id: rowData.id
-            }
-            let data = await sendRequest('/item/getItemPriceList', 'POST', param);
-            console.log(data);
-            let div = '';
-            data.data.forEach(item => {
-                div += createComponent.단가이력수정목록(item);
-            })
-            selector.modalHistoryBody.innerHTML = div;
-            selector.modalItemName.innerHTML = rowData.itemName;
+            selector.itemId.value = rowData.id;
+            selector.price1.value = rowData.price1;
+            selector.price2.value = rowData.price2;
             selector.itemModal.style.display = 'flex';
         })
     }
 
-    function 단가이력추가(){
-        let itemId = document.querySelectorAll('#modalHistoryBody tr')[0].querySelector('input').dataset.itemid;
-        let div = createComponent.단가이력수정목록({itemId:itemId});
-        selector.modalHistoryBody.insertAdjacentHTML('afterbegin', div);
-    }
 
     async function 품목삭제(id){
         let param ={
@@ -130,7 +104,6 @@ const itemList_JS = (() =>{
 
     return {
         onLoad: onLoad,
-        단가이력추가: 단가이력추가,
         품목삭제:품목삭제,
     }
 })();

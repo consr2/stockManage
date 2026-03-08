@@ -8,16 +8,9 @@
 
     <insert id="insertItem"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO items
-            (item_name)
+            (item_name, price1, price2, price3)
         VALUES
-            (#{itemName})
-    </insert>
-
-    <insert id="insertItemPrice">
-        INSERT INTO item_price
-        (item_id, price1, price2, price3)
-        VALUES
-        (#{itemId}, #{price1}, #{price2}, #{price3})
+            (#{itemName},#{price1},#{price2},#{price3})
     </insert>
 
     <insert id="insertItemStock">
@@ -31,15 +24,11 @@
             i.id,
             i.item_name,
             i.current_cnt,
-            p.price1,
-            p.price2,
-            p.price3,
-            p.create_at
+            i.price1,
+            i.price2,
+            i.created_at
         FROM
             items i
-            LEFT JOIN (select p2.* From
-                            (SELECT *, ROW_NUMBER() OVER (PARTITION BY item_id ORDER BY create_at DESC) AS rn FROM item_price) p2
-                        where p2.rn = 1) p ON p.item_id = i.id
         WHERE
             i.item_name like CONCAT('%',#{itemName},'%')
         AND i.use_yn = 'Y'
@@ -60,13 +49,13 @@
         (
             customer, customer_tel,date
             , item_idx, item_name, cnt,
-            type, created_at, cust_num, address)
+            type, created_at, cust_num, address, price)
         VALUES
         <foreach collection="itemInfoList" item="item" separator=",">
         (
             #{customer}, #{customerTel}, #{date},
             #{item.itemId}, #{item.itemName}, #{item.cnt},
-            #{type}, now(), #{custNum}, #{address}
+            #{type}, now(), #{custNum}, #{address}, #{item.price}
         )
         </foreach>
     </insert>
@@ -93,29 +82,13 @@
             h.customer,
             h.customer_tel,
             h.type,
-            p.price1,
-            p.price2,
-            p.price3,
+            h.price,
             h.created_at,
             h.cust_num,
             h.address
         FROM item_history h
         left join items i on h.item_idx = i.id
-        LEFT JOIN (
-                    SELECT item_id,price1,price2,price3,
-                        CASE
-                            WHEN ROW_NUMBER() OVER (PARTITION BY item_id ORDER BY create_at) = 1
-                            THEN '0000-01-01'
-                            ELSE create_at
-                        END AS start_date,
-                        LEAD(create_at) OVER (PARTITION BY item_id ORDER BY create_at) AS end_date
-                    FROM item_price
-                ) p ON i.id = p.item_id
         WHERE 1=1
-    <![CDATA[
-        AND h.date >= p.start_date
-        AND (h.date < p.end_date or p.end_date is null)
-    ]]>
         <if test="startDate != null and startDate != ''">
             AND h.date between #{startDate} and #{endDate}
         </if>
@@ -128,24 +101,21 @@
         <if test="type != null and type != ''">
             AND h.type = #{type}
         </if>
-        ORDER BY date desc
+        ORDER BY created_at desc
     </select>
 
-    <select id="selectItemList" resultType="com.my.shop.item.dto.ItemResponseDTO$Item">
+
+    <select id="selectItemList" resultType="com.my.shop.item.dto.ItemResponseDTO$Item"><![CDATA[
         SELECT
             i.id,
             i.item_name,
             i.current_cnt,
-            p.price1,
-            p.price2,
-            p.price3,
-            p.create_at
+            i.price1,
+            i.price2,
+            i.created_at
         FROM items i
-        LEFT JOIN (select p2.* From
-                        (SELECT *, ROW_NUMBER() OVER (PARTITION BY item_id ORDER BY create_at DESC) AS rn FROM item_price) p2
-                        where p2.rn = 1) p ON p.item_id = i.id
         WHERE 1=1
-        <if test="startDate != null and startDate != ''">
+        ]]><if test="startDate != null and startDate != ''">
             AND i.created_at between #{startDate} and #{endDate}
         </if>
         <if test="itemName != null and itemName != ''">
@@ -172,26 +142,15 @@
     </select>
 
 
-    <insert id="saveItemPriceList">
-        INSERT INTO item_price (
-            id,item_id,
-            price1,price2,price3,
-            create_at
-        )
-        VALUES
-        <foreach collection="insertItemPrice" item="item" separator=",">
-            (
-            #{item.id},#{item.itemId},
-            #{item.price1},#{item.price2},#{item.price3},
-            #{item.createAt}
-            )
-        </foreach>
-        ON DUPLICATE KEY UPDATE
-        price1 = VALUES(price1),
-        price2 = VALUES(price2),
-        price3 = VALUES(price3),
-        create_at = VALUES(create_at)
-    </insert>
+    <update id="updateItemPrice">
+        UPDATE
+            items
+        SET
+            price1 = #{price1},
+            price2 = #{price2}
+        WHERE
+            id = #{id}
+    </update>
 
     <update id="deleteItem">
         UPDATE items

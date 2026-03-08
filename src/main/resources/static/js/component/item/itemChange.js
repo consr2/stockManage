@@ -16,6 +16,7 @@ const itemChange_JS = (() =>{
         receiptBox: null,
         custNum: null,
         address: null,
+        totalCount: null,
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -38,6 +39,7 @@ const itemChange_JS = (() =>{
         selector.receiptBox = document.querySelector('#receiptBox');
         selector.custNum = document.querySelector('#receiptBox');
         selector.address = document.querySelector('#address');
+        selector.totalCount = document.querySelector('#totalCount');
         index = 1;
     }
 
@@ -62,13 +64,6 @@ const itemChange_JS = (() =>{
             index++;
         });
 
-        /**
-         * 품목 제거 클릭
-         */
-        selector.subItemBtn.addEventListener('click', function(){
-            document.querySelector(`#boxIndex_${index-1}`).remove();
-            index--;
-        });
 
         /**
          * 최종 제출
@@ -80,17 +75,27 @@ const itemChange_JS = (() =>{
 
             let list = document.querySelectorAll('.itemInfo');
             let itemInfoList = [];
-            list.forEach((item, idx) =>{
-                const id = document.querySelector(`#itemNameId_${idx + 1}`)?.value;
-                const name = document.querySelector(`#itemName_${idx + 1}`)?.value;
-                const cnt = document.querySelector(`#itemCnt_${idx + 1}`)?.value;
+            list.forEach((item) =>{
+                let idx = item.id.substring(9,12);
+                const id = document.querySelector(`#itemNameId_${idx}`)?.value;
+                const name = document.querySelector(`#itemName_${idx}`)?.value;
+                const cnt = document.querySelector(`#itemCnt_${idx}`)?.value;
+                const price1 = document.querySelector(`#price1_${idx}`).value;
+                const price2 = document.querySelector(`#price2_${idx}`).value;
+                const type = selector.type().value;
+                const tacCheck = document.querySelector(`#Tax_${idx}`).checked;
+
+                let price = 0;
+                price = (type === 'IN') ? price1 : price2;
+                price = tacCheck ? price / 1.1 : price;
 
                 // 데이터가 있는 경우만 리스트에 추가
                 if (id && cnt) {
                     itemInfoList.push({
                         itemId: parseInt(id),
                         itemName: name,
-                        cnt: parseInt(cnt)
+                        cnt: parseInt(cnt),
+                        price: price,
                     });
                 }
             })
@@ -99,10 +104,10 @@ const itemChange_JS = (() =>{
                 date: selector.date.value,
                 customer: selector.customer.value,
                 customerTel: selector.customerTel.value.replaceAll('-',''),
-                itemInfoList: itemInfoList,
                 custNum: selector.custNum.value,
                 address: selector.address.value,
                 type: selector.type().value,
+                itemInfoList: itemInfoList,
             };
 
             let data = await sendRequest("/item/changeCnt",'POST',params);
@@ -175,24 +180,40 @@ const itemChange_JS = (() =>{
      */
     function initTotalPrice(){
         let list = document.querySelectorAll('.itemInfo');
+        let totalCnt = 0;
 
         let div = '';
-        list.forEach((item, idx) =>{
-            let price1 = document.querySelector(`#price1_${idx + 1}`).value;
-            let price2 = document.querySelector(`#price2_${idx + 1}`).value;
-            let cnt = document.querySelector(`#itemCnt_${idx + 1}`).value;
-            let itemName = document.querySelector(`#itemName_${idx + 1}`).value;
+        list.forEach((item) =>{
+            let idx = item.id.substring(9,12);
+            let price1 = document.querySelector(`#price1_${idx}`).value;
+            let price2 = document.querySelector(`#price2_${idx}`).value;
+            let cnt = document.querySelector(`#itemCnt_${idx}`).value;
+            let itemName = document.querySelector(`#itemName_${idx}`).value;
+            let taxCheck = document.querySelector(`#Tax_${idx}`).checked;
+            let calculate = '';
             let price = '';
 
-            if(selector.type().value === "IN"){
-                price = fommatter('comma', price1 * cnt);
-            }else{
-                price = fommatter('comma', price2 * cnt);
+
+            //비과세 체크
+            if(taxCheck){
+                price1 = price1 / 1.1;
+                price2 = price2 / 1.1;
             }
 
-            div += createComponent.합계금액(itemName, price);
+            if(selector.type().value === "IN"){
+                calculate = '(' + fommatter('comma',price1) + ' * ' +  cnt + ')  '
+                price += fommatter('comma', price1 * cnt);
+            }else{
+                calculate = '(' + fommatter('comma',price2) + ' * ' +  cnt + ')  '
+                price += fommatter('comma', price2 * cnt);
+            }
+
+            totalCnt += cnt;
+
+            div += createComponent.합계금액(itemName, calculate, price);
         });
 
+        selector.totalCount = totalCnt + '개';
         selector.receiptBox.innerHTML = div;
 
         let total = Array.from(document.querySelectorAll('.sumPrice')).reduce((acc, el) =>{
@@ -222,11 +243,15 @@ const itemChange_JS = (() =>{
         return true;
     }
 
+    function 품목제거(idx){
+        document.querySelector(`#boxIndex_${idx}`).remove();
+    }
 
     return {
         onLoad: onLoad,
         initTotalPrice: initTotalPrice,
         selectItem: selectItem,
+        품목제거: 품목제거,
     }
 })();
 

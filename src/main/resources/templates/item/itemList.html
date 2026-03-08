@@ -42,7 +42,7 @@
     <div id="itemModal" class="modal">
         <div class="modal-content">
             <header>
-                <h3>단가 이력 수정</h3>
+                <h3>단가 수정</h3>
                 <div class="item-info">
                     <strong>품목명</strong>
                     <span id="modalItemName">품목 데이터 대기 중...</span>
@@ -52,20 +52,29 @@
                 <table class="history-table">
                     <thead>
                     <tr>
-                        <th style="width: 180px;">적용일시</th>
                         <th>매입단가</th>
                         <th>매출단가</th>
-                        <th>가격3</th>
                     </tr>
                     </thead>
-                    <tbody id="modalHistoryBody"></tbody>
+                    <tbody id="modalHistoryBody">
+                        <tr>
+                            <td hidden>
+                                <input id="itemId">
+                            </td>
+                            <td>
+                                <input id="price1">
+                            </td>
+                            <td>
+                                <input id="price2">
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
 
             <footer class="modal-footer">
                 <button type="button" class="btn-close" onclick="document.getElementById('itemModal').style.display = 'none'">취소</button>
-                <button type="button" id="addPriceTr" class="btn-save" onclick="itemList_JS.단가이력추가()">추가</button>
-                <button type="button" id="savePriceBtn" class="btn-save">전체 저장</button>
+                <button type="button" id="savePriceBtn" class="btn-save">저장</button>
             </footer>
         </div>
     </div>

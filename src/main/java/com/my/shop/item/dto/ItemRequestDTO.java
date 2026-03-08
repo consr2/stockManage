@@ -13,7 +13,6 @@ public class ItemRequestDTO {
         private String itemName;
         private Integer price1;
         private Integer price2;
-        private Integer price3;
     }
 
     @Data
@@ -29,12 +28,10 @@ public class ItemRequestDTO {
 
     @Data
     @Builder
-    public static class InsertItemPrice{
+    public static class ItemPrice{
         private Integer id;
-        private Integer itemId;
         private Integer price1;
         private Integer price2;
-        private Integer price3;
         private String createAt;
     }
 
@@ -55,6 +52,7 @@ public class ItemRequestDTO {
     public static class ItemInfo{
         private Integer itemId;
         private String itemName;
+        private Integer price;
         private Integer cnt;
     }
 
@@ -73,13 +71,6 @@ public class ItemRequestDTO {
         private String endDate;
         private String itemName;
     }
-
-    @Data
-    public static class ItemPrice{
-        private Integer id;
-    }
-
-
 
 
 }

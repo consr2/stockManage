@@ -14,8 +14,7 @@ public class ItemResponseDTO {
         private Integer currentCnt;
         private Integer price1;
         private Integer price2;
-        private Integer price3;
-        private String createAt;
+        private String createdAt;
     }
 
     @Data
@@ -32,9 +31,7 @@ public class ItemResponseDTO {
         private String customer;
         private String customerTel;
         private String type;
-        private Integer price1;
-        private Integer price2;
-        private Integer price3;
+        private Integer price;
         private String createdAt;
         private String custNum;
         private String address;

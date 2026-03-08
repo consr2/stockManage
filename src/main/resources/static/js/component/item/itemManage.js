@@ -5,7 +5,6 @@ const itemManage_JS = (() =>{
         itemName: null,
         price1: null,
         price2: null,
-        price3: null
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -18,7 +17,6 @@ const itemManage_JS = (() =>{
         selector.itemName = document.querySelector('#itemName');
         selector.price1 = document.querySelector('#price1');
         selector.price2 = document.querySelector('#price2');
-        selector.price3 = document.querySelector('#price3');
     }
 
     function initEventListener(){
@@ -32,7 +30,6 @@ const itemManage_JS = (() =>{
                 itemName: selector.itemName.value,
                 price1: selector.price1.value.replace(',',''),
                 price2: selector.price2.value.replace(',',''),
-                price3: selector.price3.value.replace(',','')
             };
 
             let data = await sendRequest("/item/save",'POST',params);
@@ -42,7 +39,6 @@ const itemManage_JS = (() =>{
                 selector.itemName.value = '';
                 selector.price1.value = '';
                 selector.price2.value = '';
-                selector.price3.value = '';
             }
         });
     }

@@ -16,7 +16,7 @@ body {
     padding-top: 5vh;
 }
 
-.dashboard { width: 100%; max-width: 500px; padding: 0 24px; }
+.dashboard { width: 100%; max-width: 700px; padding: 0 24px; }
 .main-header { margin-bottom: 40px; }
 .main-header h1 { font-size: 32px; font-weight: 700; margin-top: 8px; }
 
@@ -95,7 +95,7 @@ body {
     background-color: var(--hover-bg);
 }
 .itemName{
-    width: 140%;
+    width: 65%;
 }
 .flex-box{
     display: flex;
@@ -124,6 +124,7 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    margin-right: 10px;
 }
 .subItem:hover {
     background: #ff6b6b;
@@ -169,3 +170,4 @@ body {
     display: flex;
     justify-content: space-between;
 }
+

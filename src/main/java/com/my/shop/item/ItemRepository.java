@@ -11,8 +11,6 @@ public interface ItemRepository {
 
     Integer insertItem(ItemRequestDTO.InsertItem insertItem);
 
-    Integer insertItemPrice(ItemRequestDTO.InsertItemPrice itemPriceDto);
-
     List<ItemResponseDTO.Item> selectItemByName(ItemRequestDTO.SearchItem searchItem);
 
     Integer insertItemHistroy(ItemRequestDTO.InsertItemHistory insertItemHistory);
@@ -29,7 +27,7 @@ public interface ItemRepository {
 
     List<ItemResponseDTO.ItemPrice> selectItemPriceList(ItemRequestDTO.ItemPrice itemPrice);
 
-    Integer saveItemPriceList(List<ItemRequestDTO.InsertItemPrice> insertItemPrice);
+    Integer updateItemPrice(ItemRequestDTO.ItemPrice itemPrice);
 
     Integer deleteItem(ItemRequestDTO.ItemPrice itemPrice);
 

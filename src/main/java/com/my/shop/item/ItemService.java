@@ -17,15 +17,6 @@ public class ItemService {
 
     public Integer saveItem(ItemRequestDTO.InsertItem insertItem){
         itemRepository.insertItem(insertItem);
-        ItemRequestDTO.InsertItemPrice itemPriceDto = ItemRequestDTO.InsertItemPrice.builder()
-                                        .itemId(insertItem.getId())
-                                        .price1(insertItem.getPrice1())
-                                        .price2(insertItem.getPrice2())
-                                        .price3(insertItem.getPrice3())
-                                        .build();
-
-        itemRepository.insertItemPrice(itemPriceDto);
-
         return 1;
     }
 
@@ -65,8 +56,8 @@ public class ItemService {
         return itemRepository.selectItemPriceList(itemPrice);
     }
 
-    public Integer saveItemPriceList(List<ItemRequestDTO.InsertItemPrice> insertItemPrice){
-        return itemRepository.saveItemPriceList(insertItemPrice);
+    public Integer saveItemPriceList(ItemRequestDTO.ItemPrice itemPrice){
+        return itemRepository.updateItemPrice(itemPrice);
     }
 
     public Integer deleteItem(ItemRequestDTO.ItemPrice itemPrice){

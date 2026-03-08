@@ -13,9 +13,16 @@ const createComponent = (() => {
                                 <div id="autocomplete-list_${idx}" class="autocomplete-suggestions"></div>
                             </div>
 
-                            <div class="input-group">
+                            <div class="input-group" style="width: 15%;">
                                 <label>수량</label>
                                 <input autocomplete="off" type="number" placeholder="0" id="itemCnt_${idx}" oninput="itemChange_JS.initTotalPrice()">
+                            </div>
+                            <div class="flex-box" style="margin: 15px 0 0 10px; align-items: center;">
+                                <button class="subItem" onclick="itemChange_JS.품목제거(${idx})">삭제</button>
+                                <div class="checkbox-container" style="display: flex; flex-direction: column;">
+                                    <input type="checkbox" id="Tax_${idx}" class="custom-checkbox" onchange="itemChange_JS.initTotalPrice()">
+                                    <label for="Tax_${idx}">비과세</label>
+                                </div>
                             </div>
                         </div>`;
 
@@ -30,10 +37,13 @@ const createComponent = (() => {
         return div;
     }
 
-    function 합계금액(itemName, price){
+    function 합계금액(itemName, calculate, price){
         let div = `<div class="flex-box2">
                             <span>${itemName}</span>
-                            <span class="sumPrice">${price}원</span>
+                            <div>
+                                <span class="sumPrice">${price}원</span>
+                                <span>${calculate}</span>
+                            </div>
                         </div>`;
         return div;
     }
@@ -62,34 +72,12 @@ const createComponent = (() => {
         return div;
     }
 
-    function 단가이력수정목록(item){
-        let div = `<tr>
-                                <td hidden>
-                                    <input data-id="${item.id ?? ''}" data-itemid="${item.itemId ?? ''}">
-                                </td>
-                                <td>
-                                    <input value="${item.createAt ?? getCurrentTime()}">
-                                </td>
-                                <td>
-                                    <input value="${fommatter('comma',item.price1)}" oninput="this.value = fommatter('comma',this.value)">
-                                </td>
-                                <td>
-                                    <input value="${fommatter('comma',item?.price2)}" oninput="this.value = fommatter('comma',this.value)">
-                                </td>
-                                <td>
-                                    <input value="${fommatter('comma',item?.price3)}" oninput="this.value = fommatter('comma',this.value)">
-                                </td>
-                            </tr>`;
-        return div;
-    }
-
     function 명세표출력(item, idx){
         let div = `<tr>
                             <td>${idx}</td>
                             <td>${item.itemName}</td>
                             <td>${item.cnt}</td>
-                            <td class="text-right">${fommatter('comma',item.price1)}</td>
-                            <td class="text-right">${fommatter('comma',item.price2)}</td>
+                            <td class="text-right">${fommatter('comma',item.price)}</td>
                             <td></td>
                         </tr>`;
 
@@ -102,7 +90,6 @@ const createComponent = (() => {
         합계금액: 합계금액,
         검색된고객명단: 검색된고객명단,
         만료된휠체어목록: 만료된휠체어목록,
-        단가이력수정목록: 단가이력수정목록,
         명세표출력: 명세표출력,
     }
 })();

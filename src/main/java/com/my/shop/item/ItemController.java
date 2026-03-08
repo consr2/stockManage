@@ -124,10 +124,10 @@ public class ItemController {
 
     @ResponseBody
     @PostMapping("/item/saveItemPriceList")
-    public ResponseUtil saveItemPriceList(@RequestBody List<ItemRequestDTO.InsertItemPrice> insertItemPrice){
+    public ResponseUtil saveItemPriceList(@RequestBody ItemRequestDTO.ItemPrice itemPrice){
         log.info("POST : /item/saveItemPriceList");
         return ResponseUtil.builder()
-                .data(itemService.saveItemPriceList(insertItemPrice))
+                .data(itemService.saveItemPriceList(itemPrice))
                 .msg("저장성공")
                 .code(200)
                 .build();
