@@ -31,4 +31,6 @@ public interface ItemRepository {
 
     Integer deleteItem(ItemRequestDTO.ItemPrice itemPrice);
 
+    Integer updateitemHist(ItemRequestDTO.ItemHistoryUpdate itemHist);
+
 }

@@ -64,4 +64,8 @@ public class ItemService {
         return itemRepository.deleteItem(itemPrice);
     }
 
+    public Integer updateHist(ItemRequestDTO.ItemHistoryUpdate itemHist){
+        return itemRepository.updateitemHist(itemHist);
+    }
+
 }

@@ -72,5 +72,13 @@ public class ItemRequestDTO {
         private String itemName;
     }
 
+    @Data
+    public static class ItemHistoryUpdate{
+        private Integer id;
+        private Integer cnt;
+        private Integer price;
+        private String customer;
+    }
+
 
 }

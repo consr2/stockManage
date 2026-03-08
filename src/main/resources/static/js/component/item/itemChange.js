@@ -37,7 +37,7 @@ const itemChange_JS = (() =>{
         selector.customerTel = document.querySelector('#customerTel');
         selector.totalPrice = document.querySelector('#totalPrice');
         selector.receiptBox = document.querySelector('#receiptBox');
-        selector.custNum = document.querySelector('#receiptBox');
+        selector.custNum = document.querySelector('#custNum');
         selector.address = document.querySelector('#address');
         selector.totalCount = document.querySelector('#totalCount');
         index = 1;
@@ -196,8 +196,8 @@ const itemChange_JS = (() =>{
 
             //비과세 체크
             if(taxCheck){
-                price1 = price1 / 1.1;
-                price2 = price2 / 1.1;
+                price1 = Math.trunc(price1 / 1.1);
+                price2 = Math.trunc(price2 / 1.1);
             }
 
             if(selector.type().value === "IN"){

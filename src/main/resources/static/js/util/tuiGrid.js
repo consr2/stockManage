@@ -144,7 +144,7 @@ const tuiGrid_JS = (() =>{
                         sortable: true,
                     },
                     {
-                        header: '가격',
+                        header: '단가',
                         align: 'center',
                         name: 'price',
                         width: 110,

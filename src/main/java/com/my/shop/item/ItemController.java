@@ -111,16 +111,16 @@ public class ItemController {
                 .build();
     }
 
-    @ResponseBody
-    @PostMapping("/item/getItemPriceList")
-    public ResponseUtil getItemPriceList(@RequestBody ItemRequestDTO.ItemPrice itemPrice){
-        log.info("POST : /item/getItemPriceList");
-        return ResponseUtil.builder()
-                .data(itemService.getItemPriceList(itemPrice))
-                .msg("조회성공")
-                .code(200)
-                .build();
-    }
+//    @ResponseBody
+//    @PostMapping("/item/getItemPriceList")
+//    public ResponseUtil getItemPriceList(@RequestBody ItemRequestDTO.ItemPrice itemPrice){
+//        log.info("POST : /item/getItemPriceList");
+//        return ResponseUtil.builder()
+//                .data(itemService.getItemPriceList(itemPrice))
+//                .msg("조회성공")
+//                .code(200)
+//                .build();
+//    }
 
     @ResponseBody
     @PostMapping("/item/saveItemPriceList")
@@ -139,6 +139,17 @@ public class ItemController {
         log.info("POST : /item/deleteItem");
         return ResponseUtil.builder()
                 .data(itemService.deleteItem(itemPrice))
+                .msg("저장성공")
+                .code(200)
+                .build();
+    }
+
+    @ResponseBody
+    @PostMapping("/item/updateHist")
+    public ResponseUtil updateHist(@RequestBody ItemRequestDTO.ItemHistoryUpdate itemHist){
+        log.info("POST : /item/updateHist");
+        return ResponseUtil.builder()
+                .data(itemService.updateHist(itemHist))
                 .msg("저장성공")
                 .code(200)
                 .build();

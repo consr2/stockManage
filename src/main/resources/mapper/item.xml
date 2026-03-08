@@ -158,4 +158,13 @@
         WHERE id = #{id}
     </update>
 
+    <update id="updateitemHist">
+        UPDATE item_history
+        SET customer = #{customer}
+            ,cnt = #{cnt}
+            ,price = #{price}
+        WHERE id = #{id}
+    </update>
+
+
 </mapper>

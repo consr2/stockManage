@@ -14,6 +14,13 @@ const itemHistory_JS = (() =>{
         typeSelect: null,
         paymentReportBtn: null,
         paymentTemplate: null,
+        editHistId: null,
+        editItemName: null,
+        editCnt: null,
+        editPrice: null,
+        editCustomer: null,
+        editModal: null,
+        totalSumDisplay: null,
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -34,6 +41,14 @@ const itemHistory_JS = (() =>{
         selector.typeSelect = document.querySelector('#typeSelect');
         selector.paymentReportBtn = document.querySelector('#paymentReportBtn');
         selector.paymentTemplate = document.querySelector('#paymentTemplate');
+        selector.closeModal = document.querySelector('#closeModal');
+        selector.editHistId = document.querySelector('#editHistId');
+        selector.editItemName = document.querySelector('#editItemName');
+        selector.editCnt = document.querySelector('#editCnt');
+        selector.editPrice = document.querySelector('#editPrice');
+        selector.editCustomer = document.querySelector('#editCustomer');
+        selector.editModal = document.querySelector('#editModal');
+        selector.totalSumDisplay = document.querySelector('#totalSumDisplay');
     }
 
     function initEventListener(){
@@ -69,6 +84,11 @@ const itemHistory_JS = (() =>{
             let data = await sendRequest('/item/getItemHistory', 'POST', param);
             console.log(data);
             initGrid(data.data);
+
+            let totalPrice = data.data.reduce((acc, e) =>{
+                return acc + (Number(e.price) * Number(e.cnt));
+            }, 0)
+            selector.totalSumDisplay.innerHTML = `₩ ${fommatter('comma', totalPrice)}`;
         })
 
         selector.excelDownBtn.addEventListener('click', function(){
@@ -125,6 +145,10 @@ const itemHistory_JS = (() =>{
             printWindow.document.close();
             printWindow.print();
         })
+
+        selector.closeModal.addEventListener('click', function(){
+            selector.editModal.style.display = 'none';
+        })
     }
 
     function setCustomer(name){
@@ -153,14 +177,35 @@ const itemHistory_JS = (() =>{
         grid.on('dblclick', async (e) => {
             const rowData = grid.getRow(e.rowKey);
             console.log(rowData);
-            selector.itemId.value = rowData.id;
-            selector.price2.value = rowData.price2;
-            selector.itemModal.style.display = 'flex';
+            selector.editHistId.value = rowData.id;
+            selector.editItemName.value = rowData.itemName;
+            selector.editCnt.value = rowData.cnt;
+            selector.editPrice.value = rowData.price;
+            selector.editCustomer.value = rowData.customer;
+
+            // 모달 열기
+            selector.editModal.style.display = 'flex';
         })
+    }
+
+    async function 입출고이력수정(){
+        let param = {
+            id: selector.editHistId.value,
+            cnt: selector.editCnt.value,
+            price: selector.editPrice.value,
+            customer: selector.editCustomer.value,
+        }
+        let data = await sendRequest('/item/updateHist','POST', param);
+        if(data.code === '200'){
+            alert(data.msg);
+        }
+        selector.itemHistorySearchBtn.click();
+        selector.closeModal.click();
     }
 
     return{
         setCustomer: setCustomer,
+        입출고이력수정: 입출고이력수정,
     }
 
 })()
