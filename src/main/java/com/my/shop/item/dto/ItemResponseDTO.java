@@ -32,6 +32,7 @@ public class ItemResponseDTO {
         private String customerTel;
         private String type;
         private Integer price;
+        private Integer itemIdx;
         private String createdAt;
         private String custNum;
         private String address;

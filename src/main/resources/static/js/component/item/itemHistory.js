@@ -21,6 +21,9 @@ const itemHistory_JS = (() =>{
         editCustomer: null,
         editModal: null,
         totalSumDisplay: null,
+        editItemIdx: null,
+        editBeforeCnt: null,
+        editType: null,
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -49,6 +52,9 @@ const itemHistory_JS = (() =>{
         selector.editCustomer = document.querySelector('#editCustomer');
         selector.editModal = document.querySelector('#editModal');
         selector.totalSumDisplay = document.querySelector('#totalSumDisplay');
+        selector.editItemIdx = document.querySelector('#editItemIdx');
+        selector.editBeforeCnt = document.querySelector('#editBeforeCnt');
+        selector.editType = document.querySelector('#editType');
     }
 
     function initEventListener(){
@@ -183,15 +189,26 @@ const itemHistory_JS = (() =>{
             selector.editPrice.value = rowData.price;
             selector.editCustomer.value = rowData.customer;
 
+            selector.editItemIdx.value = rowData.itemIdx;
+            selector.editBeforeCnt.value = rowData.cnt;
+            selector.editType.value = rowData.type;
+
             // 모달 열기
             selector.editModal.style.display = 'flex';
         })
     }
 
     async function 입출고이력수정(){
+        let beforeCnt = selector.editBeforeCnt.value;
+        let afterCnt = selector.editCnt.value;
+        let editType = selector.editType.value;
+        let calCnt = editType === 'IN' ? Number(afterCnt) - Number(beforeCnt) : Number(beforeCnt) - Number(afterCnt);
+
         let param = {
             id: selector.editHistId.value,
+            itemIdx: selector.editItemIdx.value,
             cnt: selector.editCnt.value,
+            calCnt: calCnt,
             price: selector.editPrice.value,
             customer: selector.editCustomer.value,
         }
@@ -203,9 +220,27 @@ const itemHistory_JS = (() =>{
         selector.closeModal.click();
     }
 
+    async function 입출고이력삭제(idx){
+        let gridData = grid.getRow(idx);
+        console.log(gridData)
+        let param = {
+            id: gridData.id,
+            itemIdx: gridData.itemIdx,
+            cnt: gridData.cnt,
+            type: gridData.type,
+        }
+
+        let data = await sendRequest('/item/deleteHist','POST', param);
+        if(data.code === '200'){
+            alert(data.msg);
+        }
+        selector.itemHistorySearchBtn.click();
+    }
+
     return{
         setCustomer: setCustomer,
         입출고이력수정: 입출고이력수정,
+        입출고이력삭제: 입출고이력삭제,
     }
 
 })()

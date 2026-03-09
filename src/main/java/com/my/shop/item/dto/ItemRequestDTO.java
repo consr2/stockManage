@@ -49,6 +49,7 @@ public class ItemRequestDTO {
     }
 
     @Data
+    @Builder
     public static class ItemInfo{
         private Integer itemId;
         private String itemName;
@@ -75,9 +76,12 @@ public class ItemRequestDTO {
     @Data
     public static class ItemHistoryUpdate{
         private Integer id;
+        private Integer itemIdx;
         private Integer cnt;
+        private Integer calCnt;
         private Integer price;
         private String customer;
+        private String type;
     }
 
 

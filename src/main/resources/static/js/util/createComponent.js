@@ -19,10 +19,6 @@ const createComponent = (() => {
                             </div>
                             <div class="flex-box" style="margin: 15px 0 0 10px; align-items: center;">
                                 <button class="subItem" onclick="itemChange_JS.품목제거(${idx})">삭제</button>
-                                <div class="checkbox-container" style="display: flex; flex-direction: column;">
-                                    <input type="checkbox" id="Tax_${idx}" class="custom-checkbox" onchange="itemChange_JS.initTotalPrice()">
-                                    <label for="Tax_${idx}">비과세</label>
-                                </div>
                             </div>
                         </div>`;
 

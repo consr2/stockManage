@@ -8,9 +8,9 @@
 
     <insert id="insertItem"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO items
-            (item_name, price1, price2, price3)
+            (item_name, price1, price2)
         VALUES
-            (#{itemName},#{price1},#{price2},#{price3})
+            (#{itemName},#{price1},#{price2})
     </insert>
 
     <insert id="insertItemStock">
@@ -83,6 +83,7 @@
             h.customer_tel,
             h.type,
             h.price,
+            h.item_idx,
             h.created_at,
             h.cust_num,
             h.address
@@ -163,6 +164,11 @@
         SET customer = #{customer}
             ,cnt = #{cnt}
             ,price = #{price}
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteItemHist">
+        DELETE FROM item_history
         WHERE id = #{id}
     </update>
 

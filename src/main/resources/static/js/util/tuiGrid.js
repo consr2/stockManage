@@ -182,6 +182,15 @@ const tuiGrid_JS = (() =>{
                             return typeMap[value];
                         }
                     },
+                    {
+                        header: '삭제',
+                        align: 'center',
+                        name: 'histDel',
+                        width: 60,
+                        formatter:(data) => {
+                            return `<button class="tui-btn-red" onclick="itemHistory_JS.입출고이력삭제(${data.row.rowKey})">삭제</button>`;
+                        }
+                    }
 
                 ]
             },

@@ -17,6 +17,7 @@ const itemChange_JS = (() =>{
         custNum: null,
         address: null,
         totalCount: null,
+        autoSearchCustomer: null,
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -40,6 +41,7 @@ const itemChange_JS = (() =>{
         selector.custNum = document.querySelector('#custNum');
         selector.address = document.querySelector('#address');
         selector.totalCount = document.querySelector('#totalCount');
+        selector.autoSearchCustomer = document.querySelector('#autoSearchCustomer');
         index = 1;
     }
 
@@ -83,11 +85,9 @@ const itemChange_JS = (() =>{
                 const price1 = document.querySelector(`#price1_${idx}`).value;
                 const price2 = document.querySelector(`#price2_${idx}`).value;
                 const type = selector.type().value;
-                const tacCheck = document.querySelector(`#Tax_${idx}`).checked;
 
                 let price = 0;
                 price = (type === 'IN') ? price1 : price2;
-                price = tacCheck ? price / 1.1 : price;
 
                 // 데이터가 있는 경우만 리스트에 추가
                 if (id && cnt) {
@@ -122,6 +122,23 @@ const itemChange_JS = (() =>{
                 selector.address.value  = '';
                 index = 1;
                 selector.addItemBtn.click();
+            }
+        })
+
+        selector.customer.addEventListener('input',async function(){
+            let value = this.value;
+
+            if(!checkAutoComplete(value)){
+                selector.autoSearchCustomer.innerHTML = '';
+                return;
+            }
+            let param = {
+                customerName: value
+            }
+
+            let data = await sendRequest('/customer/getCustomerList', 'POST', param);
+            if(data.code === 200){
+                console.log(data.data);
             }
         })
     }
@@ -189,16 +206,9 @@ const itemChange_JS = (() =>{
             let price2 = document.querySelector(`#price2_${idx}`).value;
             let cnt = document.querySelector(`#itemCnt_${idx}`).value;
             let itemName = document.querySelector(`#itemName_${idx}`).value;
-            let taxCheck = document.querySelector(`#Tax_${idx}`).checked;
             let calculate = '';
             let price = '';
 
-
-            //비과세 체크
-            if(taxCheck){
-                price1 = Math.trunc(price1 / 1.1);
-                price2 = Math.trunc(price2 / 1.1);
-            }
 
             if(selector.type().value === "IN"){
                 calculate = '(' + fommatter('comma',price1) + ' * ' +  cnt + ')  '

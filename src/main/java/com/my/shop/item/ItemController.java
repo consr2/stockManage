@@ -155,4 +155,15 @@ public class ItemController {
                 .build();
     }
 
+    @ResponseBody
+    @PostMapping("/item/deleteHist")
+    public ResponseUtil deleteHist(@RequestBody ItemRequestDTO.ItemHistoryUpdate itemHist){
+        log.info("POST : /item/deleteHist");
+        return ResponseUtil.builder()
+                .data(itemService.deleteHist(itemHist))
+                .msg("삭제성공")
+                .code(200)
+                .build();
+    }
+
 }

@@ -40,7 +40,7 @@
             </div>
             <div class="filter-group">
                 <label>고객/담당자</label>
-                <input type="text" placeholder="성함/업체명" id="customer">
+                <input type="text" placeholder="성함/업체명" id="customer" autocomplete="off">
                 <div id="autocompleteList"></div>
             </div>
             <button class="btn-search" id="itemHistorySearchBtn">조회</button>
@@ -401,6 +401,9 @@
         </div>
         <div class="modal-body">
             <input id="editHistId" hidden>
+            <input id="editItemIdx" hidden>
+            <input id="editBeforeCnt" hidden>
+            <input id="editType" hidden>
             <div class="filter-group">
                 <label>품명</label>
                 <input type="text" id="editItemName" readonly style="background:#f2f2f2;">
