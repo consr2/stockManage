@@ -37,6 +37,12 @@ const itemList_JS = (() =>{
     }
 
     function initEventListener(){
+        selector.itemName.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') {
+                selector.itemListSearchBtn.click();
+            }
+        })
+
         selector.itemListSearchBtn.addEventListener('click',async function(){
             let param = {
                 startDate: selector.startDt.value,

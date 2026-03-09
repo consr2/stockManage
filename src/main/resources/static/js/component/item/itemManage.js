@@ -42,6 +42,7 @@ const itemManage_JS = (() =>{
                 selector.itemName.value = '';
                 selector.price1.value = '';
                 selector.price2.value = '';
+                selector.taxYN.checked = false;
             }
         });
     }

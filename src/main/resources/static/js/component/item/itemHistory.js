@@ -58,8 +58,19 @@ const itemHistory_JS = (() =>{
     }
 
     function initEventListener(){
-        selector.customerInput.addEventListener('input',async function(){
+        selector.customer.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') {
+                selector.itemHistorySearchBtn.click();
+            }
+        })
+        selector.itemName.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') {
+                selector.itemHistorySearchBtn.click();
+            }
+        })
 
+
+        selector.customerInput.addEventListener('input',async function(){
             if(!checkAutoComplete(this.value)){
                 selector.autocompleteList.innerHTML = '';
                 return;
@@ -103,6 +114,7 @@ const itemHistory_JS = (() =>{
                 }
             })
 
+            selector.autocompleteList.innerHTML = '';
         })
 
         selector.excelDownBtn.addEventListener('click', function(){
