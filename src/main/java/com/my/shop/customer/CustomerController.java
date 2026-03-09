@@ -24,7 +24,7 @@ public class CustomerController {
         log.info("POST : /customer/getCustomerList");
         return ResponseUtil.builder()
                 .data(customerService.selectCustomerList(customer))
-                .msg("연장이 완료되었습니다")
+                .msg("고객정보 조회")
                 .code(200)
                 .build();
     }

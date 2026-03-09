@@ -95,7 +95,7 @@ body {
     background-color: var(--hover-bg);
 }
 .itemName{
-    width: 65%;
+    width: 74%;
 }
 .flex-box{
     display: flex;

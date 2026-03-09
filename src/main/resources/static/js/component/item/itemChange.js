@@ -103,7 +103,7 @@ const itemChange_JS = (() =>{
             const params = {
                 date: selector.date.value,
                 customer: selector.customer.value,
-                customerTel: selector.customerTel.value.replaceAll('-',''),
+                customerTel: selector.customerTel.value,
                 custNum: selector.custNum.value,
                 address: selector.address.value,
                 type: selector.type().value,
@@ -139,6 +139,11 @@ const itemChange_JS = (() =>{
             let data = await sendRequest('/customer/getCustomerList', 'POST', param);
             if(data.code === 200){
                 console.log(data.data);
+                let result = '';
+                data.data.forEach(item => {
+                    result += createComponent.고객검색목록(item);
+                })
+                selector.autoSearchCustomer.innerHTML = result;
             }
         })
     }
@@ -257,11 +262,21 @@ const itemChange_JS = (() =>{
         document.querySelector(`#boxIndex_${idx}`).remove();
     }
 
+    function 고객선택(custInfo){
+        selector.customer.value = custInfo.customerName;
+        selector.custNum.value = custInfo.custNum;
+        selector.customerTel.value = custInfo.customerTel;
+        selector.address.value = custInfo.custAddress;
+
+        selector.autoSearchCustomer.innerHTML = '';
+    }
+
     return {
         onLoad: onLoad,
         initTotalPrice: initTotalPrice,
         selectItem: selectItem,
         품목제거: 품목제거,
+        고객선택: 고객선택,
     }
 })();
 

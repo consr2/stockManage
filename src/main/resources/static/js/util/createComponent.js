@@ -80,6 +80,13 @@ const createComponent = (() => {
         return div;
     }
 
+    function 고객검색목록(item){
+        let div = `<div class="suggestion-item" onclick='itemChange_JS.고객선택(${JSON.stringify(item)})'>
+                                ${item.customerName} (${fommatter('tel',item.customerTel)})
+                            </div>`;
+        return div;
+    }
+
     return {
         품목추가: 품목추가,
         검색된품목: 검색된품목,
@@ -87,5 +94,6 @@ const createComponent = (() => {
         검색된고객명단: 검색된고객명단,
         만료된휠체어목록: 만료된휠체어목록,
         명세표출력: 명세표출력,
+        고객검색목록: 고객검색목록,
     }
 })();
