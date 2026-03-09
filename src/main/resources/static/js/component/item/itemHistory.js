@@ -95,6 +95,14 @@ const itemHistory_JS = (() =>{
                 return acc + (Number(e.price) * Number(e.cnt));
             }, 0)
             selector.totalSumDisplay.innerHTML = `₩ ${fommatter('comma', totalPrice)}`;
+
+            //색 주기
+            grid.getData().forEach((data) => {
+                if(data.taxYN === 'Y'){
+                    grid.addRowClassName(data.rowKey, 'grid-blue');
+                }
+            })
+
         })
 
         selector.excelDownBtn.addEventListener('click', function(){
@@ -121,9 +129,18 @@ const itemHistory_JS = (() =>{
 
             let result = '';
             data.forEach((item,idx) => {
+                if(item.taxYN === 'Y'){
+                    item.tax = 0;
+                    item.realPrice = Number(item.price);
+                    item.totalPrice = Number(item.price) * Number(item.cnt);
+                }else{
+                    item.tax = getTax(item.price);
+                    item.realPrice = getRealPrice(item.price);
+                    item.totalPrice = Number(item.price) * Number(item.cnt);
+                }
                 result += createComponent.명세표출력(item, idx);
             })
-
+            console.log("변환후 값 : ", data);
             //정보 세팅
             let totalPrice = data.reduce((acc, e) =>{
                 return acc + (Number(e.price) * Number(e.cnt));
@@ -131,8 +148,12 @@ const itemHistory_JS = (() =>{
             let totalCnt = data.reduce((acc, e) =>{
                 return acc +  Number(e.cnt);
             }, 0)
-            let realPrice = Math.trunc(totalPrice / 1.1);
-            let vat = Math.trunc(Number(realPrice) * 0.1);
+            let realPrice = data.reduce((acc, e) =>{
+                return acc +  Number(e.realPrice);
+            }, 0)
+            let vat = Math.trunc(data.reduce((acc, e) =>{
+                return acc +  Number(e.tax);
+            }, 0));
 
             template.querySelector('#paymentBody').innerHTML = result;
             template.querySelector('#report_customer').innerHTML = data[0].customer;
@@ -146,7 +167,7 @@ const itemHistory_JS = (() =>{
             template.querySelector('#report_totalVat').innerHTML = fommatter('comma',vat);
             template.querySelector('#report_totalAmount').innerHTML = fommatter('comma',totalPrice);
 
-            const printWindow = window.open('', '_blank', 'width=870,height=600');
+            const printWindow = window.open('', '_blank', 'width=1000,height=800');
             printWindow.document.body.appendChild(template);
             printWindow.document.close();
             printWindow.print();

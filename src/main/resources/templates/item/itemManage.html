@@ -27,6 +27,13 @@
                 <label>매출단가</label>
                 <input placeholder="0" id="price2" oninput="this.value = fommatter('comma', this.value)">
             </div>
+            <div class="input-group">
+                <label class="font17" for="taxYN">비과세</label>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="taxYN" style="width: 20px; height: 20px;">
+                    <span class="checkbox-label font17">해당 매입, 매출단가는 비과세로 계산됩니다</span>
+                </label>
+            </div>
             <button type="submit" class="btn-add" id="saveItemBtn">등록하기</button>
         </div>
     </section>

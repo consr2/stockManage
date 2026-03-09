@@ -36,6 +36,7 @@ public class ItemResponseDTO {
         private String createdAt;
         private String custNum;
         private String address;
+        private String taxYN;
     }
 
     @Data

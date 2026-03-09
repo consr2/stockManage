@@ -8,9 +8,9 @@
 
     <insert id="insertItem"  useGeneratedKeys="true" keyProperty="id">
         INSERT INTO items
-            (item_name, price1, price2)
+            (item_name, price1, price2, taxYN)
         VALUES
-            (#{itemName},#{price1},#{price2})
+            (#{itemName},#{price1},#{price2},#{taxYN})
     </insert>
 
     <insert id="insertItemStock">
@@ -86,7 +86,8 @@
             h.item_idx,
             h.created_at,
             h.cust_num,
-            h.address
+            h.address,
+            i.taxYN
         FROM item_history h
         left join items i on h.item_idx = i.id
         WHERE 1=1

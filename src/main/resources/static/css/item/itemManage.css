@@ -77,3 +77,6 @@ body {
 }
 .item-card .name { display: block; font-size: 16px; font-weight: 600; }
 
+.font17{
+    font-size: 17px !important;
+}

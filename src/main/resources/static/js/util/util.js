@@ -114,3 +114,13 @@ function convertToKoreanWon(num) {
 
     return `${result}원정`;
 }
+
+
+function getRealPrice(price){
+    return Math.trunc(Number(price) / 1.1);
+}
+
+function getTax(price){
+    let real = Math.trunc(Number(price) / 1.1);
+    return Math.trunc(Number(real) - price);
+}

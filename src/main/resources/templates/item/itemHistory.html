@@ -47,8 +47,13 @@
         </div>
     </section>
     <div class="excelBtnBox">
-        <button class="btn-search excelBtn" id="paymentReportBtn">명세서 출력</button>
-        <button class="btn-search excelBtn" id="excelDownBtn">엑셀다운</button>
+        <div>
+            <div class="taxfree">비과세</div>
+        </div>
+        <div>
+            <button class="btn-search excelBtn" id="paymentReportBtn">명세서 출력</button>
+            <button class="btn-search excelBtn" id="excelDownBtn">엑셀다운</button>
+        </div>
     </div>
     <div class="gridBox" id="grid"></div>
 
@@ -356,7 +361,10 @@
             <th style="width: 50px;">No</th>
             <th style="width: 250px;">품명</th>
             <th style="width: 50px;">수량</th>
-            <th style="width: 80px;">가격</th>
+            <th style="width: 80px;">공급가액</th>
+            <th style="width: 80px;">부가세</th>
+            <th style="width: 80px;">최종단가</th>
+            <th style="width: 80px;">합계</th>
             <th style="width: 100px;">비고</th>
         </tr>
         </thead>

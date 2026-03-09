@@ -5,6 +5,7 @@ const itemManage_JS = (() =>{
         itemName: null,
         price1: null,
         price2: null,
+        taxYN: null,
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -17,6 +18,7 @@ const itemManage_JS = (() =>{
         selector.itemName = document.querySelector('#itemName');
         selector.price1 = document.querySelector('#price1');
         selector.price2 = document.querySelector('#price2');
+        selector.taxYN = document.querySelector('#taxYN');
     }
 
     function initEventListener(){
@@ -30,6 +32,7 @@ const itemManage_JS = (() =>{
                 itemName: selector.itemName.value,
                 price1: selector.price1.value.replace(',',''),
                 price2: selector.price2.value.replace(',',''),
+                taxYN: selector.taxYN.checked ? 'Y' : 'N',
             };
 
             let data = await sendRequest("/item/save",'POST',params);

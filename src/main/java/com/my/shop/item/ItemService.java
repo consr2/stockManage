@@ -20,8 +20,7 @@ public class ItemService {
     private final CustomerRepository customerRepository;
 
     public Integer saveItem(ItemRequestDTO.InsertItem insertItem){
-        itemRepository.insertItem(insertItem);
-        return 1;
+        return itemRepository.insertItem(insertItem);
     }
 
     public List<ItemResponseDTO.Item> itemSerch(ItemRequestDTO.SearchItem searchItem){

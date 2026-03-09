@@ -73,8 +73,11 @@ const createComponent = (() => {
                             <td>${idx}</td>
                             <td>${item.itemName}</td>
                             <td>${item.cnt}</td>
+                            <td class="text-right">${fommatter('comma',item.realPrice)}</td>
+                            <td class="text-right">${fommatter('comma',item.tax)}</td>
                             <td class="text-right">${fommatter('comma',item.price)}</td>
-                            <td></td>
+                            <td class="text-right">${fommatter('comma',item.totalPrice)}</td>
+                            <td>${item.taxYN === 'Y' ? '비과세' : ''}</td>
                         </tr>`;
 
         return div;

@@ -23,7 +23,8 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
 
 .excelBtnBox{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
 }
 .excelBtn{
     margin: 10px;
@@ -228,6 +229,13 @@ body { background-color: var(--bg-color); color: var(--text-main); display: flex
 }
 .tui-btn-red:hover { background: #ffd0d0; }
 
+.grid-blue{
+    background: #b0c4de !important;
+}
 
-
-
+.taxfree{
+    background: #b0c4de;
+    border-radius: 20px;
+    margin: 0 0 0 20px;
+    padding: 5px 10px;
+}

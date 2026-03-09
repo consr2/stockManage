@@ -145,3 +145,70 @@ textarea {
     margin-top: 10px;
     border-radius: 12px;
 }
+
+
+
+
+/* 체크박스 컨테이너 */
+.big-check-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 16px;
+    transition: background 0.2s;
+}
+
+.big-check-wrapper:hover {
+    background-color: var(--hover-bg);
+}
+
+/* 실제 체크박스 숨기기 */
+.big-check-wrapper input {
+    display: none;
+}
+
+/* 커스텀 체크박스 (이미지 역할) */
+.check-icon {
+    width: 48px;  /* 여기서 크기 자유롭게 조절 */
+    height: 48px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px; /* 더 둥글게 하려면 수치 변경 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: #fff;
+}
+
+/* 체크되었을 때 디자인 변화 */
+.big-check-wrapper input:checked + .check-icon {
+    background-color: var(--text-main);
+    border-color: var(--text-main);
+    transform: scale(1.05); /* 살짝 커지는 효과 */
+}
+
+/* SVG 체크 표시 스타일 */
+.check-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: none;
+    stroke: white;
+    stroke-width: 4; /* 선 두께 조절 가능 */
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.big-check-wrapper input:checked + .check-icon svg {
+    stroke-dashoffset: 0;
+}
+
+/* 라벨 텍스트 */
+.big-label-text {
+    font-size: 20px;
+    font-weight: 600;
+}

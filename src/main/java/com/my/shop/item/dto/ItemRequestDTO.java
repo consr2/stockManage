@@ -13,6 +13,7 @@ public class ItemRequestDTO {
         private String itemName;
         private Integer price1;
         private Integer price2;
+        private String taxYN;
     }
 
     @Data
