@@ -55,7 +55,7 @@ function fommatter(type, data){
 
 function checkAutoComplete(value){
     let lastChar = value.charAt(value.length-1);
-    let validate = /[가-힣a-zA-Z]/.test(lastChar)
+    let validate = /[0-9가-힣a-zA-Z]/.test(lastChar)
 
     if(value.length > 1 && validate){
         return true;
