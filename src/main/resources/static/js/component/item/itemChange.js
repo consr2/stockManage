@@ -260,6 +260,7 @@ const itemChange_JS = (() =>{
 
     function 품목제거(idx){
         document.querySelector(`#boxIndex_${idx}`).remove();
+        initTotalPrice();
     }
 
     function 고객선택(custInfo){
