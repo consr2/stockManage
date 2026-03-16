@@ -169,6 +169,13 @@ const tuiGrid_JS = (() =>{
                         }
                     },
                     {
+                        header: '결제방식',
+                        align: 'center',
+                        name: 'payType',
+                        width: 70,
+                        sortable: true,
+                    },
+                    {
                         header: '타입',
                         name: 'type',
                         width: 50,

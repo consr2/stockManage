@@ -44,6 +44,7 @@ public class ItemRequestDTO {
         private String customerTel;
         private String custNum;
         private String type;
+        private String payType;
         private String address;
         private List<ItemInfo> itemInfoList;
 

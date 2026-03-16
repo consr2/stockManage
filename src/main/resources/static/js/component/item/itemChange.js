@@ -18,6 +18,7 @@ const itemChange_JS = (() =>{
         address: null,
         totalCount: null,
         autoSearchCustomer: null,
+        payType: null,
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -42,6 +43,7 @@ const itemChange_JS = (() =>{
         selector.address = document.querySelector('#address');
         selector.totalCount = document.querySelector('#totalCount');
         selector.autoSearchCustomer = document.querySelector('#autoSearchCustomer');
+        selector.payType = document.querySelector('#payType');
         index = 1;
     }
 
@@ -107,6 +109,7 @@ const itemChange_JS = (() =>{
                 custNum: selector.custNum.value,
                 address: selector.address.value,
                 type: selector.type().value,
+                payType: selector.payType.value,
                 itemInfoList: itemInfoList,
             };
 

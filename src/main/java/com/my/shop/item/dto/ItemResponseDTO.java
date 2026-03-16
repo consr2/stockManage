@@ -37,6 +37,7 @@ public class ItemResponseDTO {
         private String custNum;
         private String address;
         private String taxYN;
+        private String payType;
     }
 
     @Data

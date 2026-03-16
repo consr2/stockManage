@@ -49,13 +49,13 @@
         (
             customer, customer_tel,date
             , item_idx, item_name, cnt,
-            type, created_at, cust_num, address, price)
+            type, created_at, cust_num, address, price, pay_type)
         VALUES
         <foreach collection="itemInfoList" item="item" separator=",">
         (
             #{customer}, #{customerTel}, #{date},
             #{item.itemId}, #{item.itemName}, #{item.cnt},
-            #{type}, now(), #{custNum}, #{address}, #{item.price}
+            #{type}, now(), #{custNum}, #{address}, #{item.price}, #{payType}
         )
         </foreach>
     </insert>
@@ -87,7 +87,8 @@
             h.created_at,
             h.cust_num,
             h.address,
-            i.taxYN
+            i.taxYN,
+            h.pay_type
         FROM item_history h
         left join items i on h.item_idx = i.id
         WHERE 1=1
