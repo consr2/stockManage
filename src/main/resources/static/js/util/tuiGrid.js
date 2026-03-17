@@ -99,6 +99,13 @@ const tuiGrid_JS = (() =>{
                         sortable: true
                     },
                     {
+                        header: '비과세',
+                        align: 'center',
+                        name: 'taxYN',
+                        width: 80,
+                        sortable: true
+                    },
+                    {
                         header: '삭제',
                         align: 'center',
                         width: 60,

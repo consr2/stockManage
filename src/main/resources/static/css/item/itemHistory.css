@@ -9,7 +9,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
 
 body { background-color: var(--bg-color); color: var(--text-main); display: flex; justify-content: center; padding-top: 5vh; }
-.dashboard { width: 100%; max-width: 900px; padding: 0 24px; }
+.dashboard { width: 100%; max-width: 1200px; padding: 0 24px; }
 .main-header { margin-bottom: 30px; }
 .main-header h1 { font-size: 28px; font-weight: 700; }
 .back-link { text-decoration: none; color: var(--text-sub); font-size: 14px; margin-bottom: 10px; display: inline-block; }

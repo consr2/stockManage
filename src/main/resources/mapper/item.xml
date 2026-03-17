@@ -13,11 +13,6 @@
             (#{itemName},#{price1},#{price2},#{taxYN})
     </insert>
 
-    <insert id="insertItemStock">
-        INSERT INTO item_stock
-        (item_id, item_name, current_cnt, last_updated)
-        VALUES(#{id}, #{itemName}, 0, now())
-    </insert>
 
     <select id="selectItemByName"  resultType="com.my.shop.item.dto.ItemResponseDTO$Item">
         SELECT
@@ -115,7 +110,8 @@
             i.current_cnt,
             i.price1,
             i.price2,
-            i.created_at
+            i.created_at,
+            i.taxYN
         FROM items i
         WHERE 1=1
         ]]><if test="startDate != null and startDate != ''">
